@@ -28,7 +28,7 @@ int update(int foo) {
   int i=0;
   if (foo != 0) {
     for (i=0; i < 8; i++) {
-      printf(CURSOR_TO_START_OF_LINE);
+      //printf(CURSOR_TO_START_OF_LINE);
       printf(CURSOR_UP_ONE_LINE); 
       //printf(CURSOR_CLEAR_TO_EOL);
     }
