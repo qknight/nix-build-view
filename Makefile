@@ -1,3 +1,4 @@
 all:
-	rm -f demo
-	gcc demo.c -o demo
+	rm -f demo cdemo
+	gcc cdemo.c -o cdemo
+	g++ demo.cpp -o demo
