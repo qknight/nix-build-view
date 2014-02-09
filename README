@@ -1,0 +1,13 @@
+this is an interactive showcase how nix-build could be extended for better usability
+
+
+1. type 'make'
+2. run './demo'
+
+or 
+
+cat preview
+
+on a linux shell
+
+
