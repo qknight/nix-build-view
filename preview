@@ -1,0 +1,43 @@
+building Nix...
+these derivations will be [0;0;35mbuilt[0;33;0m:
+  /nix/store/4hh3935anmmhl13q8lmdkgdsxzh46gq6-[0;0;35mtig-1.1.drv[0;33;0m
+  /nix/store/9brfbp9gk7x3qim52q49rckhw7vw08h2-[0;0;35masciidoc-8.6.8.drv[0;33;0m
+  /nix/store/ckn6dnnb0ayjbdn3avpqvqa5rs35k2w1-[0;0;35mtig-1.1.tar.gz.drv[0;33;0m
+  /nix/store/j9bgfp4q6h8gdi4b6idvi1r39b5hagvz-[0;0;35masciidoc-8.6.8.tar.gz.drv[0;33;0m
+these paths will be [0;0;32mfetched[0;33;0m ([0;1;33m40.1 Mib[0;33;0m download, [0;1;33m201.66 Mib[0;33;0m unpacked):
+  /nix/store/0yzz6p08k1sgpdb63c0wx48vx0yc51g6-[0;0;32mbzip2-1.0.6[0;33;0m
+  /nix/store/1a08qk5q5vdfv13rwasbf4fqa2s26kx4-[0;0;32mattr-2.4.47[0;33;0m
+  /nix/store/3amm865b2qb5s5mwvshvd9kpfq3aj1bc-[0;0;32mlibssh2-1.4.3[0;33;0m
+  /nix/store/5myfmphlck9gcabr6czlg6792d9zhh4m-[0;0;32mperl-DBI-1.630[0;33;0m
+  /nix/store/j298bijkgdzzv6wlzdidldx297ch5rq2-[0;0;32mnix-1.7pre3327_0e2ca[0;33;0m
+  /nix/store/mad928szz57gjpbfm9dih23hpspzz11f-[0;0;32mopenssl-1.0.1f[0;33;0m
+  /nix/store/q784x64hp3nwdxx7lbgb16f74i2bhxxk-[0;0;32mglibc-2.18[0;33;0m
+  /nix/store/qw7vn33jcv1yfsfdw19ic5r2jlqk68w3-[0;0;32mbash-4.2-p45[0;33;0m
+  /nix/store/skxdffb34mcz50f9q691qsg44bgrxg2x-[0;0;32mperl-DBD-SQLite-1.37[0;33;0m
+  /nix/store/vmq6nmnvyblnwlrmhhhpnsjdlri4qz25-[0;0;32mcurl-7.33.0[0;33;0m
+  /nix/store/xay7d5hfhm9vj3v31dbzimi08ydrgd4w-[0;0;32mzlib-1.2.8[0;33;0m
+  /nix/store/xkhr68z09y66c1qwzdq03lnhjl9c51si-[0;0;32mperl-WWW-Curl-4.15[0;33;0m
+  /nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-[0;0;32mgzip-1.6[0;33;0m
+  /nix/store/z1krxp2hwph8fypchf2b0ssnyp6z8k9l-[0;0;32mperl-5.16.3[0;33;0m
+  /nix/store/zp4bcz188h69jvrb1qyl10lfkanz7ld3-[0;0;32mboehm-gc-7.2d[0;33;0m
+  /nix/store/zsl05mbb69s38bbyi9nfff6vyry9m8jm-[0;0;32mgnutar-1.27.1[0;33;0m
+  /nix/store/zxvyl58mw530xf811nmm0i8b6nibwmw5-[0;0;32mcoreutils-8.21[0;33;0m
+-----------------------------------------------------------------------------------------------------
+Download of http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz finished
+ -> [0;1;33m24.4 Mib in 0:01:25, average speed 115kib/s[0;33;0m
+ -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-gcc-4.8.2’
+Download of http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz finished
+ -> [0;1;33m4.4 Mib in 0:02:23, average speed 333115kib/s[0;33;0m
+ -> writing  to ‘/nix/store/6pw49mccs51msj6yrc7hwm88gdkccfd2-sqlite-3.8.0.2’
+Download of http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz finished
+ -> [0;1;33m124.4 Mib in 0:03:23, average speed 1501kib/s[0;33;0m
+ -> writing  to ‘/nix/store/zsl05mbb69s38bbyi9nfff6vyry9m8jm-gnutar-1.27.1’
+-----------------------------------------------------------------------------------------------------
+[0;0;35mbuilding:[0;33;0m  
+ /nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-[0;0;35mgzip-1.6[0;33;0m
+ /nix/store/j298bijkgdzzv6wlzdidldx297ch5rq2-[0;0;35mnix-1.7pre3327_0e2ca26[0;33;0m
+[0;0;32mfetching:[0;33;0m                                                                         
+ [0;0;36mhttp://cache.nixos.org/nar/0s57kyi85g7lb9irja2csl[0;33;0mmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz  [0;0;33m50%  23Mib - 1.82 Mib/s[0;33;0m
+ [0;0;36mhttp://cache.nixos[0;33;0m.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz  [0;0;31m10%   2Mib - stalled[0;33;0m
+ [0;0;36mhttp://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4g[0;33;0mh19k0jc7nf3.nar.xz  [0;0;33m70% 25Mbib - 2.25 Mib/s[0;33;0m
+ [0;0;36mhttp://cache.nixos.org/nar/0s55vc23i4q35dv8pi4g[0;33;0mh19k0jc7nf3.nar.xz.....................  [0;0;33m49% 80Mbib - 0.25 byte/s[0;33;0m
