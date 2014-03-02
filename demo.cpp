@@ -1,3 +1,4 @@
+// http://infohost.nmt.edu/~eweiss/222_book/222_book/0201433079/ch18lev1sec12.html
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -9,6 +10,11 @@
 
 #include <stdio.h>      /* printf */
 #include <signal.h>     /* signal, raise, sig_atomic_t */
+
+#include <termios.h>
+#ifndef TIOCGWINSZ
+#include <sys/ioctl.h>
+#endif
 
 
 using namespace std;
@@ -116,9 +122,31 @@ void drawStatus(int foo) {
     linecount = c;
 }
 
+std::string GetEnv( const string & var ) {
+     const char * val = ::getenv( var.c_str() );
+     if ( val == 0 ) {
+         return "";
+     }
+     else {
+         return val;
+     }
+}
+
+static void
+pr_winsize(int fd)
+{
+    struct winsize size;
+
+    if (ioctl(fd, TIOCGWINSZ, (char *) &size) < 0)
+        printf("TIOCGWINSZ error");
+    printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
+}
 
 void signal_callback_handler(int signum) {
     printf("Caught signal %d\n",signum);
+
+    //std::cout << GetEnv("PATH") << std::endl;
+    pr_winsize(STDIN_FILENO);
 
     exit(signum);
 }
