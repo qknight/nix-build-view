@@ -53,7 +53,7 @@ static int linecount = 0;
 
 class Widget {
 public:
-    std::string render();
+    std::string render(int width=0);
 };
 
 class UrlWidget : public Widget {
@@ -67,7 +67,7 @@ public:
         m_percent = percent;
         m_bits_per_sec = bits_per_sec;
     };
-    std::string render() {
+    std::string render(int width) {
         std::stringstream s;
 
         int size = m_url.size();
@@ -131,13 +131,24 @@ static void pr_winsize(int fd)
     printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
 }
 
+std::string GetEnv( const string & var ) {
+     const char * val = ::getenv( var.c_str() );
+     if ( val == 0 ) {
+         return "";
+     }
+     else {
+         return val;
+     }
+}
+
+
 void signal_callback_handler(int signum) {
     printf("Caught signal %d\n",signum);
 
     //std::cout << GetEnv("PATH") << std::endl;
     pr_winsize(STDIN_FILENO);
 
-    exit(signum);
+    //exit(signum);
 }
 
 

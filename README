@@ -1,13 +1,50 @@
-this is an interactive showcase how nix-build could be extended for better usability
+# motivation
 
+this is an interactive showcase how nix-build could be extended for better usability
 
 1. type 'make'
 2. run './demo'
 
 or 
 
-cat preview
+on a linux shell do:
+ 
+    cat preview
 
-on a linux shell
+# todo
 
+* look at: 'nixos-rebuild build -Q', why does it look so nice?
+
+* find out what features i can do:
+
+    * total download size known?
+    * bandwidth per download known?
+    * summary of all download bandwidths known?
+
+* find out how downloads are started when doing 'nixos-rebuild switch' -> nix-build 
+
+* what drives the main loop in 'nix-build'
+  nix-store binary (nix-store.c) calls void run(..) -> opRealise(..) -> store->buildPaths(..) -> (build.cc) -> void Worker::run(const Goals & _topGoals) is the main loop!
+
+* find a nice output wrapper, preferably a singleton which wraps printMsg() somehow
+
+    * how does nix-build write to the shell
+    
+        it uses libutil/util.cc's:
+        printMsg() -> printMsg_() -> writeToStderr(s) -> _writeToStderr() -> defaultWriteToStderr(..) -> writeFull(..) -> write(..)
+
+    * how to integrate the WINCH (signal 28) terminal signal which is thrown on console resize?
+
+        probably using a FD which the sinal handler writes to
+
+    * how to extenda ./scripts/download-from-binary-cache.pl.in to read status
+
+    https://metacpan.org/source/SYP/Net-Curl-0.33/lib/Net/Curl/Easy.pm#L14
+
+
+
+* design phase
+
+    * [done] design a multiline prototype -> see demo.cpp
+    * single line prototype (wanted by eelco)
 
