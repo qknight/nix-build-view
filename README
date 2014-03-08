@@ -11,7 +11,16 @@ on a linux shell do:
  
     cat preview
 
+or look at this screenshot:
+
+    https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg
+
 # todo
+
+* design phase
+
+    * [done] design a multiline prototype -> see demo.cpp
+    * single line prototype (wanted by eelco)
 
 * look at: 'nixos-rebuild build -Q', why does it look so nice?
 
@@ -37,14 +46,10 @@ on a linux shell do:
 
         probably using a FD which the sinal handler writes to
 
-    * how to extenda ./scripts/download-from-binary-cache.pl.in to read status
+    * how to extend ./scripts/download-from-binary-cache.pl.in to get a periodict download status update?
 
-    https://metacpan.org/source/SYP/Net-Curl-0.33/lib/Net/Curl/Easy.pm#L14
+        https://metacpan.org/source/SYP/Net-Curl-0.33/lib/Net/Curl/Easy.pm#L14
 
 
 
-* design phase
-
-    * [done] design a multiline prototype -> see demo.cpp
-    * single line prototype (wanted by eelco)
 
