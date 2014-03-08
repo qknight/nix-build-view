@@ -1,4 +1,4 @@
-#!/usr/bin/perl
+#!/usr/bin/env perl
 =head1 Curl::Transport
  
 This module shows:
@@ -36,6 +36,7 @@ use strict;
 use warnings;
 use Net::Curl::Easy qw(/^CURLE_/);
 use base qw(Net::Curl::Easy);
+
  
 BEGIN {
         if ( Net::Curl::LIBCURL_VERSION_NUM() < 0x071202 ) {
@@ -55,7 +56,20 @@ use constant {
         B_VEC => 2,
         B_READBUF => 3,
 };
- 
+
+sub cb_progress()  {
+     my ( $easy, $dltotal, $dlnow, $ultotal, $ulnow, $uservar ) = @_;
+     print "================== download status beg ==================\n";
+     print $dltotal;
+     print $dlnow;
+     print $ultotal;
+     print $ulnow;
+     print $uservar;
+     print "================== download status end ==================\n";
+     return 0;
+}
+
+
  
 # new( URL ) -- get new object
 sub new
@@ -70,6 +84,7 @@ sub new
  
         $self->setopt( Net::Curl::Easy::CURLOPT_URL, $uri );
         $self->setopt( Net::Curl::Easy::CURLOPT_CONNECT_ONLY, 1 );
+        $self->setopt( Net::Curl::Easy::CURLOPT_PROGRESSFUNCTION, cb_progress );
  
         # will die if fails
         $self->perform();
@@ -206,10 +221,11 @@ use strict;
 use warnings;
 #endnopod
  
-my $host = shift @ARGV || "example.com";
+my $host = shift @ARGV || "lastlog.de";
+my $request = "/misc/bigFile.bin.bz2";
  
 my $t = Curl::Transport->new( "http://$host" );
-$t->send( "GET / HTTP/1.0\r\n" );
+$t->send( "GET $request HTTP/1.0\r\n" );
 $t->send( "User-Agent: Curl::Transport test\r\n" );
 $t->send( "Accept: */*\r\n" );
 $t->send( "Host: $host\r\n" );
@@ -229,14 +245,14 @@ my $length;
 }
  
 if ( defined $length ) {
-        print "Reading $length bytes of data:\n";
+        print "CCCCCCCCC Reading $length bytes of data:\n";
         print $t->read( $length );
  
-        print "\nTrying to read one more byte, should fail:\n";
+        print "\nBBBBBBBBBBBB Trying to read one more byte, should fail:\n";
         print $t->read( 1 );
         print "\n";
 } else {
-        print "Don't know how much to read\n";
+        print "AAAAAAAA Don't know how much to read\n";
         while ( $_ = $t->readline() ) {
                 print;
         }
