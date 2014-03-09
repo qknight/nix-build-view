@@ -11,6 +11,7 @@
 #include <stdio.h>      /* printf */
 #include <signal.h>     /* signal, raise, sig_atomic_t */
 
+#include <string.h>
 #include <termios.h>
 #ifndef TIOCGWINSZ
 #include <sys/ioctl.h>
@@ -67,7 +68,7 @@ public:
         m_percent = percent;
         m_bits_per_sec = bits_per_sec;
     };
-    std::string render(int width) {
+    std::string render(int width=0) {
         std::stringstream s;
 
         int size = m_url.size();
@@ -154,7 +155,19 @@ void signal_callback_handler(int signum) {
 
 int main() {
     int foo = 0;
+
+    //http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
+    struct termios term_stored;
+    struct termios term_new;
+    struct termios term_old;
+    tcgetattr(0,&term_stored);
+    tcgetattr(0,&term_old);
+    memcpy(&term_new,&term_old,sizeof(struct termios));
+    term_new.c_lflag &= ~(ECHO|ICANON); /* disable echo and canonization */
+    tcsetattr(0,TCSANOW,&term_new);
+
     signal(SIGWINCH, signal_callback_handler);
+
 
     std::cout <<
               "building Nix...\n" <<
@@ -184,6 +197,13 @@ int main() {
               "-----------------------------\n";
 
     while(1) {
+
+
+        // have to use select()
+// todo:
+// - pass stdin/stderr through
+// - update status every second
+// - process redraws from the sinal handler AND from each forked and downloading|building child process by using socket writes
         drawStatus(foo);
         if(foo==10) {
 //             clearStatus();
@@ -192,5 +212,6 @@ int main() {
         foo+=1;
         sleep(1);
     }
+    tcsetattr(0,TCSANOW,&term_stored); /* restore the original state */
 }
 

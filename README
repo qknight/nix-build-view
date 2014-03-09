@@ -13,14 +13,33 @@ on a linux shell do:
 
 or look at this screenshot:
 
-   ![]( https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg)
+   https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg
 
 # todo
+
+what to print to the statusline?
+ - DerivationGoal 
+   could print the current status it is in: fetching|buildPhase|installPhase|... and it could
+   pass a logfile, which one can attach to with 'tail -f /tmp/9brfbp9gk7x3qim52q49rckhw7vw08h2-asciidoc-8.6.8/buildlog' 
+   /nix/store/9brfbp9gk7x3qim52q49rckhw7vw08h2-asciidoc-8.6.8.drv [buildPhase] since 5min 20sec ETA: ~ 20min
+     log: /tmp/9brfbp9gk7x3qim52q49rckhw7vw08h2-asciidoc-8.6.8/buildlog
+ - SubstitutionGoal
+   download progress while downloading | extracting stuff
 
 * design phase
 
     * [done] design a multiline prototype -> see demo.cpp
-    * single line prototype (wanted by eelco)
+    * [done] disable keyboard echo
+
+      http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
+
+    * make the widgets resizeable - signal 28
+    * single line 'compact mode' prototype (wanted by eelco)
+    * create shortcuts which can affect the console rendering verbosity
+
+        * 'v' switch between verbose and compact mode (single line vs multiline)
+
+    * add regexp autocolor feature
 
 * look at: 'nixos-rebuild build -Q', why does it look so nice?
 
