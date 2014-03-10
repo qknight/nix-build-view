@@ -17,6 +17,10 @@
 #include <sys/ioctl.h>
 #endif
 
+#include <sys/time.h>
+#include <time.h>
+
+#include <errno.h>
 
 using namespace std;
 
@@ -43,12 +47,11 @@ using namespace std;
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
-sig_atomic_t signaled = 0;
+sig_atomic_t signaled = 1;
 
-void my_handler (int param)
-{
-    signaled = 1;
-}
+struct timeval cur_t;
+struct timeval last_t;
+struct timeval activity_timer;
 
 static int linecount = 0;
 
@@ -100,6 +103,7 @@ void drawStatus(int foo) {
     UrlWidget urlW2("http://cache.nixos.org/nar/0s57kyi8-foobar-1.2.3.nar.xz ..................................", fc, 12356);
 
     clearStatus();
+    printf("drawing()\n");
     if (foo == 3 || foo == 7 || foo == 10) 
     std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
               "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
@@ -123,15 +127,6 @@ void drawStatus(int foo) {
     linecount = c;
 }
 
-static void pr_winsize(int fd)
-{
-    struct winsize size;
-
-    if (ioctl(fd, TIOCGWINSZ, (char *) &size) < 0)
-        printf("TIOCGWINSZ error");
-    printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
-}
-
 std::string GetEnv( const string & var ) {
      const char * val = ::getenv( var.c_str() );
      if ( val == 0 ) {
@@ -142,12 +137,23 @@ std::string GetEnv( const string & var ) {
      }
 }
 
+static void pr_winsize(int fd)
+{
+    struct winsize size;
+
+    if (ioctl(fd, TIOCGWINSZ, (char *) &size) < 0)
+        printf("TIOCGWINSZ error");
+    printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
+}
 
 void signal_callback_handler(int signum) {
-    printf("Caught signal %d\n",signum);
+    //printf("Caught signal %d\n",signum);
 
     //std::cout << GetEnv("PATH") << std::endl;
-    pr_winsize(STDIN_FILENO);
+    if (signum == SIGINT)
+       signaled = 0;
+    //if (signum == SIGWINCH)
+    //   pr_winsize(STDIN_FILENO);
 
     //exit(signum);
 }
@@ -166,8 +172,22 @@ int main() {
     term_new.c_lflag &= ~(ECHO|ICANON); /* disable echo and canonization */
     tcsetattr(0,TCSANOW,&term_new);
 
-    signal(SIGWINCH, signal_callback_handler);
+    //signal(SIGWINCH, signal_callback_handler);
 
+    // https://lwn.net/Articles/176911/
+    sigset_t emptyset, blockset;
+
+    sigemptyset(&blockset);         /* Block SIGINT */
+    sigaddset(&blockset, SIGINT);
+    sigaddset(&blockset, SIGWINCH);
+    sigprocmask(SIG_BLOCK, &blockset, NULL);
+
+    struct sigaction sa;
+    sa.sa_handler = signal_callback_handler;        /* Establish signal handler */
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGINT, &sa, NULL);
+    sigaction(SIGWINCH, &sa, NULL);
 
     std::cout <<
               "building Nix...\n" <<
@@ -196,21 +216,62 @@ int main() {
               "  /nix/store/zxvyl58mw530xf811nmm0i8b6nibwmw5-" << GREEN << "coreutils-8.21\n" << RESET <<
               "-----------------------------\n";
 
-    while(1) {
+    fd_set rfds;
+    struct timespec tv;
+    int retval;
 
+    gettimeofday(&cur_t, 0);
+    gettimeofday(&last_t, 0);
+    gettimeofday(&activity_timer, 0);
 
-        // have to use select()
-// todo:
-// - pass stdin/stderr through
-// - update status every second
-// - process redraws from the sinal handler AND from each forked and downloading|building child process by using socket writes
-        drawStatus(foo);
-        if(foo==10) {
-//             clearStatus();
-            exit(0);
+    /* Watch skt to see when it has input. */
+    FD_ZERO(&rfds);
+    //FD_SET(skt, &rfds);
+
+   tv.tv_sec = 1;
+   tv.tv_nsec = 0;
+
+    while(signaled) {
+        // have to use pselect()
+        // todo:
+        // - pass stdin/stderr through
+        // - update status every second
+        // - process redraws from the sinal handler AND from each forked and downloading|building child process by using socket writes
+        sigemptyset(&emptyset);
+        retval = pselect(1, &rfds, NULL, NULL, &tv, &emptyset);
+
+        if (retval < 0) {
+          if (errno == EINTR) {
+             //printf("signal\n");
+             //printf("%lu, %lu\n", tv.tv_sec, tv.tv_nsec);
+             drawStatus(foo);
+             continue;
+          }
+          printf("error in pselect\n");
+          exit(1);
         }
-        foo+=1;
-        sleep(1);
+        // timeout
+        if (retval == 0) {
+            drawStatus(foo);
+            if(foo==10) {
+    //             clearStatus();
+                exit(0);
+            }
+            foo+=1;
+
+            tv.tv_sec = 1;
+            tv.tv_nsec = 0;
+
+            // resetting this is mendatory (see manpage: man 2 select)
+            FD_ZERO(&rfds);
+            //FD_SET(skt, &rfds);
+        }
+
+       // process FDs since data is there
+       // see http://publib.boulder.ibm.com/infocenter/iseries/v5r3/index.jsp?topic=%2Frzab6%2Frzab6xnonblock.htm
+       if (retval > 0) {
+
+       }
     }
     tcsetattr(0,TCSANOW,&term_stored); /* restore the original state */
 }

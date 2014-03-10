@@ -33,6 +33,8 @@ what to print to the statusline?
 
       http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
 
+    * printf + cout wrapper to write above the statusline
+
     * make the widgets resizeable - signal 28
     * single line 'compact mode' prototype (wanted by eelco)
     * create shortcuts which can affect the console rendering verbosity
