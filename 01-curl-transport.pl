@@ -57,7 +57,7 @@ use constant {
         B_READBUF => 3,
 };
 
-sub cb_progress()  {
+sub cb_progress  {
      my ( $easy, $dltotal, $dlnow, $ultotal, $ulnow, $uservar ) = @_;
      print "================== download status beg ==================\n";
      print $dltotal;
@@ -83,8 +83,9 @@ sub new
         my $self = $class->SUPER::new( $base );
  
         $self->setopt( Net::Curl::Easy::CURLOPT_URL, $uri );
-        $self->setopt( Net::Curl::Easy::CURLOPT_CONNECT_ONLY, 1 );
-        $self->setopt( Net::Curl::Easy::CURLOPT_PROGRESSFUNCTION, cb_progress );
+        $self->setopt( Net::Curl::Easy::CURLOPT_CONNECT_ONLY, 1);
+        $self->setopt( Net::Curl::Easy::CURLOPT_NOPROGRESS, 0);
+        $self->setopt( Net::Curl::Easy::CURLOPT_PROGRESSFUNCTION, \&cb_progress );
  
         # will die if fails
         $self->perform();
@@ -223,6 +224,7 @@ use warnings;
  
 my $host = shift @ARGV || "lastlog.de";
 my $request = "/misc/bigFile.bin.bz2";
+#my $request = "/index.php";#"/misc/bigFile.bin.bz2";
  
 my $t = Curl::Transport->new( "http://$host" );
 $t->send( "GET $request HTTP/1.0\r\n" );
