@@ -41,6 +41,14 @@ what to print to the statusline?
 
         * 'v' switch between verbose and compact mode (single line vs multiline)
 
+    * after program execution all the keystrokes are written to the shell, these should be filtered instead!
+
+    * when 3 widgets are rendered (without line-wrapping) resizing works as expected, however, if a widget exceeded the linewidth, then
+      the clearStatus call does not remove the correct ammount of lines and leaves unwanted stuff
+
+        * a fix would be to compute how many linewraps resulted from the resize: previous widget-width / new linewidth = 2,173 means we have to remove 
+          3 lines now, instead of just one for example
+
     * add regexp autocolor feature
 
 * look at: 'nixos-rebuild build -Q', why does it look so nice?

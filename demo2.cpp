@@ -24,6 +24,9 @@
 
 using namespace std;
 
+// http://ispltd.org/mini_howto:ansi_terminal_codes
+#define CURSOR_SAVE "\e7"
+#define CURSOR_RESTORE "\e8"
 #define CURSOR_TO_START_OF_LINE "\r"
 #define CURSOR_UP_ONE_LINE "\e[A"
 #define CURSOR_CLEAR_TO_EOL "\e[K"
@@ -54,6 +57,8 @@ struct timeval last_t;
 struct timeval activity_timer;
 
 static int linecount = 0;
+static int oldcols = 0;
+static std::stringstream olds;
 
 class Widget {
 public:
@@ -80,6 +85,8 @@ public:
         url_progress << CYAN << m_url.substr(0, (int)end) << RESET <<  m_url.substr((int)end, size-(int)end);
 
         s << url_progress.str() << " " << (int)(m_percent*100) << "% " << m_bits_per_sec << "\n";
+        olds << std::flush;
+        olds << s;
         return s.str();
     }
 };
@@ -102,8 +109,10 @@ void drawStatus(int foo) {
     UrlWidget urlW1("http://cache.nixos.org/nar/0s57kyi85g7lb9irja3i4q35dv8pi4gh1-foobar-1.2.3.nar.xz .........", fb, 12356);
     UrlWidget urlW2("http://cache.nixos.org/nar/0s57kyi8-foobar-1.2.3.nar.xz ..................................", fc, 12356);
 
+    //printf("\e[7l");
+
     clearStatus();
-    printf("drawing()\n");
+    //printf("drawing()\n");
     if (foo == 3 || foo == 7 || foo == 10) 
     std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
               "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
@@ -118,13 +127,30 @@ void drawStatus(int foo) {
     if (fb < 1.0) ssout << " " << urlW1.render();
     if (fc < 1.0) ssout << " " << urlW2.render();
 
+    struct winsize size;
+    if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
+        printf("TIOCGWINSZ error");
+    //printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
+    
     std::string sout = ssout.str();
     std::cout << sout;
+
     int c = 0;
-    for (int i=0 ;  i <= sout.size(); ++i)
-        if (sout[i] == '\n')
-            c++;
+    int lastnewline = 0;
+    for (int i=0 ; i < sout.size(); ++i) {
+        if (sout[i] == '\n' || i == sout.size()) {
+            if (i != sout.size())
+              c++;
+            int v = ((i-lastnewline)/size.ws_col);
+            //printf ("v=%i, i=%i, lastnewline=%i, i-lastnewline=%i, size.ws_col=%i\n", v, i, lastnewline, i-lastnewline, size.ws_col);
+            c+=v;
+            lastnewline=i;
+        } 
+        //else if (i == sout.size())
+           //c+=(i/oldcols)-1;
+    }
     linecount = c;
+    //printf ("c ist nun %i\n", c);
 }
 
 std::string GetEnv( const string & var ) {
@@ -161,6 +187,43 @@ void signal_callback_handler(int signum) {
 
 int main() {
     int foo = 0;
+    struct winsize size;
+    if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
+        printf("TIOCGWINSZ error");
+    //printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
+
+
+    // another test BEGIN
+    // this test prooved what i had suspeced, that is: when doing printf to the terminal it will compute line-wrap once
+    // but never afterwards. this means that if one writes 3 lines and the console is resized afterwards, it will
+    // always be 3 lines needed to be removed. not more not less!
+    //
+    // 1. execute this program until you can see the 11111____* string on the shell, then quick
+    // 2. resize the terminal to 30 cols and afterwards the right amount of cols will be removed 
+    // 3. also test vice versa, start at 30 cols and then resize it to 130 cols, must have the same effect [tm]
+    // 
+    //std::cout << "==================oben=================\n";
+
+    //std::string s = "11111_____11112_____11113_____11114_____11115_____11116_____11117_____11118_____11119_____11121_____11122_____\n";
+    //std::cout << s;
+    //sleep(1);
+
+    //int c=0;
+    //for(int i=0; i < s.size(); ++i) {
+    //  if(s[i] == '\n')
+    //    c+=(i/size.ws_col)+1;
+    //}
+
+    //while(c--)
+    //  printf(CURSOR_UP_ONE_LINE);
+    //printf(CURSOR_CLEAN_ALL_AFTERWARDS);
+    //std::cout << "==================unten=================\n";
+    //pr_winsize(0);
+    //std::cout << s.size();
+
+    //exit(1);
+    // another test END
+ 
 
     //http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
     struct termios term_stored;
@@ -244,7 +307,7 @@ int main() {
           if (errno == EINTR) {
              //printf("signal\n");
              //printf("%lu, %lu\n", tv.tv_sec, tv.tv_nsec);
-             drawStatus(foo);
+             //drawStatus(foo);
              continue;
           }
           printf("error in pselect\n");
