@@ -114,15 +114,13 @@ void drawStatus(int foo) {
 
     clearStatus();
     //printf("drawing()\n");
-//    if (foo == 3 || foo == 7 || foo == 10) 
-//    std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
-//              "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
-//              "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
+    if (foo == 3 || foo == 7 || foo == 10) 
+    std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
+              "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
+              "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
 
     std::stringstream ssout;
-    ssout << std::string("\n");
-    ssout << std::string("\n");
-    //ssout << std::string("\n12345\n");
+    ssout << "-----------------------------\n";
     //ssout << MAGENTA << "building:" << RESET << "\n";
     //ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 5 min " << foo << " sec" << "\n";
     //if (foo < 10) ssout << GREEN << "fetching:" << RESET << "\n";
@@ -133,29 +131,34 @@ void drawStatus(int foo) {
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
         printf("TIOCGWINSZ error");
-    //printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
     
     std::string sout = ssout.str();
-    std::cout << "\e[41m"<< sout << "\e[40m";
+    std::cout << sout;
 
     int c = 0;
     int lastnewline = 0;
     fprintf(stderr, "=====================================\n");
-    for (int i=0 ; i < sout.size(); ++i) {
-        if (sout[i] == '\n') {
-            c++;
-//FIXME do not count \n as char
-            int v = (((i-lastnewline))/size.ws_col);
-            int r = (((i-lastnewline))%size.ws_col);
+
+    std::vector<std::string> strings;
+    std::string s;
+    linecount=0;
+    while(std::getline(ssout, s, '\n')) {
+        strings.push_back(s);
+    }
+    fprintf(stderr, "strings.size()=%i\n", strings.size());
+    //FIXME the last problem are the colors and the other escape sequences i added as it affects the size()
+    for(int i=0; i < strings.size(); ++i) {
+            int v = strings[i].size()/size.ws_col;
+            int r = strings[i].size()%size.ws_col;
             if (v > 0 && r == 0)
               v--;
+            linecount+=v; 
+            fprintf(stderr, "strings[i].size=%i, i=%i, v=%i, size.ws_col=%i\n", strings[i].size(), i,v, size.ws_col);
+            fprintf(stderr, "%s\n", strings[i].c_str());
 
-            fprintf (stderr, "v=%i, i=%i-lastnewline=%i=%i, size.ws_col=%i\n", v, i, lastnewline, i-lastnewline, size.ws_col);
-            c+=v;
-            lastnewline=i;
-        } 
     }
-    linecount = c;
+    linecount += strings.size();
+
     fprintf(stderr, "=====================================\n");
 }
 
