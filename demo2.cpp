@@ -113,19 +113,20 @@ void drawStatus(int foo) {
 
     clearStatus();
     //printf("drawing()\n");
-    if (foo == 3 || foo == 7 || foo == 10) 
-    std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
-              "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
-              "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
+//    if (foo == 3 || foo == 7 || foo == 10) 
+//    std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
+//              "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
+//              "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
 
     std::stringstream ssout;
-    ssout << "-----------------------------\n";
-    ssout << MAGENTA << "building:" << RESET << "\n";
-    ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 5 min " << foo << " sec" << "\n";
-    if (foo < 10) ssout << GREEN << "fetching:" << RESET << "\n";
-    if (fa < 1.0) ssout << " " << urlW0.render();
-    if (fb < 1.0) ssout << " " << urlW1.render();
-    if (fc < 1.0) ssout << " " << urlW2.render();
+    ssout << std::string("\n\n\n\n");
+    //ssout << std::string("\n12345\n");
+    //ssout << MAGENTA << "building:" << RESET << "\n";
+    //ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 5 min " << foo << " sec" << "\n";
+    //if (foo < 10) ssout << GREEN << "fetching:" << RESET << "\n";
+    //if (fa < 1.0) ssout << " " << urlW0.render();
+    //if (fb < 1.0) ssout << " " << urlW1.render();
+    //if (fc < 1.0) ssout << " " << urlW2.render();
 
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
@@ -133,24 +134,27 @@ void drawStatus(int foo) {
     //printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
     
     std::string sout = ssout.str();
-    std::cout << sout;
+    std::cout << "\e[41m"<< sout << "\e[40m";
 
     int c = 0;
     int lastnewline = 0;
+    fprintf(stderr, "=====================================\n");
     for (int i=0 ; i < sout.size(); ++i) {
-        if (sout[i] == '\n' || i == sout.size()) {
-            if (i != sout.size())
-              c++;
-            int v = ((i-lastnewline)/size.ws_col);
-            //printf ("v=%i, i=%i, lastnewline=%i, i-lastnewline=%i, size.ws_col=%i\n", v, i, lastnewline, i-lastnewline, size.ws_col);
+        if (sout[i] == '\n') {
+            c++;
+//FIXME do not count \n as char
+            int v = (((i-lastnewline))/size.ws_col);
+            int r = (((i-lastnewline))%size.ws_col);
+            if (v > 0 && r == 0)
+              v--;
+
+            fprintf (stderr, "v=%i, i=%i-lastnewline=%i=%i, size.ws_col=%i\n", v, i, lastnewline, i-lastnewline, size.ws_col);
             c+=v;
             lastnewline=i;
         } 
-        //else if (i == sout.size())
-           //c+=(i/oldcols)-1;
     }
     linecount = c;
-    //printf ("c ist nun %i\n", c);
+    fprintf(stderr, "=====================================\n");
 }
 
 std::string GetEnv( const string & var ) {
@@ -243,6 +247,7 @@ int main() {
     sigemptyset(&blockset);         /* Block SIGINT */
     sigaddset(&blockset, SIGINT);
     sigaddset(&blockset, SIGWINCH);
+    sigaddset(&blockset, SIGSTOP);
     sigprocmask(SIG_BLOCK, &blockset, NULL);
 
     struct sigaction sa;
@@ -251,6 +256,7 @@ int main() {
     sigemptyset(&sa.sa_mask);
     sigaction(SIGINT, &sa, NULL);
     sigaction(SIGWINCH, &sa, NULL);
+    //sigaction(SIGSTART, &sa, NULL);
 
     std::cout <<
               "building Nix...\n" <<
