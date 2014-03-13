@@ -105,15 +105,12 @@ void drawStatus(int foo) {
     float fa = (((float)foo/5)*0.8) < 1.0 ? ((float)foo/5)*0.8 : 1.0;
     float fb = (((float)foo/5)*0.5) < 1.0 ? ((float)foo/5)*0.5 : 1.0;
     float fc = (((float)foo/5)*1.7) < 1.0 ? ((float)foo/5)*1.7 : 1.0;
-    //NOTE: do not use tabs
     UrlWidget urlW0("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh1-foobar-1.2.3.nar.xz", fa, 12356);
     UrlWidget urlW1("http://cache.nixos.org/nar/0s57kyi85g7lb9irja3i4q35dv8pi4gh1-foobar-1.2.3.nar.xz .........", fb, 12356);
     UrlWidget urlW2("http://cache.nixos.org/nar/0s57kyi8-foobar-1.2.3.nar.xz ..................................", fc, 12356);
 
-    //printf("\e[7l");
-
     clearStatus();
-    //printf("drawing()\n");
+
     if (foo == 3 || foo == 7 || foo == 10) 
     std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
               "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
@@ -121,12 +118,16 @@ void drawStatus(int foo) {
 
     std::stringstream ssout;
     ssout << "-----------------------------\n";
-    //ssout << MAGENTA << "building:" << RESET << "\n";
-    //ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 5 min " << foo << " sec" << "\n";
-    //if (foo < 10) ssout << GREEN << "fetching:" << RESET << "\n";
-    //if (fa < 1.0) ssout << " " << urlW0.render();
-    //if (fb < 1.0) ssout << " " << urlW1.render();
-    //if (fc < 1.0) ssout << " " << urlW2.render();
+    ssout << MAGENTA << "building:" << RESET << "\n";
+    ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 2m" << foo+28 << "s " << "\n";
+    ssout << "    [ " << BOLDYELLOW << "installationPhase" << RESET << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
+    ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "foobar-1.7" << RESET << " - 5m" << foo+17 << "s " << "\n";
+    ssout << "    [ " << BOLDYELLOW << "postinstallationPhase" << RESET << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
+    if (foo < 10) ssout << GREEN << "fetching:" << RESET << "\n";
+    if (fa < 1.0) ssout << " " << urlW0.render();
+    if (fb < 1.0) ssout << " " << urlW1.render();
+    if (fc < 1.0) ssout << " " << urlW2.render();
+    ssout << "=== " << YELLOW << "running since 20m" << foo+12 << "s " << RESET << " ===" << "\n";
 
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
@@ -318,7 +319,7 @@ int main() {
           if (errno == EINTR) {
              //printf("signal\n");
              //printf("%lu, %lu\n", tv.tv_sec, tv.tv_nsec);
-             //drawStatus(foo);
+             drawStatus(foo);
              continue;
           }
           printf("error in pselect\n");
@@ -328,7 +329,7 @@ int main() {
         if (retval == 0) {
             drawStatus(foo);
             if(foo==10) {
-    //             clearStatus();
+                //clearStatus();
                 exit(0);
             }
             foo+=1;
