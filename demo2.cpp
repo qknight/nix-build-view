@@ -60,6 +60,59 @@ static int linecount = 0;
 static int oldcols = 0;
 static std::stringstream olds;
 
+
+
+// motivation: std::stringstream must be wrapped since terminal control chars might be arbitrary and to
+//             count stringlength they have to be ignored. this is needed for rendering the string to the shell.
+// ColorString wraps std::string and color=0 means no color; color>0 will be replaced by the colortable entry
+class ColorString {
+public:
+    ColorString(std::string termCtrl, std::string str) {
+        m_termCtrl = termCtrl;
+        m_str = str;
+    }
+    // mode==0 -> BW, mode==1 -> color
+    std::string render(int mode) {
+        if (mode == 0) {
+            return m_str;
+        }
+        if (mode == 1) {
+            std::stringstream sStream;
+            sStream << m_termCtrl << m_str << RESET;
+            return sStream.str();
+        }
+    }
+private:
+    std::string m_termCtrl;
+    std::string m_str;
+};
+
+// AdvancedStringList can render to std:string with or without using terminal color codes
+class AdvancedStringList {
+public:
+    void operator<<(std::string s) {
+        cStrings.push_back(ColorString("", s));
+    }
+    void operator<<(ColorString s) {
+        cStrings.push_back(s);
+    }
+    std::string str() {
+        return render_color(0);
+    }
+    std::string color_str() {
+        return render_color(1);
+    }
+private:
+    std::string render_color(int color) {
+        std::stringstream sStream;
+        for(int i=0; i < cStrings.size(); ++i) {
+            sStream << cStrings[i].render(color);
+        }
+        return sStream.str();
+    }
+    std::vector<ColorString> cStrings;
+};
+
 class Widget {
 public:
     std::string render(int width=0);
@@ -111,10 +164,10 @@ void drawStatus(int foo) {
 
     clearStatus();
 
-    if (foo == 3 || foo == 7 || foo == 10) 
-    std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
-              "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
-              "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
+    if (foo == 3 || foo == 7 || foo == 10)
+        std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
+                  "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
+                  "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
 
     std::stringstream ssout;
     ssout << "-----------------------------\n";
@@ -132,7 +185,7 @@ void drawStatus(int foo) {
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
         printf("TIOCGWINSZ error");
-    
+
     std::string sout = ssout.str();
     std::cout << sout;
 
@@ -149,13 +202,13 @@ void drawStatus(int foo) {
     fprintf(stderr, "strings.size()=%i\n", strings.size());
     //FIXME the last problem are the colors and the other escape sequences i added as it affects the size()
     for(int i=0; i < strings.size(); ++i) {
-            int v = strings[i].size()/size.ws_col;
-            int r = strings[i].size()%size.ws_col;
-            if (v > 0 && r == 0)
-              v--;
-            linecount+=v; 
-            fprintf(stderr, "strings[i].size=%i, i=%i, v=%i, size.ws_col=%i\n", strings[i].size(), i,v, size.ws_col);
-            fprintf(stderr, "%s\n", strings[i].c_str());
+        int v = strings[i].size()/size.ws_col;
+        int r = strings[i].size()%size.ws_col;
+        if (v > 0 && r == 0)
+            v--;
+        linecount+=v;
+        fprintf(stderr, "strings[i].size=%i, i=%i, v=%i, size.ws_col=%i\n", strings[i].size(), i,v, size.ws_col);
+        fprintf(stderr, "%s\n", strings[i].c_str());
 
     }
     linecount += strings.size();
@@ -164,13 +217,13 @@ void drawStatus(int foo) {
 }
 
 std::string GetEnv( const string & var ) {
-     const char * val = ::getenv( var.c_str() );
-     if ( val == 0 ) {
-         return "";
-     }
-     else {
-         return val;
-     }
+    const char * val = ::getenv( var.c_str() );
+    if ( val == 0 ) {
+        return "";
+    }
+    else {
+        return val;
+    }
 }
 
 static void pr_winsize(int fd)
@@ -187,7 +240,7 @@ void signal_callback_handler(int signum) {
 
     //std::cout << GetEnv("PATH") << std::endl;
     if (signum == SIGINT)
-       signaled = 0;
+        signaled = 0;
     //if (signum == SIGWINCH)
     //   pr_winsize(STDIN_FILENO);
 
@@ -203,15 +256,26 @@ int main() {
     //printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
 
 
+//<ColorString experiments>/////////////////////////////////////////////////////////////
+    AdvancedStringList ad;
+    ad << ColorString(RED, "hello world\n");
+    ad << "hello";
+    ad << " world\n";
+    ad << ColorString(MAGENTA, "i love you\n");
+    std::cout << ad.color_str() << std::endl;
+//</ColorString experiments>/////////////////////////////////////////////////////////////
+    
+    exit(0);
+
     // another test BEGIN
     // this test prooved what i had suspeced, that is: when doing printf to the terminal it will compute line-wrap once
     // but never afterwards. this means that if one writes 3 lines and the console is resized afterwards, it will
     // always be 3 lines needed to be removed. not more not less!
     //
     // 1. execute this program until you can see the 11111____* string on the shell, then quick
-    // 2. resize the terminal to 30 cols and afterwards the right amount of cols will be removed 
+    // 2. resize the terminal to 30 cols and afterwards the right amount of cols will be removed
     // 3. also test vice versa, start at 30 cols and then resize it to 130 cols, must have the same effect [tm]
-    // 
+    //
     //std::cout << "==================oben=================\n";
 
     //std::string s = "11111_____11112_____11113_____11114_____11115_____11116_____11117_____11118_____11119_____11121_____11122_____\n";
@@ -233,7 +297,7 @@ int main() {
 
     //exit(1);
     // another test END
- 
+
 
     //http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
     struct termios term_stored;
@@ -303,8 +367,8 @@ int main() {
     FD_ZERO(&rfds);
     //FD_SET(skt, &rfds);
 
-   tv.tv_sec = 1;
-   tv.tv_nsec = 0;
+    tv.tv_sec = 1;
+    tv.tv_nsec = 0;
 
     while(signaled) {
         // have to use pselect()
@@ -316,14 +380,14 @@ int main() {
         retval = pselect(1, &rfds, NULL, NULL, &tv, &emptyset);
 
         if (retval < 0) {
-          if (errno == EINTR) {
-             //printf("signal\n");
-             //printf("%lu, %lu\n", tv.tv_sec, tv.tv_nsec);
-             drawStatus(foo);
-             continue;
-          }
-          printf("error in pselect\n");
-          exit(1);
+            if (errno == EINTR) {
+                //printf("signal\n");
+                //printf("%lu, %lu\n", tv.tv_sec, tv.tv_nsec);
+                drawStatus(foo);
+                continue;
+            }
+            printf("error in pselect\n");
+            exit(1);
         }
         // timeout
         if (retval == 0) {
@@ -342,12 +406,16 @@ int main() {
             //FD_SET(skt, &rfds);
         }
 
-       // process FDs since data is there
-       // see http://publib.boulder.ibm.com/infocenter/iseries/v5r3/index.jsp?topic=%2Frzab6%2Frzab6xnonblock.htm
-       if (retval > 0) {
+        // process FDs since data is there
+        // see http://publib.boulder.ibm.com/infocenter/iseries/v5r3/index.jsp?topic=%2Frzab6%2Frzab6xnonblock.htm
+        if (retval > 0) {
 
-       }
+        }
     }
     tcsetattr(0,TCSANOW,&term_stored); /* restore the original state */
 }
+
+
+
+
 
