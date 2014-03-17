@@ -62,38 +62,45 @@ static std::stringstream olds;
 
 
 
+//FIXME description needs update
 // motivation: std::stringstream must be wrapped since terminal control chars might be arbitrary and to
 //             count stringlength they have to be ignored. this is needed for rendering the string to the shell.
-// ColorString wraps std::string and color=0 means no color; color>0 will be replaced by the colortable entry
-class ColorString {
+// TermCtrl wraps std::string and color=0 means no color; color>0 will be replaced by the colortable entry
+class TermCtrl {
 public:
-    ColorString(std::string termCtrl, std::string str) {
-        m_termCtrl = termCtrl;
+    TermCtrl(std::string str, bool isTermCtrl) {
         m_str = str;
+        m_isTermCtrl = isTermCtrl;
+    }
+    TermCtrl(std::string str) {
+        m_str = str;
+        m_isTermCtrl = true;
     }
     // mode==0 -> BW, mode==1 -> color
     std::string render(int mode) {
-        if (mode == 0) {
-            return m_str;
-        }
-        if (mode == 1) {
-            std::stringstream sStream;
-            sStream << m_termCtrl << m_str << RESET;
-            return sStream.str();
-        }
+        if (mode == 0) // BW rendering
+            if (m_isTermCtrl == true) {
+                return "";
+            }
+        return m_str;
     }
 private:
-    std::string m_termCtrl;
     std::string m_str;
+    bool m_isTermCtrl;
 };
 
 // AdvancedStringList can render to std:string with or without using terminal color codes
 class AdvancedStringList {
 public:
-    void operator<<(std::string s) {
-        cStrings.push_back(ColorString("", s));
+//FIXME need support for multiple calls of operator<<(..) like: << foo << bar << foobar; this is implemented in stringstream.h
+    AdvancedStringList& operator<<( AdvancedStringList & targ ) {
+//         targ.stream() << t;
+        return targ;
     }
-    void operator<<(ColorString s) {
+    void operator<<(std::string s) {
+        cStrings.push_back(TermCtrl(s, false));
+    }
+    void operator<<(TermCtrl s) {
         cStrings.push_back(s);
     }
     std::string str() {
@@ -110,7 +117,7 @@ private:
         }
         return sStream.str();
     }
-    std::vector<ColorString> cStrings;
+    std::vector<TermCtrl> cStrings;
 };
 
 class Widget {
@@ -164,20 +171,24 @@ void drawStatus(int foo) {
 
     clearStatus();
 
+    //FIXME this must not be done here! or it will be written a gazillion times on terminal resize!
     if (foo == 3 || foo == 7 || foo == 10)
         std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
                   "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
-                  "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
+                  "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << " - " << foo << "’\n";
 
     AdvancedStringList aout;
 
     aout << "-----------------------------\n";
-    aout << ColorString(MAGENTA, "building:\n");
+//     aout << TermCtrl(MAGENTA) << "hello world" << TermCtrl(RESET) << "\n";
+//     aout << TermCtrl(MAGENTA) << TermCtrl("hello world") << TermCtrl(RESET);
+    aout << "-----------------------------\n";
+//         aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 //     ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 2m" << foo+28 << "s " << "\n";
 //     ssout << "    [ " << BOLDYELLOW << "installationPhase" << RESET << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
 //     ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "foobar-1.7" << RESET << " - 5m" << foo+17 << "s " << "\n";
 //     ssout << "    [ " << BOLDYELLOW << "postinstallationPhase" << RESET << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
-    if (foo < 10) aout << ColorString(GREEN, "fetching:\n");
+//         if (foo < 10) aout << TermCtrl(GREEN) <<  "fetching:" << TermCtrl(RESET) << "\n";
 //     if (fa < 1.0) aout << " " << urlW0.render();
 //     if (fb < 1.0) ssout << " " << urlW1.render();
 //     if (fc < 1.0) ssout << " " << urlW2.render();
@@ -190,20 +201,17 @@ void drawStatus(int foo) {
     std::cout << aout.color_str();
 
     /////////////<compute lines to remove on redraw>//////////////////////////////////
-    int c = 0;
-    int lastnewline = 0;
     fprintf(stderr, "=====================================\n");
 
     std::vector<std::string> strings;
     std::string s;
     linecount=0;
     std::stringstream ssout;
-    ssout << aout.str();
+    ssout << aout.str(); // to compute the real width, we need the strings without terminal control sequences
     while(std::getline(ssout, s, '\n')) {
         strings.push_back(s);
     }
     fprintf(stderr, "strings.size()=%i\n", strings.size());
-    //FIXME the last problem are the colors and the other escape sequences i added as it affects the size()
     for(int i=0; i < strings.size(); ++i) {
         int v = strings[i].size()/size.ws_col;
         int r = strings[i].size()%size.ws_col;
@@ -244,10 +252,6 @@ void signal_callback_handler(int signum) {
     //std::cout << GetEnv("PATH") << std::endl;
     if (signum == SIGINT)
         signaled = 0;
-    //if (signum == SIGWINCH)
-    //   pr_winsize(STDIN_FILENO);
-
-    //exit(signum);
 }
 
 
@@ -259,15 +263,15 @@ int main() {
     //printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
 
 
-//<ColorString experiments>/////////////////////////////////////////////////////////////
+//<TermCtrl experiments>/////////////////////////////////////////////////////////////
 //     AdvancedStringList ad;
-//     ad << ColorString(RED, "hello world\n");
+//     ad << TermCtrl(RED, "hello world\n");
 //     ad << "hello";
 //     ad << " world\n";
-//     ad << ColorString(MAGENTA, "i love you\n");
+//     ad << TermCtrl(MAGENTA, "i love you\n");
 //     std::cout << ad.color_str() << std::endl;
 //     exit(0);
-//</ColorString experiments>/////////////////////////////////////////////////////////////
+//</TermCtrl experiments>/////////////////////////////////////////////////////////////
 
 
     // another test BEGIN

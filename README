@@ -33,15 +33,15 @@ what to print to the statusline?
 
       http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
 
+    * [done] make the widgets resizeable - signal 28
+    
+    * after program execution all the keystrokes are written to the shell, these should be filtered instead!
     * printf + cout wrapper to write above the statusline
-
-    * make the widgets resizeable - signal 28
     * single line 'compact mode' prototype (wanted by eelco)
     * create shortcuts which can affect the console rendering verbosity
 
         * 'v' switch between verbose and compact mode (single line vs multiline)
 
-    * after program execution all the keystrokes are written to the shell, these should be filtered instead!
 
     * when 3 widgets are rendered (without line-wrapping) resizing works as expected, however, if a widget exceeded the linewidth, then
       the clearStatus call does not remove the correct ammount of lines and leaves unwanted stuff
