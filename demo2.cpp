@@ -169,26 +169,27 @@ void drawStatus(int foo) {
                   "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
                   "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << "’\n";
 
-    std::stringstream ssout;
-    ssout << "-----------------------------\n";
-    ssout << MAGENTA << "building:" << RESET << "\n";
-    ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 2m" << foo+28 << "s " << "\n";
-    ssout << "    [ " << BOLDYELLOW << "installationPhase" << RESET << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
-    ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "foobar-1.7" << RESET << " - 5m" << foo+17 << "s " << "\n";
-    ssout << "    [ " << BOLDYELLOW << "postinstallationPhase" << RESET << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
-    if (foo < 10) ssout << GREEN << "fetching:" << RESET << "\n";
-    if (fa < 1.0) ssout << " " << urlW0.render();
-    if (fb < 1.0) ssout << " " << urlW1.render();
-    if (fc < 1.0) ssout << " " << urlW2.render();
-    ssout << "=== " << YELLOW << "running since 20m" << foo+12 << "s " << RESET << " ===" << "\n";
+    AdvancedStringList aout;
+
+    aout << "-----------------------------\n";
+    aout << ColorString(MAGENTA, "building:\n");
+//     ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 2m" << foo+28 << "s " << "\n";
+//     ssout << "    [ " << BOLDYELLOW << "installationPhase" << RESET << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
+//     ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "foobar-1.7" << RESET << " - 5m" << foo+17 << "s " << "\n";
+//     ssout << "    [ " << BOLDYELLOW << "postinstallationPhase" << RESET << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
+    if (foo < 10) aout << ColorString(GREEN, "fetching:\n");
+//     if (fa < 1.0) aout << " " << urlW0.render();
+//     if (fb < 1.0) ssout << " " << urlW1.render();
+//     if (fc < 1.0) ssout << " " << urlW2.render();
+//     ssout << "=== " << YELLOW << "running since 20m" << foo+12 << "s " << RESET << " ===" << "\n";
 
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
         printf("TIOCGWINSZ error");
 
-    std::string sout = ssout.str();
-    std::cout << sout;
+    std::cout << aout.color_str();
 
+    /////////////<compute lines to remove on redraw>//////////////////////////////////
     int c = 0;
     int lastnewline = 0;
     fprintf(stderr, "=====================================\n");
@@ -196,6 +197,8 @@ void drawStatus(int foo) {
     std::vector<std::string> strings;
     std::string s;
     linecount=0;
+    std::stringstream ssout;
+    ssout << aout.str();
     while(std::getline(ssout, s, '\n')) {
         strings.push_back(s);
     }
@@ -212,8 +215,8 @@ void drawStatus(int foo) {
 
     }
     linecount += strings.size();
-
     fprintf(stderr, "=====================================\n");
+    /////////////</compute lines to remove on redraw>/////////////////////////////////
 }
 
 std::string GetEnv( const string & var ) {
@@ -257,15 +260,15 @@ int main() {
 
 
 //<ColorString experiments>/////////////////////////////////////////////////////////////
-    AdvancedStringList ad;
-    ad << ColorString(RED, "hello world\n");
-    ad << "hello";
-    ad << " world\n";
-    ad << ColorString(MAGENTA, "i love you\n");
-    std::cout << ad.color_str() << std::endl;
+//     AdvancedStringList ad;
+//     ad << ColorString(RED, "hello world\n");
+//     ad << "hello";
+//     ad << " world\n";
+//     ad << ColorString(MAGENTA, "i love you\n");
+//     std::cout << ad.color_str() << std::endl;
+//     exit(0);
 //</ColorString experiments>/////////////////////////////////////////////////////////////
-    
-    exit(0);
+
 
     // another test BEGIN
     // this test prooved what i had suspeced, that is: when doing printf to the terminal it will compute line-wrap once
