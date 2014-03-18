@@ -92,16 +92,19 @@ private:
 // AdvancedStringList can render to std:string with or without using terminal color codes
 class AdvancedStringList {
 public:
-//FIXME need support for multiple calls of operator<<(..) like: << foo << bar << foobar; this is implemented in stringstream.h
-    AdvancedStringList& operator<<( AdvancedStringList & targ ) {
-//         targ.stream() << t;
-        return targ;
-    }
-    void operator<<(std::string s) {
+  //FIXME check the return *this... is this good code?
+    AdvancedStringList& operator<<( const std::string& s ) {
         cStrings.push_back(TermCtrl(s, false));
+        return *this;
     }
-    void operator<<(TermCtrl s) {
-        cStrings.push_back(s);
+    AdvancedStringList& operator<<( const TermCtrl&  t ) {
+        cStrings.push_back(t);
+        return *this;
+    }
+    AdvancedStringList& operator<<( const int&  t ) {
+      //FIXME here is probably a bug, since the redraw fails and produces multiple line outputs
+        cStrings.push_back(std::to_string(t));
+        return *this;
     }
     std::string str() {
         return render_color(0);
@@ -136,6 +139,7 @@ public:
         m_percent = percent;
         m_bits_per_sec = bits_per_sec;
     };
+    //FIXME this code needs AdvancedStringList rewrite!
     std::string render(int width=0) {
         std::stringstream s;
 
@@ -172,27 +176,24 @@ void drawStatus(int foo) {
     clearStatus();
 
     //FIXME this must not be done here! or it will be written a gazillion times on terminal resize!
-    if (foo == 3 || foo == 7 || foo == 10)
-        std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
-                  "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
-                  "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << " - " << foo << "’\n";
+//     if (foo == 3 || foo == 7 || foo == 10)
+//         std::cout << " Download of " << CYAN << "http://cache.nixos.org/nar/00fwcb3janb72b1xf4rnq7ninzmvm8zzzlr6lc8sp9dbl7x838iz.nar.xz" << RESET << " finished\n" <<
+//                   "  -> 24.4 Mib in 0:01:25, average speed 115 kib/s\n" <<
+//                   "  -> writing  to ‘/nix/store/94l17wjg65wpkwcm4x51pr5dlvarip6a-" << CYAN << "gcc-4.8.2" << RESET << " - " << foo << "’\n";
 
     AdvancedStringList aout;
 
     aout << "-----------------------------\n";
-//     aout << TermCtrl(MAGENTA) << "hello world" << TermCtrl(RESET) << "\n";
-//     aout << TermCtrl(MAGENTA) << TermCtrl("hello world") << TermCtrl(RESET);
-    aout << "-----------------------------\n";
-//         aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-//     ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "gzip-1.6" << RESET << " - 2m" << foo+28 << "s " << "\n";
-//     ssout << "    [ " << BOLDYELLOW << "installationPhase" << RESET << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
-//     ssout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << MAGENTA << "foobar-1.7" << RESET << " - 5m" << foo+17 << "s " << "\n";
-//     ssout << "    [ " << BOLDYELLOW << "postinstallationPhase" << RESET << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
-//         if (foo < 10) aout << TermCtrl(GREEN) <<  "fetching:" << TermCtrl(RESET) << "\n";
+    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+//     aout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << TermCtrl(MAGENTA) << "gzip-1.6" << TermCtrl(RESET) << " - 2m" << foo+28 << "s " << "\n";
+    aout << "    [ " << TermCtrl(BOLDYELLOW) << "installationPhase" << TermCtrl(RESET) << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
+//     aout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << TermCtrl(MAGENTA) << "foobar-1.7" << TermCtrl(RESET) << " - 5m" << foo+17 << "s " << "\n";
+    aout << "    [ " << TermCtrl(BOLDYELLOW) << "postinstallationPhase" << TermCtrl(RESET) << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
+    if (foo < 10) aout << TermCtrl(GREEN) <<  "fetching:" << TermCtrl(RESET) << "\n";
 //     if (fa < 1.0) aout << " " << urlW0.render();
-//     if (fb < 1.0) ssout << " " << urlW1.render();
-//     if (fc < 1.0) ssout << " " << urlW2.render();
-//     ssout << "=== " << YELLOW << "running since 20m" << foo+12 << "s " << RESET << " ===" << "\n";
+//     if (fb < 1.0) aout << " " << urlW1.render();
+//     if (fc < 1.0) aout << " " << urlW2.render();
+//     aout << "=== " << TermCtrl(YELLOW) << "running since 20m" << foo+12 << "s" << TermCtrl(RESET) << " ===" << "\n";
 
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
@@ -227,24 +228,24 @@ void drawStatus(int foo) {
     /////////////</compute lines to remove on redraw>/////////////////////////////////
 }
 
-std::string GetEnv( const string & var ) {
-    const char * val = ::getenv( var.c_str() );
-    if ( val == 0 ) {
-        return "";
-    }
-    else {
-        return val;
-    }
-}
+// std::string GetEnv( const string & var ) {
+//     const char * val = ::getenv( var.c_str() );
+//     if ( val == 0 ) {
+//         return "";
+//     }
+//     else {
+//         return val;
+//     }
+// }
 
-static void pr_winsize(int fd)
-{
-    struct winsize size;
-
-    if (ioctl(fd, TIOCGWINSZ, (char *) &size) < 0)
-        printf("TIOCGWINSZ error");
-    printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
-}
+// static void pr_winsize(int fd)
+// {
+//     struct winsize size;
+//
+//     if (ioctl(fd, TIOCGWINSZ, (char *) &size) < 0)
+//         printf("TIOCGWINSZ error");
+//     printf("%d rows, %d columns\n", size.ws_row, size.ws_col);
+// }
 
 void signal_callback_handler(int signum) {
     //printf("Caught signal %d\n",signum);
