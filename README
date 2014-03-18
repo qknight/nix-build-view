@@ -75,9 +75,14 @@ what to print to the statusline?
 
         probably using a FD which the sinal handler writes to
 
-    * how to extend ./scripts/download-from-binary-cache.pl.in to get a periodict download status update?
+    * [done] how to extend ./scripts/download-from-binary-cache.pl.in to get a periodict download status update?
 
         https://metacpan.org/source/SYP/Net-Curl-0.33/lib/Net/Curl/Easy.pm#L14
+
+        see both:
+
+            * https://raw.github.com/qknight/nix-build-hack/master/www_curl_easy.pl
+            * https://raw.github.com/qknight/nix-build-hack/master/net_curl_easy.pl
 
 
 
