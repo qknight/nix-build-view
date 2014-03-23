@@ -64,12 +64,15 @@ void render_to_terminal(WINDOW *win) {
     s << "terminal resize event - LINES= " << LINES << ", COLS= " << COLS;
     mvprintw(1, 0, s.str().c_str());
     mvwprintw(win, 2, 0, "%c", status[test%4]);
-    for(int i = 0; i < COLS; ++i) {
-        if (i == COLS-1 || i == 0)
-            mvwprintw(win, 3, i, "%c", '|');
-        else
-            mvwprintw(win, 3, i, "%i", i%10);
+    for (int y = 0; y < LINES-4; ++y) {
+        for(int i = 0; i < COLS; ++i) {
+            if (i == COLS-1 || i == 0)
+                mvwprintw(win, y+3, i, "%c", '|');
+            else
+                mvwprintw(win, y+3, i, "%i", i%10);
+        }
     }
+    mvprintw(LINES-1, 0, std::string("hello world").c_str());
     attroff(A_REVERSE);
     test+=1;
     wrefresh(win);
