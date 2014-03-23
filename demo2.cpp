@@ -154,15 +154,17 @@ public:
 };
 
 void clearStatus() {
-    printf("\e[%iA", linecount);
-//     printf("\eM");
-//     for (int i=0; i < linecount; i++) {
+//     printf("\e[%iA", linecount);
+
+// printf("\e[r");
+    for (int i=0; i < linecount; i++) {
+//         printf("\e[1F");
 //         printf(CURSOR_TO_START_OF_LINE);
 
-//         printf(CURSOR_UP_ONE_LINE);
+        printf(CURSOR_UP_ONE_LINE);
 //         printf(CURSOR_CLEAR_TO_EOL);
-//     }
-    printf(CURSOR_CLEAN_ALL_AFTERWARDS);
+    }
+        printf(CURSOR_CLEAN_ALL_AFTERWARDS);
 }
 
 
@@ -209,14 +211,14 @@ void drawStatus(int foo) {
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+// 
+//     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+//     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+//     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+// 
+//     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+//     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+//     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 
     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";

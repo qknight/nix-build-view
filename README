@@ -1,6 +1,6 @@
 # motivation
 
-this is an interactive showcase how nix-build could be extended for better usability
+this is an interactive showcase how nix-build could be extended for better usability using a GUI
 
 1. type 'make'
 2. run './demo'
@@ -11,10 +11,29 @@ on a linux shell do:
  
     cat preview
 
-or look at this screenshot:
+or look at this screenshot(s):
 
    https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg
    https://raw.github.com/qknight/nix-build-hack/master/screenshot2.jpeg
+   https://raw.github.com/qknight/nix-build-hack/master/screenshot3.jpeg
+
+# current objectives
+
+i first tried to use terminal CTRLs to avoid ncurses but that failed since i couldn't access data outside the view (shift+pgup or scroll-wheel when using X).
+now i'm heading for a ncurses client which works like 'less' and after calling ctrl+c (or normal program exit) it will print the buffer to the terminal.
+   
+it is planned to be called like:
+
+nix-build -A foo -JSON | nix-build-viewer
+
+current experiments:
+- [done] find out if selection of text can be preserved
+  when not using wclear(win); it can be done but only if the selected field is not modified
+- create a working mainloop
+ - receives data using stdin via JSON requests
+  - stdout/stderr from nix-build is displayed in a log, JSON strings are translated into the statusbuf
+ - receives CTRL+C
+ - terminal resize events using KEY_RESIZE
 
 # todo
 
@@ -29,20 +48,24 @@ what to print to the statusline?
 
 * design phase
 
-    * [done] design a multiline prototype -> see demo.cpp
+    * [done] design a multiline prototype -> see demo.cpp/demo2.cpp
+    
+      this can only be used if the amount of rows (used by the statusline) don't exceed the amount of rows shown by the terminal. 
+      as my list might get pretty big (10-200 entries) i will not continue to use this and instead use ncurses like done in htop.
+      
+      still if one has only 1-3 statuslines it should be possible to be used without many issues.
+    
     * [done] disable keyboard echo
 
       http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
 
     * [done] make the widgets resizeable - signal 28
     
-    * after program execution all the keystrokes are written to the shell, these should be filtered instead!
-    * printf + cout wrapper to write above the statusline
-    * single line 'compact mode' prototype (wanted by eelco)
+    * [done] single line 'compact mode' prototype (wanted by eelco) - see demo3.cpp and screenshot3.jpeg
+
     * create shortcuts which can affect the console rendering verbosity
 
         * 'v' switch between verbose and compact mode (single line vs multiline)
-
 
     * when 3 widgets are rendered (without line-wrapping) resizing works as expected, however, if a widget exceeded the linewidth, then
       the clearStatus call does not remove the correct ammount of lines and leaves unwanted stuff
@@ -54,11 +77,14 @@ what to print to the statusline?
 
 * look at: 'nixos-rebuild build -Q', why does it look so nice?
 
-* find out what features i can do:
+* find out what features can be supported:
 
-    * total download size known?
-    * bandwidth per download known?
-    * summary of all download bandwidths known?
+    * single download sizes
+    * total download size
+    * single bandwidth per download 
+    * total badwidth per all downloads
+    * data already downloaded
+    * maybe include the hierarchy of targets? 
 
 * find out how downloads are started when doing 'nixos-rebuild switch' -> nix-build 
 
@@ -76,15 +102,10 @@ what to print to the statusline?
 
         probably using a FD which the sinal handler writes to
 
-    * [done] how to extend ./scripts/download-from-binary-cache.pl.in to get a periodict download status update?
+    * how to extend ./scripts/download-from-binary-cache.pl.in to get a periodict download status update?
 
         https://metacpan.org/source/SYP/Net-Curl-0.33/lib/Net/Curl/Easy.pm#L14
 
-        see both:
+# related
 
-            * https://raw.github.com/qknight/nix-build-hack/master/www_curl_easy.pl
-            * https://raw.github.com/qknight/nix-build-hack/master/net_curl_easy.pl
-
-
-
-
+* http://stackoverflow.com/questions/22476911/ansi-terminal-rewrite-the-output
