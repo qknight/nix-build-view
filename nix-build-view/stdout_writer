@@ -9,11 +9,13 @@ echo "hello world"
 echo "hello world"
 echo "hello world"
 echo "hello world"
+sleep 1
 echo "hello world"
 echo "hello world"
 echo "hello world"
 echo "hello world"
 echo "hello world"
+sleep 1
 echo "hello world"
 echo "hello world"
 sleep 0.1

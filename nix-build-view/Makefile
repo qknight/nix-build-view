@@ -1,2 +1,2 @@
 all:
-	g++ test.cpp -lncurses -o test
+	g++ nix-build-view.cpp -lncurses -o nix-build-view

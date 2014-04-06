@@ -29,12 +29,20 @@ nix-build -A foo -JSON | nix-build-viewer
 current experiments:
 - [done] find out if selection of text can be preserved
   when not using wclear(win); it can be done but only if the selected field is not modified
+- make dynamic coloring work
 - create a working mainloop
- - receives data using stdin via JSON requests
-  - stdout/stderr from nix-build is displayed in a log, JSON strings are translated into the statusbuf
- - receives CTRL+C
- - terminal resize events using KEY_RESIZE
+ - [done] keyboard input
+ - [done] terminal resize events using KEY_RESIZE
+ - receives CTRL+C, since i might have to forward this event and afterwards exit
+ - use pselect instead of while(true) and react only on incomming data, wrap getchar as well!
+- receives data using stdin via JSON requests
+ - stdout/stderr from nix-build is displayed in a log, JSON strings are translated into the statusbuf
+- create a widget library where elements can be selected, expanded and collapsed
+- create a logger widget with search support
 
+
+ 
+ 
 # todo
 
 what to print to the statusline?
