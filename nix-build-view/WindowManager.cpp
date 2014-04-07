@@ -15,10 +15,10 @@ void WindowManager::render(int w, int h) {
     wclear(m_win);
     attron(A_REVERSE);
     int n = m_widgets.size()-1;
-    attron(COLOR_PAIR(3)); // for color support
+    attron(COLOR_PAIR(1)); // for color support
     //FIXME add a function which checks the output to not exeed the boundingbox given!
     mvprintw(0, 0, m_widgets[0]->render(width(),height()-n).c_str());
-    attroff(COLOR_PAIR(3)); // for color support
+    attroff(COLOR_PAIR(1)); // for color support
 
     for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
         attron(COLOR_PAIR(2)); // for color support

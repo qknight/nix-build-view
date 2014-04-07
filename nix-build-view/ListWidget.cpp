@@ -41,8 +41,6 @@ std::string ListWidget::render(int w, int h) {
             std::string::const_iterator it_tmp = it_e-1;
 
             while(it_tmp < it_e && it_tmp >= it_b) {
-//                 if (it_tmp == it_b)
-//                     s_tmp << ' ' << std::endl;
                 if (*it_tmp == ' ') {
                     --it_tmp;
                 } else {
@@ -50,10 +48,8 @@ std::string ListWidget::render(int w, int h) {
                     break;
                 }
             }
-//             if (tmp[i].size() == 0)
-//                 s_tmp << ' ' << std::endl;
-//             else
-            s_tmp << std::endl;
+            if(i < tmp.size()-1)
+                s_tmp << std::endl;
         }
         /////// END: trim end of each string!
         s = s_tmp.str();
@@ -69,7 +65,7 @@ std::string ListWidget::render(int w, int h) {
         }
 
         if (s[i] == '\n')  {
-            tmp += std::string(w-tmp.size(), 'x');
+            tmp += std::string(w-tmp.size(), ' ');
             terminal.push_back(tmp);
             tmp="";
             continue;
@@ -77,18 +73,19 @@ std::string ListWidget::render(int w, int h) {
         tmp += s[i];
     }
 
-//copy the last h elements from terminal to the out buffer
+    //copy the last h elements from terminal to the out buffer
     std::stringstream out;
 
     std::vector<std::string>::const_iterator it_b = terminal.begin();
     std::vector<std::string>::const_iterator it_e = terminal.end();
 
-    if (it_e - h >= it_b)
-        it_b = it_e - h;
+    if (it_e - h + m_line >= it_b)
+        it_b = it_e - h + m_line ;
 
     for(; it_b != it_e; it_b++) {
         out << *it_b;
     }
+
     return out.str();
 }
 
@@ -105,4 +102,13 @@ void ListWidget::append(std::string line) {
     }
 
     m_logfile << buf.str();
+}
+
+void ListWidget::down() {
+    if (m_line > 0)
+        m_line -= 1;
+}
+
+void ListWidget::up() {
+    m_line += 1;
 }
