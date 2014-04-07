@@ -34,15 +34,15 @@ std::string ListWidget::render(int w, int h) {
         std::stringstream s_tmp;
         std::vector<std::string> tmp;
         splitString(tmp, s, '\n');
-	
+
         for(int i=0; i < tmp.size(); ++i) {
             std::string::const_iterator it_b = tmp[i].begin();
             std::string::const_iterator it_e = tmp[i].end();
             std::string::const_iterator it_tmp = it_e-1;
 
             while(it_tmp < it_e && it_tmp >= it_b) {
-                if (it_tmp == it_b)
-                    s_tmp << ' ' << std::endl;
+//                 if (it_tmp == it_b)
+//                     s_tmp << ' ' << std::endl;
                 if (*it_tmp == ' ') {
                     --it_tmp;
                 } else {
@@ -50,12 +50,15 @@ std::string ListWidget::render(int w, int h) {
                     break;
                 }
             }
+//             if (tmp[i].size() == 0)
+//                 s_tmp << ' ' << std::endl;
+//             else
             s_tmp << std::endl;
         }
         /////// END: trim end of each string!
         s = s_tmp.str();
     }
-    
+
 
     //render the m_logfile into a terminal with width w
     std::string tmp;
@@ -64,13 +67,10 @@ std::string ListWidget::render(int w, int h) {
             terminal.push_back(tmp);
             tmp="";
         }
-        
+
         if (s[i] == '\n')  {
-            if(tmp != "") {
-                //fill each incomplete line with whitespaces so that \n isn't needed
-                tmp += std::string(w-tmp.size(), ' ');
-                terminal.push_back(tmp);
-            }
+            tmp += std::string(w-tmp.size(), 'x');
+            terminal.push_back(tmp);
             tmp="";
             continue;
         }
