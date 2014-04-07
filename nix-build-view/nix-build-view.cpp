@@ -36,9 +36,9 @@ int main(int argc, char *argv[]) {
     }
     initscr();	/* Start curses mode */
     start_color();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);
-    init_pair(2, COLOR_BLACK, COLOR_MAGENTA);
-    init_pair(3, COLOR_BLACK, COLOR_GREEN);
+    init_pair(1, COLOR_MAGENTA, COLOR_WHITE);
+    init_pair(2, COLOR_WHITE, COLOR_MAGENTA);
+    init_pair(3, COLOR_MAGENTA, COLOR_GREEN);
     init_pair(4, COLOR_BLACK, COLOR_YELLOW);
     cbreak(); /* Line buffering disabled. Pass on every thing */
     keypad(stdscr, TRUE);
@@ -48,6 +48,7 @@ int main(int argc, char *argv[]) {
 
     wm = new WindowManager(stdscr);
     lw = new ListWidget();
+    
     wm->addWidget(lw);
     wm->addWidget(new UrlWidget("1 http://url.com/nix/store/xay7d5hfhm9vjd3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.4, 235));
     wm->addWidget(new UrlWidget("2 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
@@ -55,7 +56,7 @@ int main(int argc, char *argv[]) {
     wm->addWidget(new UrlWidget("4 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
     wm->addWidget(new UrlWidget("5 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
     wm->addWidget(new UrlWidget("6 http://url.com/nix/store/asdy7d5hfhm9vj3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.1, 33234045));
-    wm->addWidget(new UrlWidget("7 http://url.com/nix/store/asdy7d5hfhm9vj3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.1, 33234045));
+//     wm->addWidget(new UrlWidget("7 http://url.com/nix/store/asdy7d5hfhm9vj3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.1, 33234045));
 
     // FIXME maybe this can be replaced by a pselect
     while (main_loop) {
