@@ -1,56 +1,6 @@
 #!/bin/bash
-sleep 0.1
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-sleep 1
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-sleep 1
-echo "hello world"
-echo "hello world"
-sleep 0.1
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-sleep 0.1
-echo "hello world"
-sleep 0.1
-echo "hello world"
-sleep 1
-sleep 0.1
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-echo "hello world"
-sleep 0.1
-echo "hello world"
-sleep 4
-echo "hello world"
-sleep 4
-echo "hello world"
-sleep 4
-echo "hello world"
-sleep 4
+while true; do
+  sleep 0.5
+  date=$(date)
+  echo "it is now $date"
+done
