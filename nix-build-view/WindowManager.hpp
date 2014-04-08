@@ -13,7 +13,7 @@ class Widget;
 class WindowManager {
 public:
     WindowManager(WINDOW *win);
-    void render(int w, int h);
+    void render();
     void addWidget(Widget* w);
     void updateDimension();
     int width() { return m_width; };

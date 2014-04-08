@@ -11,7 +11,8 @@ WindowManager::WindowManager(WINDOW* win) {
     updateDimension();
 }
 
-void WindowManager::render(int w, int h) {
+//FIXME redraw per widget and not the whole screen every time!
+void WindowManager::render() {
     wclear(m_win);
     attron(A_REVERSE);
     int n = m_widgets.size()-1;

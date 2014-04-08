@@ -31,6 +31,61 @@ ssize_t read;
 WindowManager* wm;
 ListWidget* lw;
 
+void check_usr_response() {
+    int ch;
+
+    //FIXME now the terminal is redrawn every TIME_OUT which is very often
+    timeout(TIME_OUT);
+    ch = getch(); /* Waits for TIME_OUT milliseconds */
+    if (ch == ERR)
+        return;
+    if (ch == KEY_F(1))
+        ;
+    if (ch == KEY_F(2))
+        ;
+    if (ch == 'Q' || ch == 'q') {
+        main_loop = 0;
+    }
+    if (ch == KEY_LEFT)
+        ;
+    if (ch == KEY_RIGHT)
+        ;
+    
+    //FIXME left/right, up/down, pgup/pwdn, home/end for ListWidget
+    if (ch == KEY_HOME)
+        lw->home();
+    if (ch == KEY_END)
+        lw->end();
+    if (ch == KEY_UP)
+        lw->up();
+    if (ch == KEY_DOWN)
+        lw->down();
+    if (ch == KEY_PPAGE)
+        lw->pgup();
+    if (ch == KEY_NPAGE)
+        lw->pgdown();
+    
+
+    // this event indicates a SIG 28 - SIGWINCH
+    if (ch == KEY_RESIZE) {
+        wm->updateDimension();
+    }
+}
+
+void check_logfile(ListWidget* lw) {
+    ssize_t read;
+    do {
+        if (read = getline(&line, &len, fp) != -1) {
+            lw->append(line);
+        }
+    } while (read > 0);
+}
+
+void check_JSON() {
+// wm->addWidget(new BuildWidget("73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
+}
+
+
 int main(int argc, char *argv[]) {
     fp = fopen("logfile", "r");
     if (fp == NULL) {
@@ -58,19 +113,18 @@ int main(int argc, char *argv[]) {
     wm->addWidget(new UrlWidget("4 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
     wm->addWidget(new UrlWidget("5 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
     wm->addWidget(new UrlWidget("6 http://url.com/nix/store/asdy7d5hfhm9vj3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.1, 33234045));
-    wm->addWidget(new BuildWidget("hello buildWidget"));
-    wm->addWidget(new BuildWidget("hello buildWidget"));
-    wm->addWidget(new BuildWidget("hello buildWidget"));
-    wm->addWidget(new BuildWidget("hello buildWidget"));
+    wm->addWidget(new BuildWidget("1 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
+    wm->addWidget(new BuildWidget("2 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
+    wm->addWidget(new BuildWidget("3 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
+    wm->addWidget(new BuildWidget("4 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
     wm->addWidget(new StatusWidget());
-//     wm->addWidget(new UrlWidget("7 http://url.com/nix/store/asdy7d5hfhm9vj3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.1, 33234045));
 
-    // FIXME maybe this can be replaced by a pselect
+    // FIXME maybe this should be replaced by a pselect
     while (main_loop) {
         check_logfile(lw);
-//         check_JSON();
+        check_JSON();
         check_usr_response();
-        wm->render(20,1);
+        wm->render();
     }
 
     endwin(); /* End curses mode */
@@ -78,54 +132,4 @@ int main(int argc, char *argv[]) {
     return 0;
 }
 
-void check_usr_response() {
-    int ch;
-
-    //FIXME now the terminal is redrawn every TIME_OUT which is very often
-    timeout(TIME_OUT);
-    ch = getch(); /* Waits for TIME_OUT milliseconds */
-    if (ch == ERR)
-        return;
-    if (ch == KEY_F(1))
-        lw->up();
-    if (ch == KEY_F(2))
-        lw->down();
-    if (ch == 'Q' || ch == 'q') {
-        main_loop = 0;
-    }
-    //FIXME left/right, up/down, pgup/pwdn, home/end for ListWidget
-    // this event indicates a SIG 28 SIGWINCH
-    if (ch == KEY_RESIZE) {
-        wm->updateDimension();
-    }
-}
-
-void check_logfile(ListWidget* lw) {
-    ssize_t read;
-    do {
-        if (read = getline(&line, &len, fp) != -1) {
-            lw->append(line);
-        }
-    } while (read > 0);
-}
-
-void check_JSON() {
-// wm->addWidget(new BuildWidget("hello buildWidget"));
-}
-
-//     mvprintw(LINES-10, 0, std::string(" |+ 3v30s57kyi85g7lb9irjv80s57kyi86-foobar-1.2.3 ......................... [1/8 fetchingPhase]").c_str());
-//     mvprintw(LINES-9, 0, std::string(" |+ 3v30s57kyi85g7lb9irjv80s57kyi86-foobar-1.2.3 ........................ [3/8 configurePhase]").c_str());
-//     mvprintw(LINES-8, 0, std::string(" |+ d3v357kyi85g7lb9firjv80s57fkyi8-foo-1.2.3 ............................... [5/8 buildPhase]").c_str());
-//     mvprintw(LINES-7, 0, std::string(" |+ 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]").c_str());
-//     mvprintw(LINES-6, 0, std::string(" |+ ... 5 more (select to see) ...").c_str());
-//     mvprintw(LINES-4, 0, std::string(" |+ http://cache.nixos.org/nar/0s57kyi85g7lb9irjv80s57kyi8-foobar-1.2.3.nar.xz . 10% 3.3 Mib/s").c_str());
-//     mvprintw(LINES-3, 0, std::string(" |+ http://cache.nixos.org/nar/kya2cslmh5vc23i4q35di8-foobar-1.2.3.nar.xz ...... 60% 2.3 Mib/s").c_str());
-//     mvprintw(LINES-2, 0, std::string(" |+ http://cache.nixos.org/nar/7kc3c3jc3yi8-foobar-1.2.3.nar.xz ................ 30% 1.3 Mib/s").c_str());
-//     attroff(COLOR_PAIR(1));
-//     attron(COLOR_PAIR(4));
-//     attroff(COLOR_PAIR(4));
-//     attroff(A_REVERSE);
-//     test+=1;
-//     wrefresh(win);
-// }
 

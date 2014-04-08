@@ -21,13 +21,13 @@ void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &
 }
 
 //FIXME buffer the result, only compute this stuff when the terminal width changes
+//FIXME massive memleaks ahead!
 std::string ListWidget::render(int w, int h) {
     // - render the text to a buffer
     // - do line-wrapping
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
 
     std::string s = m_logfile.str();
-    std::vector<std::string> terminal;
 
     {
         /////// BEGIN: trim end of each string!
@@ -60,13 +60,13 @@ std::string ListWidget::render(int w, int h) {
     std::string tmp;
     for (int i=0; i <= s.size(); ++i) {
         if (tmp.size() == w) {
-            terminal.push_back(tmp);
+            m_terminal.push_back(tmp);
             tmp="";
         }
 
         if (s[i] == '\n')  {
             tmp += std::string(w-tmp.size(), ' ');
-            terminal.push_back(tmp);
+            m_terminal.push_back(tmp);
             tmp="";
             continue;
         }
@@ -76,14 +76,16 @@ std::string ListWidget::render(int w, int h) {
     //copy the last h elements from terminal to the out buffer
     std::stringstream out;
 
-    std::vector<std::string>::const_iterator it_b = terminal.begin();
-    std::vector<std::string>::const_iterator it_e = terminal.end();
+    std::vector<std::string>::const_iterator it_b = m_terminal.begin();
+    std::vector<std::string>::const_iterator it_e = m_terminal.end();
 
-    if (it_e - h + m_line >= it_b)
-        it_b = it_e - h + m_line ;
+    if (it_e - h - m_line >= it_b)
+        it_b = it_e - h - m_line ;
 
-    for(; it_b != it_e; it_b++) {
-        out << *it_b;
+    for(int i=0; i < h; ++i) {
+        if (it_b >= it_e)
+            break;
+        out << *it_b++;
     }
 
     return out.str();
@@ -111,4 +113,25 @@ void ListWidget::down() {
 
 void ListWidget::up() {
     m_line += 1;
+}
+
+void ListWidget::pgup() {
+  //FIXME go up half of the widget size
+    m_line += 15;
+}
+
+void ListWidget::pgdown() {
+    m_line -= 15;
+    if (m_line < 0)
+        m_line = 0;
+}
+
+void ListWidget::home() {
+  //FIXME broken
+  m_line = 1000000;
+//     m_line = m_terminal.size();
+}
+
+void ListWidget::end() {
+    m_line = 0;
 }

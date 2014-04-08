@@ -17,9 +17,14 @@ public:
     void append(std::string line);
     void up();
     void down();
+    void pgup();
+    void pgdown();
+    void home();
+    void end();
 private:
     std::stringstream m_logfile;
     int m_line = 0;
+    std::vector<std::string> m_terminal;
 };
 
 #endif
