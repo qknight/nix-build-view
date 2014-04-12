@@ -1,5 +1,6 @@
 #include "WindowManager.hpp"
 #include "Widget.hpp"
+#include "AdvancedString.hpp"
 
 #ifndef TIOCGWINSZ
 #include <sys/ioctl.h>
@@ -13,6 +14,8 @@ WindowManager::WindowManager(WINDOW* win) {
 
 //FIXME redraw per widget and not the whole screen every time!
 void WindowManager::render() {
+
+    //FIXME found new bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
     wclear(m_win);
     attron(A_REVERSE);
     int n = m_widgets.size()-1;

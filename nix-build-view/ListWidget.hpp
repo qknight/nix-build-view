@@ -21,6 +21,7 @@ public:
     void pgdown();
     void home();
     void end();
+    std::string log() { return m_logfile.str(); };
 private:
     std::stringstream m_logfile;
     int m_line = 0;

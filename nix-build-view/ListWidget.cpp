@@ -57,6 +57,7 @@ std::string ListWidget::render(int w, int h) {
 
 
     //render the m_logfile into a terminal with width w
+    m_terminal.clear();
     std::string tmp;
     for (int i=0; i <= s.size(); ++i) {
         if (tmp.size() == w) {
@@ -112,12 +113,17 @@ void ListWidget::down() {
 }
 
 void ListWidget::up() {
+    //FIXME broken need to substract widget-height!
     m_line += 1;
+    if (m_line > m_terminal.size())
+        m_line = m_terminal.size();
 }
 
 void ListWidget::pgup() {
-  //FIXME go up half of the widget size
+    //FIXME broken need to substract widget-height!
     m_line += 15;
+    if (m_line > m_terminal.size())
+        m_line = m_terminal.size();
 }
 
 void ListWidget::pgdown() {
@@ -127,9 +133,8 @@ void ListWidget::pgdown() {
 }
 
 void ListWidget::home() {
-  //FIXME broken
-  m_line = 1000000;
-//     m_line = m_terminal.size();
+    //FIXME broken need to substract widget-height!
+    m_line = m_terminal.size();
 }
 
 void ListWidget::end() {

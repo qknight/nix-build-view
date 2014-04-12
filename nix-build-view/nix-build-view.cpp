@@ -14,6 +14,7 @@
 #include "ListWidget.hpp"
 #include "BuildWidget.hpp"
 #include "StatusWidget.hpp"
+#include "AdvancedString.hpp"
 
 #define TIME_OUT 100
 
@@ -39,10 +40,6 @@ void check_usr_response() {
     ch = getch(); /* Waits for TIME_OUT milliseconds */
     if (ch == ERR)
         return;
-    if (ch == KEY_F(1))
-        ;
-    if (ch == KEY_F(2))
-        ;
     if (ch == 'Q' || ch == 'q') {
         main_loop = 0;
     }
@@ -50,7 +47,21 @@ void check_usr_response() {
         ;
     if (ch == KEY_RIGHT)
         ;
-    
+    if (ch == '1') {
+        ;
+    }
+    if (ch == '2') {
+        ;
+    }
+    if (ch == '3') {
+        ;
+    }
+    if (ch == '4') {
+        ;
+    }
+    if (ch == 'h' || ch == 'H') {
+        ;//HELP
+    }
     //FIXME left/right, up/down, pgup/pwdn, home/end for ListWidget
     if (ch == KEY_HOME)
         lw->home();
@@ -119,7 +130,7 @@ int main(int argc, char *argv[]) {
     wm->addWidget(new BuildWidget("4 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
     wm->addWidget(new StatusWidget());
 
-    // FIXME maybe this should be replaced by a pselect
+    // FIXME maybe this should be replaced by a pselect so rendering happens only on demand
     while (main_loop) {
         check_logfile(lw);
         check_JSON();
@@ -128,7 +139,15 @@ int main(int argc, char *argv[]) {
     }
 
     endwin(); /* End curses mode */
-//     std::cout << lw.str() << std::endl;
+
+    //FIXME enable this once it starts making sense
+//     std::cout << lw->log() << std::endl;
+    
+    //FIXME example code
+    AdvancedStringList aout;
+    aout << TermCtrl(MAGENTA) << "hello magenta world!" << TermCtrl(RESET) << "\n";
+    std::cout << aout.color_str();
+
     return 0;
 }
 
