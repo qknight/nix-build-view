@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
 
 #include "ColorCodes.h"
 #include "WindowManager.hpp"
@@ -29,7 +30,6 @@ char * line = NULL;
 size_t len = 0;
 ssize_t read;
 
-WindowManager* wm;
 ListWidget* lw;
 
 void check_usr_response() {
@@ -53,19 +53,19 @@ void check_usr_response() {
     //      - 3 - fetch is fullscreen and is scrollable
     //      - 4 - build is fullscreen and is scrollable
     if (ch == '1') {
-        ;
+        WindowManager::Instance()->updateLayout(1);
     }
     if (ch == '2') {
-        ;
+        WindowManager::Instance()->updateLayout(1);
     }
     if (ch == '3') {
-        ;
+        WindowManager::Instance()->updateLayout(1);
     }
     if (ch == '4') {
-        ;
+        WindowManager::Instance()->updateLayout(1);
     }
     if (ch == 'h' || ch == 'H') {
-        ;//HELP
+        WindowManager::Instance()->updateLayout(0);
     }
     //FIXME left/right, up/down, pgup/pwdn, home/end for ListWidget
     if (ch == KEY_HOME)
@@ -80,11 +80,14 @@ void check_usr_response() {
         lw->pgup();
     if (ch == KEY_NPAGE)
         lw->pgdown();
-    
+
 
     // this event indicates a SIG 28 - SIGWINCH
     if (ch == KEY_RESIZE) {
-        wm->updateDimension();
+        struct winsize size;
+        if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
+            printf("TIOCGWINSZ error");
+        WindowManager::Instance()->resize(size.ws_col, size.ws_row);
     }
 }
 
@@ -98,7 +101,7 @@ void check_logfile(ListWidget* lw) {
 }
 
 void check_JSON() {
-// wm->addWidget(new BuildWidget(" [8/8 installationPhase]"));
+// WindowManager::Instance()->addWidget(new BuildWidget(" [8/8 installationPhase]"));
 }
 
 
@@ -119,40 +122,40 @@ int main(int argc, char *argv[]) {
 
     noecho();
 
-    wm = new WindowManager(stdscr);
     lw = new ListWidget();
+    WindowManager::Instance()->addWidget(lw);
 
-    wm->addWidget(lw);
-    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
-    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
-    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
-    wm->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc [8/8 installationPhase]"));
-    wm->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
-    wm->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
-    wm->addWidget(new StatusWidget());
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc [8/8 installationPhase]"));
+    WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
+    WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
+    WindowManager::Instance()->addWidget(new StatusWidget());
 
-    // FIXME maybe this should be replaced by a pselect so rendering happens only on demand
+    WindowManager::Instance()->update();
+    
     while (main_loop) {
         check_logfile(lw);
         check_JSON();
         check_usr_response();
-        wm->render();
     }
 
     endwin(); /* End curses mode */
 
     //FIXME enable this once it starts making sense
 //     std::cout << lw->log() << std::endl;
-    
+
     //FIXME example code
-    AdvancedStringList aout;
-    aout << TermCtrl(MAGENTA) << "hello magenta world!" << TermCtrl(RESET) << "\n";
-    std::cout << aout.color_str();
+//     AdvancedStringList aout;
+//     aout << TermCtrl(MAGENTA) << "hello magenta world!" << TermCtrl(RESET) << "\n";
+//     std::cout << aout.color_str();
 
     return 0;
 }
+
 
 

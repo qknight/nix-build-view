@@ -4,7 +4,7 @@
 #include "Widget.hpp"
 
 class StatusWidget : public Widget {
-  std::string render(int w, int h);
+  std::string render();
 };
 
 #endif

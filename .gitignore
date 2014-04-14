@@ -14,6 +14,5 @@ nix-build-hack.kdev4
 core
 logfile
 logfile_
-nix-build-view
 perl-5.18.2.tar.gz
 preview2

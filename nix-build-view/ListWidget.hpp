@@ -12,21 +12,27 @@
 
 class ListWidget : public Widget {
 public:
+    ListWidget();
     void splitString(std::vector<std::string> &v_str,const std::string &str,const char ch);
-    std::string render(int w, int h);
+    std::string render();
     void append(std::string line);
-    std::string terminal_preprocess();
+    void resize(int w, int h);
+    void terminal_preprocess();
     void up();
     void down();
     void pgup();
     void pgdown();
     void home();
     void end();
-    std::string log() { return m_logfile.str(); };
+    std::string log() {
+        return m_logfile.str();
+    };
 private:
     std::stringstream m_logfile;
     int m_line = 0;
     std::vector<std::string> m_terminal;
+    int m_width_last = 0;
+    int m_height_last = 0;
 };
 
 #endif

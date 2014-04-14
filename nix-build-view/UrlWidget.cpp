@@ -11,7 +11,8 @@ UrlWidget::UrlWidget(std::string url, float percent, int bits_per_sec) {
     m_bits_per_sec = bits_per_sec;
 };
 
-std::string UrlWidget::render(int w, int h) {
+
+std::string UrlWidget::render() {
 
     int size = m_url.size();
     std::stringstream url_progress;
@@ -24,7 +25,7 @@ std::string UrlWidget::render(int w, int h) {
     std::stringstream s2;
     
     // dynamic spacer
-    int i = w - url_progress.str().size() - s1.str().size() - 1;
+    int i = width() - url_progress.str().size() - s1.str().size() - 1;
     if (i < 0) i = 0;
     s2 << url_progress.str() << " " << std::string(i, '.') << s1.str();
 

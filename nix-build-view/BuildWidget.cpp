@@ -5,6 +5,6 @@ BuildWidget::BuildWidget(std::string name) {
 }
 
 
-std::string BuildWidget::render(int w, int h) {
+std::string BuildWidget::render() {
   return m_name;
 }

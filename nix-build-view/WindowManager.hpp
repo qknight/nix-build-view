@@ -12,17 +12,20 @@ class Widget;
 
 class WindowManager {
 public:
-    WindowManager(WINDOW *win);
-    void render();
+    void update();
+    void updateLayout(int type);
     void addWidget(Widget* w);
-    void updateDimension();
+    void resize(int width, int height);
     int width() { return m_width; };
     int height() { return m_height; };
+    static WindowManager* Instance();
 private:
+    WindowManager(WINDOW *win);
     WINDOW* m_win;
     std::vector<Widget*> m_widgets;
     int m_width;
     int m_height;
+    static WindowManager* m_pInstance;
 };
 
 #endif
