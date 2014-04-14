@@ -24,6 +24,7 @@ void WindowManager::render() {
     mvprintw(0, 0, m_widgets[0]->render(width(),height()-n).c_str());
     attroff(COLOR_PAIR(1)); // for color support
 
+    //FIXME this layout (compositing) is static and needs to be made dynamic
     for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
         attron(COLOR_PAIR(2)); // for color support
         mvprintw(height()-i, 0, m_widgets[m_widgets.size()-i]->render(width(),1).c_str());

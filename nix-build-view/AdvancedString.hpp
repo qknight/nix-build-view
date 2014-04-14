@@ -1,7 +1,7 @@
 #ifndef ADVANCEDSTRING_HPP
 #define ADVANCEDSTRING_HPP
 
-#include "Colorcodes.h"
+#include "ColorCodes.h"
 
 /*
  * motivation for AdvancedStringList was that each terminal (xterm, vt100, ncurses) do interprete escape sequences differently

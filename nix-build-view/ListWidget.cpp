@@ -20,8 +20,13 @@ void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &
     }
 }
 
+std::string ListWidget::terminal_preprocess() {
+  return "";
+}
+
 //FIXME buffer the result, only compute this stuff when the terminal width changes
-//FIXME massive memleaks ahead!
+//FIXME only scroll the view when m_line==0
+//FIXME scrollback does scroll further than  m_terminal.size(), render needs to be fixed. however, the widget has to know it's current w and h, which is only known at render(...) currently
 std::string ListWidget::render(int w, int h) {
     // - render the text to a buffer
     // - do line-wrapping
@@ -105,6 +110,7 @@ void ListWidget::append(std::string line) {
     }
 
     m_logfile << buf.str();
+    terminal_preprocess();
 }
 
 void ListWidget::down() {
@@ -113,14 +119,12 @@ void ListWidget::down() {
 }
 
 void ListWidget::up() {
-    //FIXME broken need to substract widget-height!
     m_line += 1;
     if (m_line > m_terminal.size())
         m_line = m_terminal.size();
 }
 
 void ListWidget::pgup() {
-    //FIXME broken need to substract widget-height!
     m_line += 15;
     if (m_line > m_terminal.size())
         m_line = m_terminal.size();
@@ -133,7 +137,6 @@ void ListWidget::pgdown() {
 }
 
 void ListWidget::home() {
-    //FIXME broken need to substract widget-height!
     m_line = m_terminal.size();
 }
 

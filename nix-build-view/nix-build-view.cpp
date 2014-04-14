@@ -47,6 +47,11 @@ void check_usr_response() {
         ;
     if (ch == KEY_RIGHT)
         ;
+    //FIXME redirect none-global shortcuts to the respective widgets like
+    //      - 1 - composed view: input should be forwarded to the log
+    //      - 2 - like 1 but log has fullscreen
+    //      - 3 - fetch is fullscreen and is scrollable
+    //      - 4 - build is fullscreen and is scrollable
     if (ch == '1') {
         ;
     }
@@ -93,7 +98,7 @@ void check_logfile(ListWidget* lw) {
 }
 
 void check_JSON() {
-// wm->addWidget(new BuildWidget("73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
+// wm->addWidget(new BuildWidget(" [8/8 installationPhase]"));
 }
 
 
@@ -118,16 +123,15 @@ int main(int argc, char *argv[]) {
     lw = new ListWidget();
 
     wm->addWidget(lw);
-    wm->addWidget(new UrlWidget("1 http://url.com/nix/store/xay7d5hfhm9vjd3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.4, 235));
-    wm->addWidget(new UrlWidget("2 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
-    wm->addWidget(new UrlWidget("3 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
-    wm->addWidget(new UrlWidget("4 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
-    wm->addWidget(new UrlWidget("5 http://url.com/nix/store/bnasfgdddm9vj3v31dbdzimi08ydrgd4w-zlib-1.2.8", 1.0, 234045));
-    wm->addWidget(new UrlWidget("6 http://url.com/nix/store/asdy7d5hfhm9vj3v31dbzimi08ydrgd4w-zlib-1.2.8", 0.1, 33234045));
-    wm->addWidget(new BuildWidget("1 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
-    wm->addWidget(new BuildWidget("2 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
-    wm->addWidget(new BuildWidget("3 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
-    wm->addWidget(new BuildWidget("4 73v30s57kyi85g7lb9irjv80s57kyi1-psi-1.2.3 ........................ [8/8 installationPhase]"));
+    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
+    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
+    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    wm->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    wm->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc [8/8 installationPhase]"));
+    wm->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
+    wm->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
     wm->addWidget(new StatusWidget());
 
     // FIXME maybe this should be replaced by a pselect so rendering happens only on demand
