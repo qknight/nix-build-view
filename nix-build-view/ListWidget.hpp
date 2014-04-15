@@ -16,7 +16,7 @@ public:
     void splitString(std::vector<std::string> &v_str,const std::string &str,const char ch);
     std::string render();
     void append(std::string line);
-    void resize(int w, int h);
+    void resize(unsigned int w, unsigned int h);
     void terminal_preprocess();
     void up();
     void down();

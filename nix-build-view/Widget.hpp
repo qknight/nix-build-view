@@ -18,7 +18,7 @@ public:
     unsigned int height() {
         return m_height;
     };
-    void resize(unsigned int width, unsigned int height) {
+    virtual void resize(unsigned int width, unsigned int height) {
         m_width = width;
         m_height = height;
     }

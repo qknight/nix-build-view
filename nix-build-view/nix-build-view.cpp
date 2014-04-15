@@ -131,6 +131,25 @@ int main(int argc, char *argv[]) {
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+//     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc [8/8 installationPhase]"));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f [8/8 installationPhase]"));
@@ -149,10 +168,10 @@ int main(int argc, char *argv[]) {
     //FIXME enable this once it starts making sense
 //     std::cout << lw->log() << std::endl;
 
-    //FIXME example code
-//     AdvancedStringList aout;
-//     aout << TermCtrl(MAGENTA) << "hello magenta world!" << TermCtrl(RESET) << "\n";
-//     std::cout << aout.color_str();
+//     FIXME example code
+    AdvancedStringList aout;
+    aout << TermCtrl(MAGENTA) << "hello magenta world!" << TermCtrl(RESET) << "\n";
+    std::cout << aout.color_str();
 
     return 0;
 }

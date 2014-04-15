@@ -75,18 +75,10 @@ void ListWidget::terminal_preprocess() {
     }
 }
 
-//FIXME buffer the result, only compute this stuff when the terminal width changes
-//FIXME only scroll the view when m_line==0
-//FIXME scrollback does scroll further than  m_terminal.size(), render needs to be fixed. however, the widget has to know it's current w and h, which is only known at render(...) currently
+//FIXME only auto-scroll the view when m_line==0
 std::string ListWidget::render() {
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
 
-//     if (m_width_last != width() && m_height_last != height()) {
-//        m_width_last = width();
-//        m_height_last = height();
-//        terminal_preprocess();
-//     }
-    
     //copy the last h elements from terminal to the out buffer
     std::stringstream out;
 
@@ -105,11 +97,13 @@ std::string ListWidget::render() {
     return out.str();
 }
 
-void ListWidget::resize(int w, int h) {
+void ListWidget::resize(unsigned int w, unsigned int h) {
     Widget::resize(w, h);
+    terminal_preprocess();
     update();
 }
 
+//FIXME do not recompute the whole buffer every time but instead scan for the last newline and go from there...
 void ListWidget::append(std::string line) {
     // replace all \t with '        ' (8 spaces)
     // you can't use copy'n'paste from that terminal, so Makefiles for example will be broken when being copied this way
@@ -137,15 +131,15 @@ void ListWidget::down() {
 
 void ListWidget::up() {
     m_line += 1;
-    if (m_line > m_terminal.size())
-        m_line = m_terminal.size();
+    if (m_line > m_terminal.size()-height())
+        m_line = m_terminal.size()-height();
     update();
 }
 
 void ListWidget::pgup() {
     m_line += 15;
-    if (m_line > m_terminal.size())
-        m_line = m_terminal.size();
+    if (m_line > m_terminal.size()-height())
+        m_line = m_terminal.size()-height();
     update();
 }
 
@@ -157,7 +151,7 @@ void ListWidget::pgdown() {
 }
 
 void ListWidget::home() {
-    m_line = m_terminal.size();
+    m_line = m_terminal.size()-height();
     update();
 }
 
