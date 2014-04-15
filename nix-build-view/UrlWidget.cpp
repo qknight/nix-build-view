@@ -21,11 +21,11 @@ std::string UrlWidget::render() {
 
     
     std::stringstream s1;
-    s1 << " " << setw(3) << right << (int)(m_percent*100) << "% " << setw(4) << setprecision(4) << 123.31333 << "kib/s, " << setw(4) << setprecision(3) << 26.3333 << "Mib" << "\n";
+    s1 << " " << setw(3) << right << (int)(m_percent*100) << "% " << setw(4) << setprecision(4) << 123.31333 << "kib/s " << setw(4) << setprecision(3) << 26.3333 << "Mib" << "\n";
     std::stringstream s2;
     
     // dynamic spacer
-    int i = width() - url_progress.str().size() - s1.str().size() - 1;
+    int i = width() - url_progress.str().size() - s1.str().size() ;
     if (i < 0) i = 0;
     s2 << url_progress.str() << " " << std::string(i, '.') << s1.str();
 

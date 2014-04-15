@@ -6,10 +6,11 @@
 
 class BuildWidget : public Widget {
 public:
-    BuildWidget(std::string name);
+    BuildWidget(std::string name, std::string status);
     std::string render();
 private:
     std::string m_name;
+    std::string m_status;
 };
 
 #endif

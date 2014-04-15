@@ -1,5 +1,11 @@
 #include "StatusWidget.hpp"
+#include <sstream>
 
 std::string StatusWidget::render() {
-    return std::string("[ h help | 1 combined | 2 log | 3 fetch | 4 build ] - building: 4/9 | fetching: 3/3 | since 20m30s");
+    std::stringstream s;
+    std::string status = std::string("[ h help | 1 combined | 2 log | 3 fetching: 3/3 | 4 building: 4/9 ] - since 20m30s");
+    int i = width() - status.size();
+    if (i < 0) i = 0;
+    s << status << " " << std::string(i, ' ');
+    return s.str();
 }

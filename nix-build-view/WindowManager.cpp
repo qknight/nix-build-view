@@ -45,6 +45,7 @@ void WindowManager::resize(int width, int height) {
     update();
 }
 
+//FIXME this function must be able to redraw individual widgets thus it has to know which widgets are visible
 void WindowManager::update() {
     //FIXME found new bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
     wclear(m_win);
