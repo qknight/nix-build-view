@@ -123,6 +123,8 @@ void ListWidget::append(std::string line) {
     update();
 }
 
+
+//FIXME rewrite this to have a common interface with a switch(key) case 'g' ...
 void ListWidget::down() {
     if (m_line > 0)
         m_line -= 1;

@@ -45,9 +45,14 @@ void WindowManager::resize(int width, int height) {
     update();
 }
 
-//FIXME this function must be able to redraw individual widgets thus it has to know which widgets are visible
+//redraw individual widgets thus it has to know which widgets are visible
+void WindowManager::update(Widget* w) {
+  //FIXME need a scene-graph!
+}
+
+// redraw the whole scene
 void WindowManager::update() {
-    //FIXME found new bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
+    //FIXME bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
     wclear(m_win);
     attron(A_REVERSE);
     int n = m_widgets.size()-1;
@@ -56,7 +61,7 @@ void WindowManager::update() {
     mvprintw(0, 0, m_widgets[0]->render().c_str());
     attroff(COLOR_PAIR(1)); // for color support
 
-    //FIXME this layout (compositing) is static and needs to be made dynamic
+    //FIXME this layout (compositing) is static and needs to be made dynamic -> need scenegraph
     for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
         attron(COLOR_PAIR(2)); // for color support
         mvprintw(height()-i, 0, m_widgets[m_widgets.size()-i]->render().c_str());

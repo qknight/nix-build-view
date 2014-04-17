@@ -65,13 +65,13 @@ static std::stringstream olds;
 // motivation: std::stringstream must be wrapped since terminal control chars might be arbitrary and to
 //             count stringlength they have to be ignored. this is needed for rendering the string to the shell.
 // TermCtrl wraps std::string and color=0 means no color; color>0 will be replaced by the colortable entry
-class TermCtrl {
+class AdvancedString {
 public:
-    TermCtrl(std::string str, bool isTermCtrl) {
+    AdvancedString(std::string str, bool isTermCtrl) {
         m_str = str;
         m_isTermCtrl = isTermCtrl;
     }
-    TermCtrl(std::string str) {
+    AdvancedString(std::string str) {
         m_str = str;
         m_isTermCtrl = true;
     }
@@ -93,15 +93,15 @@ class AdvancedStringList {
 public:
     //FIXME check the return *this... is this good code?
     AdvancedStringList& operator<<( const std::string& s ) {
-        cStrings.push_back(TermCtrl(s, false));
+        cStrings.push_back(AdvancedString(s, false));
         return *this;
     }
-    AdvancedStringList& operator<<( const TermCtrl&  t ) {
+    AdvancedStringList& operator<<( const AdvancedString&  t ) {
         cStrings.push_back(t);
         return *this;
     }
     AdvancedStringList& operator<<( const int&  t ) {
-        cStrings.push_back(TermCtrl(std::to_string(t), false));
+        cStrings.push_back(AdvancedString(std::to_string(t), false));
         return *this;
     }
     std::string str() {
@@ -118,7 +118,7 @@ private:
         }
         return sStream.str();
     }
-    std::vector<TermCtrl> cStrings;
+    std::vector<AdvancedString> cStrings;
 };
 
 class Widget {
@@ -188,22 +188,22 @@ void drawStatus(int foo) {
 
     //FIXME found new bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
     aout << "-----------------------------\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
 
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
 
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
 
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
 
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
@@ -220,23 +220,23 @@ void drawStatus(int foo) {
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 //     aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
 
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
     //FIXME long strings will create a problem when being wrapped.... duno where the error is, need to investegate!
-    aout << TermCtrl(MAGENTA) << "buildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd:" << TermCtrl(RESET) << "\n";
-    aout << TermCtrl(MAGENTA) << "building:" << TermCtrl(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "buildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingdddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddbuildingddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd dddd:" << AdvancedString(RESET) << "\n";
+    aout << AdvancedString(MAGENTA) << "building:" << AdvancedString(RESET) << "\n";
 //     aout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << TermCtrl(MAGENTA) << "gzip-1.6" << TermCtrl(RESET) << " - 2m" << foo+28 << "s " << "\n";
 //     aout << "    [ " << TermCtrl(BOLDYELLOW) << "installationPhase" << TermCtrl(RESET) << " ] - /tmp/build-ylcpwyczz887grq8lzdz8hn81q7yrn38/log\n";
 //     aout << " " << "/nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-" << TermCtrl(MAGENTA) << "foobar-1.7" << TermCtrl(RESET) << " - 5m" << foo+17 << "s " << "\n";
 //     aout << "    [ " << TermCtrl(BOLDYELLOW) << "postinstallationPhase" << TermCtrl(RESET) << " ] - /tmp/build-yczz887grq8lzdylcpwz8hn81q7yrn38/log\n";
-    if (foo < 10) aout << TermCtrl(GREEN) <<  "fetching:" << TermCtrl(RESET) << "\n";
+    if (foo < 10) aout << AdvancedString(GREEN) <<  "fetching:" << AdvancedString(RESET) << "\n";
     //FIXME the UrlWidget code is not using TermCtrl and AdvancedStringList yet so fix that!
 //     if (fa < 1.0) aout << " " << urlW0.render();
 //     if (fb < 1.0) aout << " " << urlW1.render();
 //     if (fc < 1.0) aout << " " << urlW2.render();
-    aout << "=== " << TermCtrl(YELLOW) << "running since 20m" << foo+12 << "s" << TermCtrl(RESET) << " ===" << "\n";
+    aout << "=== " << AdvancedString(YELLOW) << "running since 20m" << foo+12 << "s" << AdvancedString(RESET) << " ===" << "\n";
 
     struct winsize size;
     if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
