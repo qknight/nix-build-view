@@ -24,6 +24,9 @@ public:
     int size() {
         return m_str.size();
     }
+    std::string str() {
+        return render(0);
+    }
     // mode==0 -> BW, mode==1 -> color
     std::string render(int mode) {
         if (mode == 0) // BW rendering

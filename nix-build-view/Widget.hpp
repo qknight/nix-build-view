@@ -2,13 +2,12 @@
 #define WIDGET__HPP
 
 #include "WindowManager.hpp"
-
-#include <string>
+#include "AdvancedString.hpp"
 
 
 class Widget {
 public:
-    virtual std::string render() = 0;
+    virtual AdvancedString render() = 0;
     void update() {
       //FIXME tell the WM to update(this)!
         WindowManager::Instance()->update();

@@ -17,6 +17,7 @@
 #include "StatusWidget.hpp"
 #include "AdvancedString.hpp"
 
+
 #define TIME_OUT 100
 
 int main_loop = 1;
@@ -118,10 +119,6 @@ int main(int argc, char *argv[]) {
     }
     initscr();	/* Start curses mode */
     start_color();
-    init_pair(1, COLOR_BLACK, COLOR_WHITE);
-    init_pair(2, COLOR_WHITE, COLOR_MAGENTA);
-    init_pair(3, COLOR_MAGENTA, COLOR_GREEN);
-    init_pair(4, COLOR_BLACK, COLOR_YELLOW);
     cbreak(); /* Line buffering disabled. Pass on every thing */
     keypad(stdscr, TRUE);
     curs_set(FALSE);
@@ -161,13 +158,15 @@ int main(int argc, char *argv[]) {
 //     std::cout << lw->log() << std::endl;
 
     AdvancedStringContainer aout;
-    aout << AdvancedString(MAGENTA, "hello magenta world!") << "\n";
+    AdvancedString a("hello BW world");
+    aout << a << "\n" << AdvancedString(MAGENTA, "hello magenta world!") << "\n";
     aout << AdvancedString(MAGENTA, "################### big red #################") << "\n";
     aout << AdvancedString(GREEN, "   this is foooobar") << "\n";
     aout << AdvancedString(MAGENTA, "################### /big red ################") << "\n";
     std::cout << aout.terminal_str();
     std::cout << aout.str();
     std::cout << aout.size() << std::endl;
+    std::cout << sizeof(int) << std::endl;
 
     return 0;
 }

@@ -7,7 +7,7 @@
 class BuildWidget : public Widget {
 public:
     BuildWidget(std::string name, std::string status);
-    std::string render();
+    AdvancedString render();
 private:
     std::string m_name;
     std::string m_status;

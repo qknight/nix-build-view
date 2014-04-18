@@ -12,7 +12,7 @@ UrlWidget::UrlWidget(std::string url, float percent, int bits_per_sec) {
 };
 
 
-std::string UrlWidget::render() {
+AdvancedString UrlWidget::render() {
 
     int size = m_url.size();
     std::stringstream url_progress;

@@ -1,7 +1,7 @@
 #include "StatusWidget.hpp"
 #include <sstream>
 
-std::string StatusWidget::render() {
+AdvancedString StatusWidget::render() {
     std::stringstream s;
     std::string status = std::string("[ h help | 1 combined | 2 log | 3 fetching: 3/3 | 4 building: 4/9 ]");
     int i = width() - status.size();

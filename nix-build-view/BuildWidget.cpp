@@ -7,7 +7,7 @@ BuildWidget::BuildWidget(std::string name, std::string status) {
 }
 
 
-std::string BuildWidget::render() {
+AdvancedString BuildWidget::render() {
     std::stringstream s;
     int i = width() - m_name.size() - m_status.size() - 2;
     if (i < 0) i = 0;

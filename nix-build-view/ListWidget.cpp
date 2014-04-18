@@ -76,7 +76,7 @@ void ListWidget::terminal_preprocess() {
 }
 
 //FIXME only auto-scroll the view when m_line==0
-std::string ListWidget::render() {
+AdvancedString ListWidget::render() {
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
 
     //copy the last h elements from terminal to the out buffer

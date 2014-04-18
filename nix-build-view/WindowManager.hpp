@@ -9,6 +9,8 @@
 #include <vector>
 
 class Widget;
+class AdvancedString;
+#include "ColorManager.hpp"
 
 class WindowManager {
 public:
@@ -25,12 +27,13 @@ public:
     static WindowManager* Instance();
     void update(Widget* w);
 private:
-        WindowManager(WINDOW *win);
-        WINDOW* m_win;
-        std::vector<Widget*> m_widgets;
-        int m_width;
-        int m_height;
-        static WindowManager* m_pInstance;
-    };
+    WindowManager(WINDOW *win);
+    WINDOW* m_win;
+    std::vector<Widget*> m_widgets;
+    int m_width;
+    int m_height;
+    static WindowManager* m_pInstance;
+    ColorManager cm;
+};
 
 #endif

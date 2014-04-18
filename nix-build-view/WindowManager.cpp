@@ -1,7 +1,9 @@
 #include "WindowManager.hpp"
 #include "Widget.hpp"
 #include "AdvancedString.hpp"
+
 #include <sys/ioctl.h>
+
 
 WindowManager* WindowManager::m_pInstance = NULL;
 
@@ -20,6 +22,8 @@ WindowManager::WindowManager(WINDOW* win) {
         printf("TIOCGWINSZ error");
     m_width = size.ws_col;
     m_height = size.ws_row;
+
+
 }
 
 void WindowManager::addWidget(Widget* w) {
@@ -47,7 +51,7 @@ void WindowManager::resize(int width, int height) {
 
 //redraw individual widgets thus it has to know which widgets are visible
 void WindowManager::update(Widget* w) {
-  //FIXME need a scene-graph!
+    //FIXME need a scene-graph!
 }
 
 // redraw the whole scene
@@ -56,19 +60,23 @@ void WindowManager::update() {
     wclear(m_win);
     attron(A_REVERSE);
     int n = m_widgets.size()-1;
-    attron(COLOR_PAIR(1)); // for color support
+    attron(COLOR_PAIR(cm.setColor(COLOR_BLACK, COLOR_GREEN))); // for color support
     //FIXME add a function which checks the output to not exeed the boundingbox given!
-    mvprintw(0, 0, m_widgets[0]->render().c_str());
-    attroff(COLOR_PAIR(1)); // for color support
+    mvprintw(0, 0, m_widgets[0]->render().str().c_str());
+    attroff(COLOR_PAIR(cm.setColor(COLOR_BLACK, COLOR_GREEN))); // for color support
 
     //FIXME this layout (compositing) is static and needs to be made dynamic -> need scenegraph
     for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
-        attron(COLOR_PAIR(2)); // for color support
-        mvprintw(height()-i, 0, m_widgets[m_widgets.size()-i]->render().c_str());
-        attroff(COLOR_PAIR(2)); // for color support
+        AdvancedString as = m_widgets[m_widgets.size()-i]->render();
+        for (int x=0; x <= as.size(); ++x) {
+        attron(COLOR_PAIR(cm.setColor(COLOR_MAGENTA, COLOR_GREEN))); // for color support
+            mvprintw(height()-i, 0, as.str().c_str());
+        attroff(COLOR_PAIR(cm.setColor(COLOR_MAGENTA, COLOR_GREEN))); // for color support
+        }
     }
     wrefresh(m_win);
 }
+
 
 
 
