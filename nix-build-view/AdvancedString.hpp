@@ -1,7 +1,6 @@
 #ifndef ADVANCEDSTRING_HPP
 #define ADVANCEDSTRING_HPP
 
-#include "ColorCodes.h"
 #include "ncurses.h"
 
 #include <string>

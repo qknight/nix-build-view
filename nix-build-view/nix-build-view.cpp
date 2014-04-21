@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <sys/ioctl.h>
 
-#include "ColorCodes.h"
 #include "WindowManager.hpp"
 #include "UrlWidget.hpp"
 #include "ListWidget.hpp"
@@ -131,11 +130,11 @@ int main(int argc, char *argv[]) {
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045));
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
-    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
-    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045));
+    WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.1, 33234045));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8"));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7"));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8"));
@@ -155,18 +154,8 @@ int main(int argc, char *argv[]) {
     endwin(); /* End curses mode */
 
     //FIXME enable this, once it starts making sense
-//     std::cout << lw->log() << std::endl;
+    std::cout << listWidget->log() << std::endl;
 
-    AdvancedStringContainer aout;
-    AdvancedString a("hello BW world");
-    aout << a << "\n" << AdvancedString("hello magenta world!", COLOR_MAGENTA) << "\n";
-//     aout << AdvancedString(MAGENTA, "################### big red #################") << "\n";
-//     aout << AdvancedString(GREEN, "   this is foooobar") << "\n";
-//     aout << AdvancedString(MAGENTA, "################### /big red ################") << "\n";
-//     std::cout << aout.terminal_str();
-//     std::cout << aout.str();
-//     std::cout << aout.size() << std::endl;
-//     std::cout << sizeof(int) << std::endl;
 
     return 0;
 }
