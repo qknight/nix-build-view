@@ -4,11 +4,33 @@
 
 AdvancedStringContainer StatusWidget::render() {
     AdvancedStringContainer s1;
-    
+
     AdvancedStringContainer s2;
-    s2 << "[ h help |" << AdvancedString(std::string(" 1 combined "), COLOR_WHITE, 0, COLOR_BLUE) << "| 2 log | 3 fetching: 3/3 | 4 building: 4/9 ]";
+    std::vector<std::string> el;
+    el.push_back(" h help ");
+    el.push_back(" 1 combined ");
+    el.push_back(" 2 log ");
+    el.push_back(" 3 fetching ");
+    el.push_back(" 4 building ");
+    
+    s2 << "[";
+    for (int i=0; i < el.size(); ++i) {
+      if (i == m_focus)  
+        s2 << AdvancedString(el[i], COLOR_WHITE, 0, COLOR_BLUE);
+      else 
+	s2 << el[i];
+      if (i != el.size()-1)
+        s2 << "|";
+    }
+    s2 << "]";
+    
     int i = width() - s1.size();
     if (i < 0) i = 0;
 //     s2 << s1 << " " << std::string(i, ' ');
     return s2;
+}
+
+void StatusWidget::setFocus(int focus) {
+    m_focus = focus;
+    update();
 }

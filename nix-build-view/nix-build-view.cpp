@@ -31,6 +31,7 @@ size_t len = 0;
 ssize_t read;
 
 ListWidget* listWidget;
+StatusWidget* statusWidget;
 
 void check_usr_response() {
     int ch;
@@ -54,18 +55,23 @@ void check_usr_response() {
     //      - 4 - build is fullscreen and is scrollable
     if (ch == '1') {
         WindowManager::Instance()->updateLayout(1);
+        statusWidget->setFocus(1);
     }
     if (ch == '2') {
         WindowManager::Instance()->updateLayout(1);
+        statusWidget->setFocus(2);
     }
     if (ch == '3') {
         WindowManager::Instance()->updateLayout(1);
+        statusWidget->setFocus(3);
     }
     if (ch == '4') {
         WindowManager::Instance()->updateLayout(1);
+        statusWidget->setFocus(4);
     }
     if (ch == 'h' || ch == 'H') {
         WindowManager::Instance()->updateLayout(0);
+        statusWidget->setFocus(0);
     }
     //FIXME left/right, up/down, pgup/pwdn, home/end for ListWidget
     if (ch == KEY_HOME)
@@ -125,6 +131,7 @@ int main(int argc, char *argv[]) {
     noecho();
 
     listWidget = new ListWidget();
+    statusWidget = new StatusWidget();
     WindowManager::Instance()->addWidget(listWidget);
 
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
@@ -141,7 +148,7 @@ int main(int argc, char *argv[]) {
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8"));
     WindowManager::Instance()->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f", "barPhase 1/8"));
 
-    WindowManager::Instance()->addWidget(new StatusWidget());
+    WindowManager::Instance()->addWidget(statusWidget);
 
     WindowManager::Instance()->update();
 

@@ -27,11 +27,18 @@ WindowManager::WindowManager(WINDOW* win) {
 void WindowManager::addWidget(Widget* w) {
     m_widgets.push_back(w);
     w->resize(width(), w->height());
-    updateLayout(1);
+    updateLayout();
 }
 
 // layout widgets on the canvas to later draw them
-void WindowManager::updateLayout(int type) {
+void WindowManager::updateLayout(int layout) {
+  m_selectedLayout = layout;
+  updateLayout();
+}
+
+// updates the layout, the structure which is drawn, based on the selected layout (m_selectedLayout)
+void WindowManager::updateLayout() {
+//   m_selectedLayout;
     if (m_widgets.size() > 0)
         m_widgets[0]->resize(width(), height()-m_widgets.size()+1);
     for(int i=0; i < m_widgets.size(); ++i) {
@@ -43,13 +50,13 @@ void WindowManager::updateLayout(int type) {
 void WindowManager::resize(int width, int height) {
     m_width = width;
     m_height = height;
-    updateLayout(1);
+    updateLayout();
     update();
 }
 
 //redraw individual widgets thus it has to know which widgets are visible
 void WindowManager::update(Widget* w) {
-    //FIXME need a scene-graph!
+    //FIXME need a layout to know what to do here...
 }
 
 // redraw the whole scene

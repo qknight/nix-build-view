@@ -28,6 +28,7 @@ public:
         m_width = width;
         m_height = height;
     }
+//     int type() = 0;
 private:
     unsigned int m_width = 0;
     unsigned int m_height = 1;

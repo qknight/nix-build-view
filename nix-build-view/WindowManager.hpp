@@ -15,7 +15,8 @@ class AdvancedString;
 class WindowManager {
 public:
     void update();
-    void updateLayout(int type);
+    void updateLayout(int layout);
+    void updateLayout();
     void addWidget(Widget* w);
     void resize(int width, int height);
     int width() {
@@ -34,6 +35,7 @@ private:
     int m_height;
     static WindowManager* m_pInstance;
     ColorManager cm;
+    int m_selectedLayout;
 };
 
 #endif
