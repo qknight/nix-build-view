@@ -10,8 +10,7 @@ void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &
     std::string::size_type old_pos = 0;
     bool flag=true;
 
-    while(flag)
-    {
+    while(flag) {
         pos=str.find_first_of(ch,pos);
         if(pos == std::string::npos)
         {
@@ -76,11 +75,11 @@ void ListWidget::terminal_preprocess() {
 }
 
 //FIXME only auto-scroll the view when m_line==0
-AdvancedString ListWidget::render() {
+AdvancedStringContainer ListWidget::render() {
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
 
     //copy the last h elements from terminal to the out buffer
-    std::stringstream out;
+    AdvancedStringContainer out;
 
     std::vector<std::string>::const_iterator it_b = m_terminal.begin();
     std::vector<std::string>::const_iterator it_e = m_terminal.end();
@@ -94,7 +93,7 @@ AdvancedString ListWidget::render() {
         out << *it_b++;
     }
 
-    return out.str();
+    return out;
 }
 
 void ListWidget::resize(unsigned int w, unsigned int h) {

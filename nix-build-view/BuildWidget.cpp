@@ -7,10 +7,10 @@ BuildWidget::BuildWidget(std::string name, std::string status) {
 }
 
 
-AdvancedString BuildWidget::render() {
-    std::stringstream s;
+AdvancedStringContainer BuildWidget::render() {
+    AdvancedStringContainer s;
     int i = width() - m_name.size() - m_status.size() - 2;
     if (i < 0) i = 0;
-    s << m_name << " " << std::string(i, '.') << " " << m_status;
-    return s.str();
+    s << AdvancedString(m_name, COLOR_MAGENTA) << " " << std::string(i, '.') << " " << AdvancedString(m_status, COLOR_YELLOW);
+    return s;
 }

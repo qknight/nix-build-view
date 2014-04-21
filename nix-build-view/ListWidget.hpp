@@ -14,7 +14,7 @@ class ListWidget : public Widget {
 public:
     ListWidget();
     void splitString(std::vector<std::string> &v_str,const std::string &str,const char ch);
-    AdvancedString render();
+    AdvancedStringContainer render();
     void append(std::string line);
     void resize(unsigned int w, unsigned int h);
     void terminal_preprocess();

@@ -2,6 +2,9 @@
 #define ADVANCEDSTRING_HPP
 
 #include "ColorCodes.h"
+#include "ncurses.h"
+
+#include <string>
 
 /*
  * motivation for AdvancedStringContainer was that each terminal (xterm, vt100, ncurses) do interprete escape sequences differently
@@ -13,72 +16,77 @@
  */
 class AdvancedString {
 public:
-    AdvancedString(std::string color, std::string string) {
+    AdvancedString() {}
+    AdvancedString(std::string string, int color=COLOR_WHITE, int attributes = 0, int bgColor=COLOR_BLACK) {
         m_str = string;
-        m_color = color;
-    }
-    AdvancedString(std::string string) {
-        m_str = string;
-        m_color = "";
+        m_fontColor = color;
+        m_attributes = attributes;
+        m_bgColor = bgColor;
     }
     int size() {
         return m_str.size();
     }
     std::string str() {
-        return render(0);
+        return m_str;
     }
-    // mode==0 -> BW, mode==1 -> color
-    std::string render(int mode) {
-        if (mode == 0) // BW rendering
-            return  m_str;
-        return m_color + m_str + RESET;
+    int fontColor() {
+        return m_fontColor;
+    }
+    int bgColor() {
+        return m_bgColor;
+    }
+    int attributes() {
+        return m_attributes;
     }
 private:
     std::string m_str;
-    std::string m_color;
+    int m_fontColor;
+    int m_bgColor;
+    int m_attributes;
 };
 
 // AdvancedStringList can render to std:string with or without using terminal color codes
 class AdvancedStringContainer {
 public:
-    AdvancedStringContainer& operator<<( const std::string& s1 ) {
-        sContainer.push_back(AdvancedString("", s1));
-        return *this;
-    }
     AdvancedStringContainer& operator<<( const AdvancedString&  t ) {
         sContainer.push_back(t);
         return *this;
     }
-    AdvancedStringContainer& operator<<( const int&  t ) {
-        sContainer.push_back(AdvancedString(std::to_string(t), ""));
+    AdvancedStringContainer& operator<<(  AdvancedStringContainer& c ) {
+        for(int i=0; i < c.size(); ++i) {
+            sContainer.push_back(c[i]);
+        }
         return *this;
     }
-    std::string str() {
-        return render_color(0);
+    AdvancedStringContainer& operator<<( const std::string& s1 ) {
+        sContainer.push_back(AdvancedString(s1));
+        return *this;
     }
-    std::string terminal_str() {
-        return render_color(1);
+    AdvancedStringContainer& operator<<( const int&  t ) {
+        sContainer.push_back(AdvancedString(std::to_string(t)));
+        return *this;
     }
-    const std::vector<AdvancedString>data() {
-        return sContainer;
+    AdvancedStringContainer& operator<<( const float&  f ) {
+        sContainer.push_back(AdvancedString(std::to_string(f)));
+        return *this;
     }
-    // string size (which ignores the terminal control sequences like colors, but contains things like '\n' and '\t')
+    AdvancedString operator[] (int element) {
+        if (element >=0 && element < sContainer.size())
+            return sContainer[element];
+        else
+            return AdvancedString();
+    }
     int size() {
-        int s=0;
-        for(int i=0; i < sContainer.size(); ++i) {
-            s += sContainer[i].size();
-        }
-        return s;
+        sContainer.size();
     }
-
+    int str_size() {
+        int size = 0;
+        for(int i=0; i < sContainer.size(); ++i) {
+            size += sContainer[i].size();
+        }
+        return size;
+    }
 private:
-    std::string render_color(int color) {
-        std::stringstream sStream;
-        for(int i=0; i < sContainer.size(); ++i) {
-            sStream << sContainer[i].render(color);
-        }
-        return sStream.str();
-    }
     std::vector<AdvancedString> sContainer;
 };
 

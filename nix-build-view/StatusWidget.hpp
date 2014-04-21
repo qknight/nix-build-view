@@ -4,7 +4,7 @@
 #include "Widget.hpp"
 
 class StatusWidget : public Widget {
-  AdvancedString render();
+  AdvancedStringContainer render();
 };
 
 #endif

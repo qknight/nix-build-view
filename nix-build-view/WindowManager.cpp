@@ -57,21 +57,28 @@ void WindowManager::update(Widget* w) {
 // redraw the whole scene
 void WindowManager::update() {
     //FIXME bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
+    int pos=0;
     wclear(m_win);
     attron(A_REVERSE);
     int n = m_widgets.size()-1;
-    attron(COLOR_PAIR(cm.setColor(COLOR_BLACK, COLOR_GREEN))); // for color support
+    AdvancedStringContainer as = m_widgets[0]->render();
     //FIXME add a function which checks the output to not exeed the boundingbox given!
-    mvprintw(0, 0, m_widgets[0]->render().str().c_str());
-    attroff(COLOR_PAIR(cm.setColor(COLOR_BLACK, COLOR_GREEN))); // for color support
-
+    pos=0;
+    for (int x=0; x < as.size(); ++x) {
+        attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
+        mvprintw(0, pos, as[x].str().c_str());
+	pos += as[x].str().size();
+        attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
+    }
     //FIXME this layout (compositing) is static and needs to be made dynamic -> need scenegraph
     for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
-        AdvancedString as = m_widgets[m_widgets.size()-i]->render();
-        for (int x=0; x <= as.size(); ++x) {
-        attron(COLOR_PAIR(cm.setColor(COLOR_MAGENTA, COLOR_GREEN))); // for color support
-            mvprintw(height()-i, 0, as.str().c_str());
-        attroff(COLOR_PAIR(cm.setColor(COLOR_MAGENTA, COLOR_GREEN))); // for color support
+        AdvancedStringContainer as = m_widgets[m_widgets.size()-i]->render();
+        pos=0;
+        for (int x=0; x < as.size(); ++x) {
+            attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
+            mvprintw(height()-i, pos, as[x].str().c_str());
+            pos+=as[x].str().size();
+            attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
         }
     }
     wrefresh(m_win);

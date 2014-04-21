@@ -159,14 +159,14 @@ int main(int argc, char *argv[]) {
 
     AdvancedStringContainer aout;
     AdvancedString a("hello BW world");
-    aout << a << "\n" << AdvancedString(MAGENTA, "hello magenta world!") << "\n";
-    aout << AdvancedString(MAGENTA, "################### big red #################") << "\n";
-    aout << AdvancedString(GREEN, "   this is foooobar") << "\n";
-    aout << AdvancedString(MAGENTA, "################### /big red ################") << "\n";
-    std::cout << aout.terminal_str();
-    std::cout << aout.str();
-    std::cout << aout.size() << std::endl;
-    std::cout << sizeof(int) << std::endl;
+    aout << a << "\n" << AdvancedString("hello magenta world!", COLOR_MAGENTA) << "\n";
+//     aout << AdvancedString(MAGENTA, "################### big red #################") << "\n";
+//     aout << AdvancedString(GREEN, "   this is foooobar") << "\n";
+//     aout << AdvancedString(MAGENTA, "################### /big red ################") << "\n";
+//     std::cout << aout.terminal_str();
+//     std::cout << aout.str();
+//     std::cout << aout.size() << std::endl;
+//     std::cout << sizeof(int) << std::endl;
 
     return 0;
 }

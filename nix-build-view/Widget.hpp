@@ -7,7 +7,7 @@
 
 class Widget {
 public:
-    virtual AdvancedString render() = 0;
+    virtual AdvancedStringContainer render() = 0;
     void update() {
       //FIXME tell the WM to update(this)!
         WindowManager::Instance()->update();
