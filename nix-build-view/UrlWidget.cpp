@@ -22,7 +22,7 @@ AdvancedStringContainer UrlWidget::render() {
 
     
     stringstream s1;
-    s1 << " " << setw(3) << right << (int)(m_percent*100) << "% " << setw(4) << setprecision(4) << 123.31333 << "kib/s " << setw(4) << setprecision(3) << 26.3333 << "Mib" << "\n";
+    s1 << " " << setw(3) << right << (int)(m_percent*100) << "% " << setw(4) << setprecision(3) << 26.3333 << "Mib " << setw(4) << setprecision(4) << 123.31333 << "kib/s ";
 //     s1 << " " << (int)(m_percent*100) << "/100 " << (int)123.31333f << "kib/s " << (int)26.3333f << "Mib" << "\n";
     AdvancedStringContainer s2;
     

@@ -63,10 +63,10 @@ void WindowManager::update() {
     //FIXME add a function which checks the output to not exeed the boundingbox given!
     pos=0;
     for (int x=0; x < as.size(); ++x) {
-        attron(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLUE, as[x].fontColor())));
+        attron(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLACK, as[x].fontColor())));
         mvprintw(x, 0, as[x].str().c_str());
 	pos += as[x].str().size();
-        attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLUE, as[x].fontColor())));
+        attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLACK, as[x].fontColor())));
     }
     //FIXME this layout (compositing) is static and needs to be made dynamic -> need scenegraph
     for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
