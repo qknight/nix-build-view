@@ -15,6 +15,7 @@
 #include "BuildWidget.hpp"
 #include "StatusWidget.hpp"
 #include "AdvancedString.hpp"
+#include "HelpWidget.hpp"
 
 
 #define TIME_OUT 100
@@ -32,6 +33,7 @@ ssize_t read;
 
 ListWidget* listWidget;
 StatusWidget* statusWidget;
+HelpWidget* helpWidget;
 
 void check_usr_response() {
     int ch;
@@ -49,7 +51,7 @@ void check_usr_response() {
     if (ch == KEY_RIGHT)
         ;
     //FIXME redirect none-global shortcuts to the respective widgets like
-    //      0 - help widget 
+    //      0 - help widget
     //      1 - composed view: input should be forwarded to the log
     //      2 - like 1 but log has fullscreen
     //      3 - fetch is fullscreen and is scrollable
@@ -62,20 +64,9 @@ void check_usr_response() {
         WindowManager::Instance()->updateLayout(0);
         statusWidget->setFocus(0);
     }
-    //FIXME left/right, up/down, pgup/pwdn, home/end for ListWidget
-    if (ch == KEY_HOME)
-        listWidget->home();
-    if (ch == KEY_END)
-        listWidget->end();
-    if (ch == KEY_UP)
-        listWidget->up();
-    if (ch == KEY_DOWN)
-        listWidget->down();
-    if (ch == KEY_PPAGE)
-        listWidget->pgup();
-    if (ch == KEY_NPAGE)
-        listWidget->pgdown();
-
+    if (ch == KEY_HOME | ch == KEY_END | ch == KEY_UP | ch == KEY_DOWN | ch == KEY_PPAGE | ch == KEY_NPAGE) {
+        listWidget->keyboardInputHandler(ch);
+    }
 
     // this event indicates a SIG 28 - SIGWINCH
     if (ch == KEY_RESIZE) {
@@ -120,6 +111,9 @@ int main(int argc, char *argv[]) {
 
     listWidget = new ListWidget();
     statusWidget = new StatusWidget();
+    helpWidget = new HelpWidget();
+
+//     WindowManager::Instance()->addWidget(helpWidget);
     WindowManager::Instance()->addWidget(listWidget);
 
     WindowManager::Instance()->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));

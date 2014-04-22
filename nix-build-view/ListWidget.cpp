@@ -4,6 +4,11 @@ ListWidget::ListWidget() {
     terminal_preprocess();
 }
 
+int ListWidget::type() {
+    return WidgetName::ListWidget;
+}
+
+
 void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &str,const char ch) {
     std::string sub;
     std::string::size_type pos = 0;
@@ -122,41 +127,40 @@ void ListWidget::append(std::string line) {
     update();
 }
 
-
-//FIXME rewrite this to have a common interface with a switch(key) case 'g' ...
-void ListWidget::down() {
-    if (m_line > 0)
-        m_line -= 1;
-    update();
-}
-
-void ListWidget::up() {
-    m_line += 1;
-    if (m_line > m_terminal.size()-height())
+void ListWidget::keyboardInputHandler(int ch) {
+    switch(ch) {
+    case(KEY_HOME):
         m_line = m_terminal.size()-height();
-    update();
-}
-
-void ListWidget::pgup() {
-    m_line += 15;
-    if (m_line > m_terminal.size()-height())
-        m_line = m_terminal.size()-height();
-    update();
-}
-
-void ListWidget::pgdown() {
-    m_line -= 15;
-    if (m_line < 0)
+        update();
+        break;
+    case(KEY_END):
         m_line = 0;
-    update();
-}
-
-void ListWidget::home() {
-    m_line = m_terminal.size()-height();
-    update();
-}
-
-void ListWidget::end() {
-    m_line = 0;
-    update();
+        update();
+        break;
+    case(KEY_UP):
+        m_line += 1;
+        if (m_line > m_terminal.size()-height())
+            m_line = m_terminal.size()-height();
+        update();
+        break;
+    case(KEY_DOWN):
+        if (m_line > 0)
+            m_line -= 1;
+        update();
+        break;
+    case(KEY_PPAGE):
+        m_line += 15;
+        if (m_line > m_terminal.size()-height())
+            m_line = m_terminal.size()-height();
+        update();
+        break;
+    case(KEY_NPAGE):
+        m_line -= 15;
+        if (m_line < 0)
+            m_line = 0;
+        update();
+        break;
+    default:
+        break;
+    }
 }

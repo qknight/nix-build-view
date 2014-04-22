@@ -13,6 +13,11 @@ UrlWidget::UrlWidget(std::string url, float percent, int bits_per_sec) {
     m_bits_per_sec = bits_per_sec;
 };
 
+int UrlWidget::type() {
+    return WidgetName::UrlWidget;
+}
+
+
 AdvancedStringContainer UrlWidget::render() {
 
     int size = m_url.size();
@@ -24,7 +29,7 @@ AdvancedStringContainer UrlWidget::render() {
     stringstream s1;
     s1 << " " /*<< setw(3) << right*/ << (int)(m_percent*100) << "% " << setw(4) << setprecision(3) << 26.3333 << "Mib " << setw(4) << setprecision(4) << 123.31333 << "kib/s ";
     AdvancedStringContainer s2;
-    
+
     // dynamic spacer
     int i = width() - url_progress.str_size() - s1.str().size() ;
     if (i < 0) i = 0;

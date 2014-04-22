@@ -2,6 +2,10 @@
 #include "AdvancedString.hpp"
 #include <string>
 
+int StatusWidget::type() {
+    return WidgetName::StatusWidget;
+}
+
 AdvancedStringContainer StatusWidget::render() {
     AdvancedStringContainer s1;
 

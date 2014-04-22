@@ -5,14 +5,7 @@
 
 #include <string>
 
-/*
- * motivation for AdvancedStringContainer was that each terminal (xterm, vt100, ncurses) do interprete escape sequences differently
- *
- * my requirements were:
- *  - i need to be able to count the amount of chars (without color escape sequences) to predict if the string fits into the given widget's width
- *  - to print the string to a normal xterm with colors while
- *  - also using the same representation to draw it using ncurses
- */
+
 class AdvancedString {
 public:
     AdvancedString() {}
@@ -44,7 +37,17 @@ private:
     int m_attributes;
 };
 
-// AdvancedStringList can render to std:string with or without using terminal color codes
+/*
+ * main motivation for AdvancedStringContainer:
+ * - each Widget should only return a sequence of chars which are then drawn by the WindowManager
+ * - this prevents that every widget has full draw support to the whole screen
+ * - however, still every widget can use all the formating extensions like color, bold and italic text
+ * 
+ * my requirements were:
+ *  - i need to be able to count the amount of chars (without color escape sequences) to predict if the string fits into the given widget's width
+ *  - to print the string to a normal xterm with colors while
+ *  - also using the same representation to draw it using ncurses
+ */
 class AdvancedStringContainer {
 public:
     AdvancedStringContainer& operator<<( const AdvancedString&  t ) {

@@ -18,12 +18,8 @@ public:
     void append(std::string line);
     void resize(unsigned int w, unsigned int h);
     void terminal_preprocess();
-    void up();
-    void down();
-    void pgup();
-    void pgdown();
-    void home();
-    void end();
+    int type();
+    void keyboardInputHandler(int ch);
     std::string log() {
         return m_logfile.str();
     };

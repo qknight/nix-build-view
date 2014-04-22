@@ -32,8 +32,8 @@ void WindowManager::addWidget(Widget* w) {
 
 // layout widgets on the canvas to later draw them
 void WindowManager::updateLayout(int layout) {
-  m_selectedLayout = layout;
-  updateLayout();
+    m_selectedLayout = layout;
+    updateLayout();
 }
 
 // updates the layout, the structure which is drawn, based on the selected layout (m_selectedLayout)
@@ -72,7 +72,7 @@ void WindowManager::update() {
     for (int x=0; x < as.size(); ++x) {
         attron(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLACK, as[x].fontColor())));
         mvprintw(x, 0, as[x].str().c_str());
-	pos += as[x].str().size();
+        pos += as[x].str().size();
         attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLACK, as[x].fontColor())));
     }
     //FIXME this layout (compositing) is static and needs to be made dynamic -> need scenegraph

@@ -6,6 +6,9 @@ BuildWidget::BuildWidget(std::string name, std::string status) {
     m_status = status;
 }
 
+int BuildWidget::type() {
+    return WidgetName::BuildWidget;
+}
 
 AdvancedStringContainer BuildWidget::render() {
     AdvancedStringContainer s;

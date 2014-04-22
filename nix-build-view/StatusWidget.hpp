@@ -7,7 +7,7 @@ class StatusWidget : public Widget {
     AdvancedStringContainer render();
 public:
     void setFocus(int arg1);
-
+    int type();
 private:
     int m_focus = 1;
 };

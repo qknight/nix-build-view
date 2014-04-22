@@ -8,6 +8,7 @@ class UrlWidget : public Widget {
 public:
     UrlWidget(std::string url, float percent, int bits_per_sec);
     AdvancedStringContainer render();
+    int type();
 private:
     std::string m_url;
     float m_percent;
