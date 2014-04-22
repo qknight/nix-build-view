@@ -49,25 +49,14 @@ void check_usr_response() {
     if (ch == KEY_RIGHT)
         ;
     //FIXME redirect none-global shortcuts to the respective widgets like
-    //      - 1 - composed view: input should be forwarded to the log
-    //      - 2 - like 1 but log has fullscreen
-    //      - 3 - fetch is fullscreen and is scrollable
-    //      - 4 - build is fullscreen and is scrollable
-    if (ch == '1') {
-        WindowManager::Instance()->updateLayout(1);
-        statusWidget->setFocus(1);
-    }
-    if (ch == '2') {
-        WindowManager::Instance()->updateLayout(1);
-        statusWidget->setFocus(2);
-    }
-    if (ch == '3') {
-        WindowManager::Instance()->updateLayout(1);
-        statusWidget->setFocus(3);
-    }
-    if (ch == '4') {
-        WindowManager::Instance()->updateLayout(1);
-        statusWidget->setFocus(4);
+    //      0 - help widget 
+    //      1 - composed view: input should be forwarded to the log
+    //      2 - like 1 but log has fullscreen
+    //      3 - fetch is fullscreen and is scrollable
+    //      4 - build is fullscreen and is scrollable
+    if (ch == '1' | ch == '2' | ch == '3'| ch == '4') {
+        WindowManager::Instance()->updateLayout(ch-48);
+        statusWidget->setFocus(ch-48);
     }
     if (ch == 'h' || ch == 'H') {
         WindowManager::Instance()->updateLayout(0);
@@ -115,7 +104,6 @@ void check_JSON() {
 //         }
 //     } while (read > 0);
 }
-
 
 int main(int argc, char *argv[]) {
     fp = fopen("logfile", "r");

@@ -12,21 +12,20 @@ AdvancedStringContainer StatusWidget::render() {
     el.push_back(" 2 log ");
     el.push_back(" 3 fetching ");
     el.push_back(" 4 building ");
-    
+
     s2 << "[";
     for (int i=0; i < el.size(); ++i) {
-      if (i == m_focus)  
-        s2 << AdvancedString(el[i], COLOR_WHITE, 0, COLOR_BLUE);
-      else 
-	s2 << el[i];
-      if (i != el.size()-1)
-        s2 << "|";
+        if (i == m_focus)
+            s2 << AdvancedString(el[i], COLOR_WHITE, 0, COLOR_BLUE);
+        else
+            s2 << el[i];
+        if (i != el.size()-1)
+            s2 << "|";
     }
     s2 << "]";
-    
+
     int i = width() - s1.size();
     if (i < 0) i = 0;
-//     s2 << s1 << " " << std::string(i, ' ');
     return s2;
 }
 
