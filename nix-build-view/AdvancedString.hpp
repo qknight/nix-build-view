@@ -42,7 +42,7 @@ private:
  * - each Widget should only return a sequence of chars which are then drawn by the WindowManager
  * - this prevents that every widget has full draw support to the whole screen
  * - however, still every widget can use all the formating extensions like color, bold and italic text
- * 
+ *
  * my requirements were:
  *  - i need to be able to count the amount of chars (without color escape sequences) to predict if the string fits into the given widget's width
  *  - to print the string to a normal xterm with colors while
@@ -54,6 +54,7 @@ public:
         sContainer.push_back(t);
         return *this;
     }
+    //FIXME understand why adding const before AdvancedStringContainer results in a strange compiler error
     AdvancedStringContainer& operator<<(  AdvancedStringContainer& c ) {
         for(int i=0; i < c.size(); ++i) {
             sContainer.push_back(c[i]);
@@ -87,6 +88,13 @@ public:
             size += sContainer[i].size();
         }
         return size;
+    }
+    std::string str() {
+        std::string s;
+        for(int i=0; i < sContainer.size(); ++i) {
+            s += sContainer[i].str();
+        }
+        return s;
     }
 private:
     std::vector<AdvancedString> sContainer;

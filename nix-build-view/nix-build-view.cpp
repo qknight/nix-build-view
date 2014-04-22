@@ -38,7 +38,6 @@ HelpWidget* helpWidget;
 void check_usr_response() {
     int ch;
 
-    //FIXME now the terminal is redrawn every TIME_OUT which is very often
     timeout(TIME_OUT);
     ch = getch(); /* Waits for TIME_OUT milliseconds */
     if (ch == ERR)
@@ -46,11 +45,6 @@ void check_usr_response() {
     if (ch == 'Q' || ch == 'q') {
         main_loop = 0;
     }
-    if (ch == KEY_LEFT)
-        ;
-    if (ch == KEY_RIGHT)
-        ;
-    //FIXME redirect none-global shortcuts to the respective widgets like
     //      0 - help widget
     //      1 - composed view: input should be forwarded to the log
     //      2 - like 1 but log has fullscreen
@@ -67,6 +61,11 @@ void check_usr_response() {
     if (ch == KEY_HOME | ch == KEY_END | ch == KEY_UP | ch == KEY_DOWN | ch == KEY_PPAGE | ch == KEY_NPAGE) {
         listWidget->keyboardInputHandler(ch);
     }
+    if (ch == 't' || ch == 'T') {
+        AdvancedStringContainer s;
+        s << AdvancedString("test\n", COLOR_MAGENTA);
+        listWidget->append(s);
+    }
 
     // this event indicates a SIG 28 - SIGWINCH
     if (ch == KEY_RESIZE) {
@@ -82,18 +81,15 @@ void check_logfile(ListWidget* lw) {
     ssize_t read;
     do {
         if (read = getline(&line, &len, fp) != -1) {
-            lw->append(line);
+            AdvancedStringContainer s;
+            s << line;
+            lw->append(s);
         }
     } while (read > 0);
 }
 
 void check_JSON() {
-//     ssize_t read;
-//     do {
-//         if (read = getline(&line, &len, fp) != -1) {
-//             lw->append(line);
-//         }
-//     } while (read > 0);
+
 }
 
 int main(int argc, char *argv[]) {
@@ -134,6 +130,7 @@ int main(int argc, char *argv[]) {
 
     WindowManager::Instance()->update();
 
+    //FIXME think about pselect here...
     while (main_loop) {
         check_logfile(listWidget);
         check_JSON();
@@ -142,9 +139,8 @@ int main(int argc, char *argv[]) {
 
     endwin(); /* End curses mode */
 
-    //FIXME enable this, once it starts making sense
-    std::cout << listWidget->log() << std::endl;
-
+    //FIXME need a renderer for AdvancedString to shell *oh sigh*
+//     std::cout << listWidget->log().str() << std::endl;
 
     return 0;
 }

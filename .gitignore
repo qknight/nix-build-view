@@ -16,3 +16,4 @@ logfile
 logfile_
 perl-5.18.2.tar.gz
 preview2
+*.o

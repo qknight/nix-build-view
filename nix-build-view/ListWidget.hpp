@@ -15,16 +15,16 @@ public:
     ListWidget();
     void splitString(std::vector<std::string> &v_str,const std::string &str,const char ch);
     AdvancedStringContainer render();
-    void append(std::string line);
+    void append(AdvancedStringContainer line);
     void resize(unsigned int w, unsigned int h);
-    void terminal_preprocess();
+    void terminal_rasterize();
     int type();
     void keyboardInputHandler(int ch);
-    std::string log() {
-        return m_logfile.str();
+    AdvancedStringContainer log() {
+        return m_logfile;
     };
 private:
-    std::stringstream m_logfile;
+    AdvancedStringContainer m_logfile;
     int m_line = 0;
     std::vector<std::string> m_terminal;
     int m_width_last = 0;

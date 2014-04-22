@@ -1,13 +1,12 @@
 #include "ListWidget.hpp"
 
 ListWidget::ListWidget() {
-    terminal_preprocess();
+    terminal_rasterize();
 }
 
 int ListWidget::type() {
     return WidgetName::ListWidget;
 }
-
 
 void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &str,const char ch) {
     std::string sub;
@@ -28,7 +27,8 @@ void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &
     }
 }
 
-void ListWidget::terminal_preprocess() {
+//FIXME this ignores ncurses coloring implemented in AdvancedString and AdvancedStringContainer!!!
+void ListWidget::terminal_rasterize() {
     // - render the text to a buffer
     // - do line-wrapping
     std::string s = m_logfile.str();
@@ -103,26 +103,29 @@ AdvancedStringContainer ListWidget::render() {
 
 void ListWidget::resize(unsigned int w, unsigned int h) {
     Widget::resize(w, h);
-    terminal_preprocess();
+    terminal_rasterize();
     update();
 }
 
 //FIXME do not recompute the whole buffer every time but instead scan for the last newline and go from there...
-void ListWidget::append(std::string line) {
+void ListWidget::append(AdvancedStringContainer line) {
     // replace all \t with '        ' (8 spaces)
     // you can't use copy'n'paste from that terminal, so Makefiles for example will be broken when being copied this way
-    std::stringstream buf;
+    AdvancedStringContainer buf;
 
-    for(int i=0; i < line.size(); ++i) {
-        if (line[i] == '\t')
-            buf << "        ";
-        else
-            buf << line[i];
-    }
+    //FIXME broken
+//     for(int i=0; i < line.size(); ++i) {
+//         if (line[i] == '\t')
+//             buf << "        ";
+//         else
+//             buf << line[i];
+//     }
+    //FIXME filter for \t is not included right now!
+    buf << line;
 
     // add the new string
-    m_logfile << buf.str();
-    terminal_preprocess(); //FIXME optimization needed
+    m_logfile << buf;
+    terminal_rasterize();
 
     update();
 }
@@ -164,3 +167,4 @@ void ListWidget::keyboardInputHandler(int ch) {
         break;
     }
 }
+
