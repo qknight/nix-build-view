@@ -39,7 +39,7 @@ void ListWidget::terminal_rasterize() {
         std::vector<std::string> tmp;
         splitString(tmp, s, '\n');
 
-        for(int i=0; i < tmp.size(); ++i) {
+        for(unsigned int i=0; i < tmp.size(); ++i) {
             std::string::const_iterator it_b = tmp[i].begin();
             std::string::const_iterator it_e = tmp[i].end();
             std::string::const_iterator it_tmp = it_e-1;
@@ -63,7 +63,7 @@ void ListWidget::terminal_rasterize() {
     //render the m_logfile into a terminal with width w
     m_terminal.clear();
     std::string tmp;
-    for (int i=0; i <= s.size(); ++i) {
+    for (unsigned int i=0; i <= s.size(); ++i) {
         if (tmp.size() == width()) {
             m_terminal.push_back(tmp);
             tmp="";
@@ -92,7 +92,7 @@ AdvancedStringContainer ListWidget::render() {
     if (it_e - height() - m_line >= it_b)
         it_b = it_e - height() - m_line;
 
-    for(int i=0; i < height(); ++i) {
+    for(unsigned int i=0; i < height(); ++i) {
         if (it_b >= it_e)
             break;
         out << *it_b++;
@@ -121,6 +121,7 @@ void ListWidget::append(AdvancedStringContainer line) {
 //             buf << line[i];
 //     }
     //FIXME filter for \t is not included right now!
+    buf << "FIXME filter for '\\t' is not included right now!\n";
     buf << line;
 
     // add the new string
@@ -159,8 +160,6 @@ void ListWidget::keyboardInputHandler(int ch) {
         break;
     case(KEY_NPAGE):
         m_line -= 15;
-        if (m_line < 0)
-            m_line = 0;
         update();
         break;
     default:

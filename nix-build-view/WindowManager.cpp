@@ -5,13 +5,9 @@
 #include <sys/ioctl.h>
 
 
-WindowManager* WindowManager::m_pInstance = NULL;
-
 WindowManager* WindowManager::Instance() {
-    if(!m_pInstance)
-        m_pInstance = new WindowManager(stdscr);
-
-    return m_pInstance;
+    static WindowManager* _instance = new WindowManager(stdscr);
+    return _instance;
 }
 
 WindowManager::WindowManager(WINDOW* win) {
@@ -41,7 +37,7 @@ void WindowManager::updateLayout() {
 //   m_selectedLayout;
     if (m_widgets.size() > 0)
         m_widgets[0]->resize(width(), height()-m_widgets.size()+1);
-    for(int i=0; i < m_widgets.size(); ++i) {
+    for(unsigned int i=0; i < m_widgets.size(); ++i) {
         Widget* w= m_widgets[i];
         w->resize(width(), w->height());
     }
@@ -65,21 +61,20 @@ void WindowManager::update() {
     int pos=0;
     wclear(m_win);
     attron(A_REVERSE);
-    int n = m_widgets.size()-1;
     AdvancedStringContainer as = m_widgets[0]->render();
     //FIXME add a function which checks the output to not exeed the boundingbox given!
     pos=0;
-    for (int x=0; x < as.size(); ++x) {
+    for (unsigned int x=0; x < as.size(); ++x) {
         attron(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLACK, as[x].fontColor())));
         mvprintw(x, 0, as[x].str().c_str());
         pos += as[x].str().size();
         attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(COLOR_BLACK, as[x].fontColor())));
     }
     //FIXME this layout (compositing) is static and needs to be made dynamic -> need scenegraph
-    for(int i=m_widgets.size()-1;  i >= 1 ; --i) {
+    for(unsigned int i=m_widgets.size()-1;  i >= 1 ; --i) {
         AdvancedStringContainer as = m_widgets[m_widgets.size()-i]->render();
         pos=0;
-        for (int x=0; x < as.size(); ++x) {
+        for (unsigned int x=0; x < as.size(); ++x) {
             attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
             mvprintw(height()-i, pos, as[x].str().c_str());
             pos+=as[x].str().size();
@@ -88,4 +83,5 @@ void WindowManager::update() {
     }
     wrefresh(m_win);
 }
+
 

@@ -18,7 +18,7 @@ AdvancedStringContainer StatusWidget::render() {
     el.push_back(" 4 building ");
 
     s2 << "[";
-    for (int i=0; i < el.size(); ++i) {
+    for (unsigned int i=0; i < el.size(); ++i) {
         if (i == m_focus)
             s2 << AdvancedString(el[i], COLOR_WHITE, 0, COLOR_BLUE);
         else

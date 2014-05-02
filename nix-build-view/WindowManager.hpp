@@ -33,7 +33,6 @@ private:
     std::vector<Widget*> m_widgets;
     int m_width;
     int m_height;
-    static WindowManager* m_pInstance;
     ColorManager cm;
     int m_selectedLayout;
 };

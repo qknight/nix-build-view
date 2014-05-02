@@ -56,7 +56,7 @@ public:
     }
     //FIXME understand why adding const before AdvancedStringContainer results in a strange compiler error
     AdvancedStringContainer& operator<<(  AdvancedStringContainer& c ) {
-        for(int i=0; i < c.size(); ++i) {
+        for(unsigned int i=0; i < c.size(); ++i) {
             sContainer.push_back(c[i]);
         }
         return *this;
@@ -73,25 +73,25 @@ public:
         sContainer.push_back(AdvancedString(std::to_string(f)));
         return *this;
     }
-    AdvancedString operator[] (int element) {
-        if (element >=0 && element < sContainer.size())
+    AdvancedString operator[] (unsigned int element) {
+        if (element < sContainer.size())
             return sContainer[element];
         else
             return AdvancedString();
     }
-    int size() {
-        sContainer.size();
+    unsigned int size() {
+        return sContainer.size();
     }
     int str_size() {
-        int size = 0;
-        for(int i=0; i < sContainer.size(); ++i) {
+        unsigned int size = 0;
+        for(unsigned int i=0; i < sContainer.size(); ++i) {
             size += sContainer[i].size();
         }
         return size;
     }
     std::string str() {
         std::string s;
-        for(int i=0; i < sContainer.size(); ++i) {
+        for(unsigned int i=0; i < sContainer.size(); ++i) {
             s += sContainer[i].str();
         }
         return s;

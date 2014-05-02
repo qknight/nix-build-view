@@ -17,3 +17,4 @@ logfile_
 perl-5.18.2.tar.gz
 preview2
 *.o
+nix-build-view/nix-build-view

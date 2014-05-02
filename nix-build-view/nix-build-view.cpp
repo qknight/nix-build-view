@@ -42,29 +42,35 @@ void check_usr_response() {
     ch = getch(); /* Waits for TIME_OUT milliseconds */
     if (ch == ERR)
         return;
+    
     if (ch == 'Q' || ch == 'q') {
         main_loop = 0;
+	return;
     }
     //      0 - help widget
     //      1 - composed view: input should be forwarded to the log
     //      2 - like 1 but log has fullscreen
     //      3 - fetch is fullscreen and is scrollable
     //      4 - build is fullscreen and is scrollable
-    if (ch == '1' | ch == '2' | ch == '3'| ch == '4') {
+    if (ch == '1' || ch == '2' || ch == '3' || ch == '4') {
         WindowManager::Instance()->updateLayout(ch-48);
         statusWidget->setFocus(ch-48);
+        return;
     }
     if (ch == 'h' || ch == 'H') {
         WindowManager::Instance()->updateLayout(0);
         statusWidget->setFocus(0);
+        return;
     }
-    if (ch == KEY_HOME | ch == KEY_END | ch == KEY_UP | ch == KEY_DOWN | ch == KEY_PPAGE | ch == KEY_NPAGE) {
+    if (ch == KEY_HOME || ch == KEY_END || ch == KEY_UP || ch == KEY_DOWN || ch == KEY_PPAGE || ch == KEY_NPAGE) {
         listWidget->keyboardInputHandler(ch);
+        return;
     }
     if (ch == 't' || ch == 'T') {
         AdvancedStringContainer s;
-        s << AdvancedString("test\n", COLOR_MAGENTA);
+        s << AdvancedString("**this should be colored in MAGENTA**\n", COLOR_MAGENTA);
         listWidget->append(s);
+        return;
     }
 
     // this event indicates a SIG 28 - SIGWINCH
@@ -73,14 +79,16 @@ void check_usr_response() {
         if (ioctl(0, TIOCGWINSZ, (char *) &size) < 0)
             printf("TIOCGWINSZ error");
         WindowManager::Instance()->resize(size.ws_col, size.ws_row);
+        return;
     }
+    // FIXME delegate input to focus widget
 }
 
 void check_logfile(ListWidget* lw) {
     //FIXME read as much as possible
     ssize_t read;
     do {
-        if (read = getline(&line, &len, fp) != -1) {
+        if ((read = getline(&line, &len, fp)) != -1) {
             AdvancedStringContainer s;
             s << line;
             lw->append(s);
@@ -104,7 +112,7 @@ int main(int argc, char *argv[]) {
     curs_set(FALSE);
 
     noecho();
-
+    
     listWidget = new ListWidget();
     statusWidget = new StatusWidget();
     helpWidget = new HelpWidget();

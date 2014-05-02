@@ -25,10 +25,10 @@ public:
     };
 private:
     AdvancedStringContainer m_logfile;
-    int m_line = 0;
+    unsigned int m_line = 0;
     std::vector<std::string> m_terminal;
-    int m_width_last = 0;
-    int m_height_last = 0;
+//     unsigned int m_width_last = 0;
+//     unsigned int m_height_last = 0;
 };
 
 #endif

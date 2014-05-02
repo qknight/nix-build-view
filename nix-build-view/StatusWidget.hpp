@@ -9,7 +9,7 @@ public:
     void setFocus(int arg1);
     int type();
 private:
-    int m_focus = 1;
+    unsigned int m_focus = 1;
 };
 
 #endif
