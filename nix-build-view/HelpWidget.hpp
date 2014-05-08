@@ -5,7 +5,7 @@
 #include "Widget.hpp"
 
 class HelpWidget : public Widget {
-    AdvancedStringContainer render();
+    AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type();
 };
 

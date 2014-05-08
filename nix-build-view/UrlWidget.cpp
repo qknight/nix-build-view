@@ -18,7 +18,7 @@ int UrlWidget::type() {
 }
 
 
-AdvancedStringContainer UrlWidget::render() {
+AdvancedStringContainer UrlWidget::render(unsigned int width, unsigned int height) {
 
     int size = m_url.size();
     AdvancedStringContainer url_progress;
@@ -31,7 +31,7 @@ AdvancedStringContainer UrlWidget::render() {
     AdvancedStringContainer s2;
 
     // dynamic spacer
-    int i = width() - url_progress.str_size() - s1.str().size() ;
+    int i = width - url_progress.str_size() - s1.str().size() ;
     if (i < 0) i = 0;
     s2 << url_progress << " " << std::string(i, '.') << AdvancedString(s1.str(), COLOR_YELLOW);
 

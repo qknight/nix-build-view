@@ -10,10 +10,15 @@ int BuildWidget::type() {
     return WidgetName::BuildWidget;
 }
 
-AdvancedStringContainer BuildWidget::render() {
+AdvancedStringContainer BuildWidget::render(unsigned int width, unsigned int height) {
     AdvancedStringContainer s;
-    int i = width() - m_name.size() - m_status.size() - 2;
+    int i = width - m_name.size() - m_status.size() - 2;
     if (i < 0) i = 0;
     s << AdvancedString(m_name, COLOR_MAGENTA) << " " << std::string(i, '.') << " " << AdvancedString(m_status, COLOR_YELLOW);
+
+    //FIXME srly, needed?
+    m_width = width;
+    m_height = height;
+
     return s;
 }

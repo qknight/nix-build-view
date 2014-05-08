@@ -7,7 +7,7 @@
 namespace WidgetName {
 enum {
     HelpWidget,
-    ListWidget,
+    TerminalWidget,
     UrlWidgetManager,
     UrlWidget,
     BuildWidgetManager,
@@ -18,32 +18,27 @@ enum {
 
 class Widget {
 public:
-    virtual AdvancedStringContainer render() = 0;
+    virtual AdvancedStringContainer render(unsigned int width, unsigned int height) = 0;
     void update() {
-        //FIXME tell the WM to update(this)!
-        WindowManager::Instance()->update();
-    };
+        WindowManager::Instance()->update(this);
+    }
     unsigned int width()  {
         return m_width;
-    };
+    }
     unsigned int height() {
         return m_height;
-    };
+    }
     void hide() {
         m_visible = false;
     }
     void show() {
         m_visible = true;
     }
-    virtual void resize(unsigned int width, unsigned int height) {
-        m_width = width;
-        m_height = height;
-    }
     virtual int type() = 0;
     void keyboardInputHandler(int ch);
-private:
     unsigned int m_width = 0;
-    unsigned int m_height = 1;
+    unsigned int m_height = 0;
+private:
     bool m_visible = true;
 };
 

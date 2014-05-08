@@ -1,5 +1,5 @@
-#ifndef LISTWIDGET__HPP
-#define LISTWIDGET__HPP
+#ifndef TERMINALWIDGET__HPP
+#define TERMINALWIDGET__HPP
 
 #include <string>
 #include <sstream>
@@ -10,13 +10,12 @@
 #include "Widget.hpp"
 
 
-class ListWidget : public Widget {
+class TerminalWidget : public Widget {
 public:
-    ListWidget();
+    TerminalWidget();
     void splitString(std::vector<std::string> &v_str,const std::string &str,const char ch);
-    AdvancedStringContainer render();
+    AdvancedStringContainer render(unsigned int width, unsigned int height);
     void append(AdvancedStringContainer line);
-    void resize(unsigned int w, unsigned int h);
     void terminal_rasterize();
     int type();
     void keyboardInputHandler(int ch);
@@ -27,8 +26,6 @@ private:
     AdvancedStringContainer m_logfile;
     unsigned int m_line = 0;
     std::vector<std::string> m_terminal;
-//     unsigned int m_width_last = 0;
-//     unsigned int m_height_last = 0;
 };
 
 #endif

@@ -6,7 +6,7 @@ int StatusWidget::type() {
     return WidgetName::StatusWidget;
 }
 
-AdvancedStringContainer StatusWidget::render() {
+AdvancedStringContainer StatusWidget::render(unsigned int width, unsigned int height) {
     AdvancedStringContainer s1;
 
     AdvancedStringContainer s2;
@@ -28,7 +28,7 @@ AdvancedStringContainer StatusWidget::render() {
     }
     s2 << "]";
 
-    int i = width() - s1.size();
+    int i = width - s1.size();
     if (i < 0) i = 0;
     return s2;
 }

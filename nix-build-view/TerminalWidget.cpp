@@ -1,14 +1,14 @@
-#include "ListWidget.hpp"
+#include "TerminalWidget.hpp"
 
-ListWidget::ListWidget() {
+TerminalWidget::TerminalWidget() {
     terminal_rasterize();
 }
 
-int ListWidget::type() {
-    return WidgetName::ListWidget;
+int TerminalWidget::type() {
+    return WidgetName::TerminalWidget;
 }
 
-void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &str,const char ch) {
+void TerminalWidget::splitString(std::vector<std::string> &v_str,const std::string &str,const char ch) {
     std::string sub;
     std::string::size_type pos = 0;
     std::string::size_type old_pos = 0;
@@ -28,7 +28,7 @@ void ListWidget::splitString(std::vector<std::string> &v_str,const std::string &
 }
 
 //FIXME this ignores ncurses coloring implemented in AdvancedString and AdvancedStringContainer!!!
-void ListWidget::terminal_rasterize() {
+void TerminalWidget::terminal_rasterize() {
     // - render the text to a buffer
     // - do line-wrapping
     std::string s = m_logfile.str();
@@ -80,35 +80,35 @@ void ListWidget::terminal_rasterize() {
 }
 
 //FIXME only auto-scroll the view when m_line==0
-AdvancedStringContainer ListWidget::render() {
+AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int height) {
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
 
     //copy the last h elements from terminal to the out buffer
     AdvancedStringContainer out;
 
+    if ((m_width != width) || (m_height != height))
+        terminal_rasterize();
+
     std::vector<std::string>::const_iterator it_b = m_terminal.begin();
     std::vector<std::string>::const_iterator it_e = m_terminal.end();
 
-    if (it_e - height() - m_line >= it_b)
-        it_b = it_e - height() - m_line;
+    if (it_e - height - m_line >= it_b)
+        it_b = it_e - height - m_line;
 
-    for(unsigned int i=0; i < height(); ++i) {
+    for(unsigned int i=0; i < height; ++i) {
         if (it_b >= it_e)
             break;
         out << *it_b++;
     }
 
+    m_width = width;
+    m_height = height;
+
     return out;
 }
 
-void ListWidget::resize(unsigned int w, unsigned int h) {
-    Widget::resize(w, h);
-    terminal_rasterize();
-    update();
-}
-
 //FIXME do not recompute the whole buffer every time but instead scan for the last newline and go from there...
-void ListWidget::append(AdvancedStringContainer line) {
+void TerminalWidget::append(AdvancedStringContainer line) {
     // replace all \t with '        ' (8 spaces)
     // you can't use copy'n'paste from that terminal, so Makefiles for example will be broken when being copied this way
     AdvancedStringContainer buf;
@@ -131,7 +131,8 @@ void ListWidget::append(AdvancedStringContainer line) {
     update();
 }
 
-void ListWidget::keyboardInputHandler(int ch) {
+void TerminalWidget::keyboardInputHandler(int ch) {
+    unsigned int a=0;
     switch(ch) {
     case(KEY_HOME):
         m_line = m_terminal.size()-height();
@@ -159,7 +160,10 @@ void ListWidget::keyboardInputHandler(int ch) {
         update();
         break;
     case(KEY_NPAGE):
+        a = m_line;
         m_line -= 15;
+        if (m_line > a)
+            m_line = 0;
         update();
         break;
     default:

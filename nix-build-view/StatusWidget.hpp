@@ -4,7 +4,7 @@
 #include "Widget.hpp"
 
 class StatusWidget : public Widget {
-    AdvancedStringContainer render();
+    AdvancedStringContainer render(unsigned int width, unsigned int height);
 public:
     void setFocus(int arg1);
     int type();

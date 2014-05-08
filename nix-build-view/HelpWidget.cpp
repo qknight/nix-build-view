@@ -5,7 +5,7 @@ int HelpWidget::type() {
 }
 
 
-AdvancedStringContainer HelpWidget::render() {
+AdvancedStringContainer HelpWidget::render(unsigned int width, unsigned int height) {
     AdvancedStringContainer s;
     s << "\
          .                                                   "\
