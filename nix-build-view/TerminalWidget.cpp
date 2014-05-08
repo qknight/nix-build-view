@@ -70,7 +70,7 @@ void TerminalWidget::terminal_rasterize() {
         }
 
         if (s[i] == '\n')  {
-            tmp += std::string(width()-tmp.size(), ' ');
+            tmp += std::string(width()-tmp.size(), '?');
             m_terminal.push_back(tmp);
             tmp="";
             continue;
@@ -85,9 +85,13 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
 
     //copy the last h elements from terminal to the out buffer
     AdvancedStringContainer out;
+    AdvancedStringContainer d;
 
-    if ((m_width != width) || (m_height != height))
+    if ((m_width != width) || (m_height != height)) {
+        m_width = width;
+        m_height = height;
         terminal_rasterize();
+    }
 
     std::vector<std::string>::const_iterator it_b = m_terminal.begin();
     std::vector<std::string>::const_iterator it_e = m_terminal.end();
@@ -100,10 +104,11 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
             break;
         out << *it_b++;
     }
-
-    m_width = width;
-    m_height = height;
-
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a123aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV444444444444444444444444999999999999999999999a1234";
+//     d << *m_terminal.begin();
+//     d << *m_terminal.begin();
+//     return d;
+    
     return out;
 }
 
@@ -121,7 +126,7 @@ void TerminalWidget::append(AdvancedStringContainer line) {
 //             buf << line[i];
 //     }
     //FIXME filter for \t is not included right now!
-    buf << "FIXME filter for '\\t' is not included right now!\n";
+//     buf << "FIXME filter for '\\t' is not included right now!\n";
     buf << line;
 
     // add the new string

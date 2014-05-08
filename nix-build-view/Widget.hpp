@@ -12,7 +12,8 @@ enum {
     UrlWidget,
     BuildWidgetManager,
     BuildWidget,
-    StatusWidget
+    StatusWidget,
+    VerticalSpacerWidget,
 };
 };
 

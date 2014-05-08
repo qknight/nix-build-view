@@ -8,6 +8,7 @@
 #include "BuildWidget.hpp"
 #include "StatusWidget.hpp"
 #include "HelpWidget.hpp"
+#include "VerticalSpacerWidget.hpp"
 
 #include <sys/ioctl.h>
 
@@ -28,12 +29,14 @@ WindowManager::WindowManager(WINDOW* win) {
 
 
     statusWidget = new StatusWidget();
+    verticalSpacer = new VerticalSpacerWidget();
     Layout* l1 = new Layout;
 
     helpWidget = new HelpWidget();
     l1->addWidget(helpWidget);
+    l1->addWidget(verticalSpacer);
     l1->addWidget(statusWidget);
-    
+
     Layout* l2 = new Layout;
 
     terminalWidget = new TerminalWidget();
@@ -59,10 +62,12 @@ WindowManager::WindowManager(WINDOW* win) {
 
     Layout* l4 = new Layout;
 //     l4->addWidget(); //FIXME
+    l4->addWidget(verticalSpacer);
     l4->addWidget(statusWidget);
 
     Layout* l5 = new Layout;
 //     l5->addWidget(); //FIXME
+    l5->addWidget(verticalSpacer);
     l5->addWidget(statusWidget);
 
     addLayout(l1);
@@ -89,32 +94,40 @@ void WindowManager::resize(int width, int height) {
     update();
 }
 
-//redraw individual widget
-void WindowManager::update(Widget* w) {
-    //FIXME need a layout to know what to do here...
-    update();
-}
-
 // redraw the whole screen
-void WindowManager::update() {
+void WindowManager::update(Widget* w) {
+    //FIXME do not clear and redraw the whole screen
+    wclear(m_win);
+    if (w == NULL)
+        ; //FIXME redraw everything
+    else
+        ;//FIXME redraw only single widget space
+
     //FIXME bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
     int pos=0;
-    wclear(m_win);
+    int heightpointer = 0;
     attron(A_REVERSE);
     if (m_selectedLayout > m_layouts.size())
         return;
     Layout* l = m_layouts[m_selectedLayout];
 
-    for(int i=0; i < l->m_widgets.size(); ++i) {
-        Widget* w = l->m_widgets[i];
-        AdvancedStringContainer as = w->render(width(), 1); //FIXME height must be set by the layout 
+    // layout the widget in the current terminal width/height
+    RasterizedLayout r = l->rasterize(width(), height());
+
+    for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
+        FixedWidget fw = r.m_fixedWidgets[i];
+
+        //FIXME ensure that w->render(width(), height)'s returned AbstractString does not exceed the given bounds!
+        AdvancedStringContainer as = fw.widget->render(fw.width, fw.height);
+//         as << "----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444\n4444444444444444444444444445555555555555            111111111111111111122222222222222222223333333333333333333334444444444444444444";
         pos=0;
         for (unsigned int x=0; x < as.size(); ++x) {
             attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
-            mvprintw(i, pos, as[x].str().c_str());
+            mvprintw(heightpointer, pos, as[x].str().c_str());
             pos+=as[x].str().size();
             attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
         }
+        heightpointer += fw.height;
     }
     wrefresh(m_win);//FIXME do i need this?
 }
@@ -135,10 +148,6 @@ void WindowManager::keyboard_input_handler(int ch) {
         statusWidget->setFocus(0);
         return;
     }
-    if (ch == KEY_HOME || ch == KEY_END || ch == KEY_UP || ch == KEY_DOWN || ch == KEY_PPAGE || ch == KEY_NPAGE) {
-        terminalWidget->keyboardInputHandler(ch);
-        return;
-    }
     if (ch == 't' || ch == 'T') {
         AdvancedStringContainer s;
         s << AdvancedString("**this should be colored in MAGENTA**\n", COLOR_MAGENTA);
@@ -153,7 +162,10 @@ void WindowManager::keyboard_input_handler(int ch) {
         resize(size.ws_col, size.ws_row);
         return;
     }
-
+    if (ch == KEY_HOME || ch == KEY_END || ch == KEY_UP || ch == KEY_DOWN || ch == KEY_PPAGE || ch == KEY_NPAGE) {
+        terminalWidget->keyboardInputHandler(ch);
+        return;
+    }
     //FIXME, all unhandled events should be directed to the focus widget
 }
 

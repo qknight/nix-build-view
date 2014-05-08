@@ -14,11 +14,12 @@ class AdvancedString;
 class TerminalWidget;
 class StatusWidget;
 class HelpWidget;
+class VerticalSpacerWidget;
 #include "ColorManager.hpp"
 
 class WindowManager {
 public:
-    void update();
+    void update(Widget* w = NULL);
     void setLayout(int layout);
 //     void updateLayout();
     void addLayout(Layout* l);
@@ -30,7 +31,6 @@ public:
         return m_height;
     };
     static WindowManager* Instance();
-    void update(Widget* w);
     void keyboard_input_handler(int ch);
 private:
     WindowManager(WINDOW *win);
@@ -38,11 +38,12 @@ private:
     int m_width;
     int m_height;
     ColorManager cm;
-    int m_selectedLayout=0;
+    unsigned int m_selectedLayout=0;
 
     TerminalWidget* terminalWidget;
     StatusWidget* statusWidget;
     HelpWidget* helpWidget;
+    VerticalSpacerWidget* verticalSpacer;
     
     std::vector<Layout*> m_layouts;
 

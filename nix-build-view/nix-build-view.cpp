@@ -19,7 +19,7 @@
 int main_loop = 1;
 
 void keyboard_input_handler();
-void check_logfile(TerminalWidget* lw);
+void check_logfile();
 void check_JSON();
 
 FILE* fp;
@@ -47,7 +47,7 @@ void keyboard_input_handler() {
     WindowManager::Instance()->keyboard_input_handler(ch);
 }
 
-void check_logfile(TerminalWidget* lw) {
+void check_logfile() {
     //FIXME read as much as possible
     ssize_t read;
     do {
@@ -81,7 +81,7 @@ int main(int argc, char *argv[]) {
     //FIXME think about pselect here...
     while (main_loop) {
       //FIXME not working right now
-//         check_logfile(listWidget);
+        check_logfile();
         check_JSON();
         keyboard_input_handler();
     }
