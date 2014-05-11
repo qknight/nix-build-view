@@ -48,12 +48,14 @@ WindowManager::WindowManager(WINDOW* win) {
     l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045));
     l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
     l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.1, 33234045));
+    UrlWidget* uw = new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.1, 33234045);
+    l2->addWidget(uw);
     l2->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8"));
     l2->addWidget(new BuildWidget("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7"));
     l2->addWidget(new BuildWidget("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8"));
     l2->addWidget(new BuildWidget("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8"));
-    l2->addWidget(new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f", "barPhase 1/8"));
+    BuildWidget* bw =  new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f", "barPhase 1/8");
+    l2->addWidget(bw);
     l2->addWidget(statusWidget);
 
     Layout* l3 = new Layout;
@@ -61,13 +63,13 @@ WindowManager::WindowManager(WINDOW* win) {
     l3->addWidget(statusWidget);
 
     Layout* l4 = new Layout;
-//     l4->addWidget(); //FIXME
     l4->addWidget(verticalSpacer);
+    l4->addWidget(uw);
     l4->addWidget(statusWidget);
 
     Layout* l5 = new Layout;
-//     l5->addWidget(); //FIXME
     l5->addWidget(verticalSpacer);
+    l5->addWidget(bw);
     l5->addWidget(statusWidget);
 
     addLayout(l1);
@@ -119,11 +121,16 @@ void WindowManager::update(Widget* w) {
 
         //FIXME ensure that w->render(width(), height)'s returned AbstractString does not exceed the given bounds!
         AdvancedStringContainer as = fw.widget->render(fw.width, fw.height);
-//         as << "----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444\n4444444444444444444444444445555555555555            111111111111111111122222222222222222223333333333333333333334444444444444444444";
+//         as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_MAGENTA);
+//         as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_GREEN);
+	/*
+        as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_YELLOW);
+        as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_BLUE);
+	as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444");*/
         pos=0;
         for (unsigned int x=0; x < as.size(); ++x) {
             attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
-            mvprintw(heightpointer, pos, as[x].str().c_str());
+            mvprintw(heightpointer+(pos/width()), pos%width(), as[x].str().c_str());
             pos+=as[x].str().size();
             attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
         }
@@ -151,6 +158,8 @@ void WindowManager::keyboard_input_handler(int ch) {
     if (ch == 't' || ch == 'T') {
         AdvancedStringContainer s;
         s << AdvancedString("**this should be colored in MAGENTA**\n", COLOR_MAGENTA);
+	s << AdvancedString("**this should be colored in GREEN**\n", COLOR_GREEN);
+	s << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_GREEN);
         terminalWidget->append(s);
         return;
     }

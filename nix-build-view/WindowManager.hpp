@@ -3,6 +3,8 @@
 
 #include <curses.h>
 
+#include "ColorManager.hpp"
+
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -15,13 +17,12 @@ class TerminalWidget;
 class StatusWidget;
 class HelpWidget;
 class VerticalSpacerWidget;
-#include "ColorManager.hpp"
+
 
 class WindowManager {
 public:
     void update(Widget* w = NULL);
     void setLayout(int layout);
-//     void updateLayout();
     void addLayout(Layout* l);
     void resize(int width, int height);
     int width() {

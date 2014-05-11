@@ -104,11 +104,17 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
             break;
         out << *it_b++;
     }
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a123aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV444444444444444444444444999999999999999999999a1234";
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
+//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
 //     d << *m_terminal.begin();
 //     d << *m_terminal.begin();
+//     d << (float) height;
 //     return d;
-    
+
     return out;
 }
 
