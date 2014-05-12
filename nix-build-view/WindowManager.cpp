@@ -3,12 +3,14 @@
 #include "Layout.hpp"
 #include "AdvancedString.hpp"
 
-#include "UrlWidget.hpp"
+#include "FetchWidget.hpp"
 #include "TerminalWidget.hpp"
 #include "BuildWidget.hpp"
 #include "StatusWidget.hpp"
 #include "HelpWidget.hpp"
 #include "VerticalSpacerWidget.hpp"
+#include "FetchWidgetManager.hpp"
+#include "BuildWidgetManager.hpp"
 
 #include <sys/ioctl.h>
 
@@ -27,8 +29,7 @@ WindowManager::WindowManager(WINDOW* win) {
     m_width = size.ws_col;
     m_height = size.ws_row;
 
-
-    statusWidget = new StatusWidget();
+    statusWidget = StatusWidget::Instance();
     verticalSpacer = new VerticalSpacerWidget();
     Layout* l1 = new Layout;
 
@@ -41,14 +42,21 @@ WindowManager::WindowManager(WINDOW* win) {
 
     TerminalWidget* terminalWidget = TerminalWidget::Instance();
     l2->addWidget(terminalWidget);
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
-    l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045));
-    UrlWidget* uw = new UrlWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.1, 33234045);
+    
+    BuildWidgetManager* buildWidgetManager = BuildWidgetManager::Instance(); 
+    FetchWidgetManager* fetchWidgetManager = FetchWidgetManager::Instance(); 
+    
+    l2->addWidget(buildWidgetManager);
+    l2->addWidget(fetchWidgetManager);
+    
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045));
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045));
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
+    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045));
+    FetchWidget* uw = new FetchWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.1, 33234045);
     l2->addWidget(uw);
     l2->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8"));
     l2->addWidget(new BuildWidget("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7"));

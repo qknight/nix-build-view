@@ -1,4 +1,4 @@
-#include "UrlWidget.hpp"
+#include "FetchWidget.hpp"
 #include "AdvancedString.hpp"
 
 #include <sstream>
@@ -7,18 +7,18 @@
 
 using namespace std;
 
-UrlWidget::UrlWidget(std::string url, float percent, int bits_per_sec) {
+FetchWidget::FetchWidget(std::string url, float percent, int bits_per_sec) {
     m_url=url;
     m_percent = percent;
     m_bits_per_sec = bits_per_sec;
 };
 
-int UrlWidget::type() {
-    return WidgetName::UrlWidget;
+int FetchWidget::type() {
+    return WidgetName::FetchWidget;
 }
 
 
-AdvancedStringContainer UrlWidget::render(unsigned int width, unsigned int height) {
+AdvancedStringContainer FetchWidget::render(unsigned int width, unsigned int height) {
 
     int size = m_url.size();
     AdvancedStringContainer url_progress;

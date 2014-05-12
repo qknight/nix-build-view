@@ -126,13 +126,13 @@ public:
     std::string render(int width=0);
 };
 
-class UrlWidget : public Widget {
+class FetchWidget : public Widget {
 private:
     std::string m_url;
     float m_percent;
     int m_bits_per_sec;
 public:
-    UrlWidget(std::string url, float percent, int bits_per_sec) {
+    FetchWidget(std::string url, float percent, int bits_per_sec) {
         m_url=url;
         m_percent = percent;
         m_bits_per_sec = bits_per_sec;
@@ -172,9 +172,9 @@ void drawStatus(int foo) {
     float fa = (((float)foo/5)*0.8) < 1.0 ? ((float)foo/5)*0.8 : 1.0;
     float fb = (((float)foo/5)*0.5) < 1.0 ? ((float)foo/5)*0.5 : 1.0;
     float fc = (((float)foo/5)*1.7) < 1.0 ? ((float)foo/5)*1.7 : 1.0;
-    UrlWidget urlW0("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh1-foobar-1.2.3.nar.xz", fa, 12356);
-    UrlWidget urlW1("http://cache.nixos.org/nar/0s57kyi85g7lb9irja3i4q35dv8pi4gh1-foobar-1.2.3.nar.xz .........", fb, 12356);
-    UrlWidget urlW2("http://cache.nixos.org/nar/0s57kyi8-foobar-1.2.3.nar.xz ..................................", fc, 12356);
+    FetchWidget urlW0("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh1-foobar-1.2.3.nar.xz", fa, 12356);
+    FetchWidget urlW1("http://cache.nixos.org/nar/0s57kyi85g7lb9irja3i4q35dv8pi4gh1-foobar-1.2.3.nar.xz .........", fb, 12356);
+    FetchWidget urlW2("http://cache.nixos.org/nar/0s57kyi8-foobar-1.2.3.nar.xz ..................................", fc, 12356);
 
     clearStatus();
 

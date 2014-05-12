@@ -8,7 +8,9 @@ class StatusWidget : public Widget {
 public:
     void setFocus(int arg1);
     int type();
+    static StatusWidget* Instance();
 private:
+    StatusWidget();
     unsigned int m_focus = 1;
 };
 

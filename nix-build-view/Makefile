@@ -3,8 +3,7 @@ CC=g++
 CFLAGS=-c -Wall -std=c++11 -I /usr/include
 LDFLAGS=
 LIBS=-lncurses
-SOURCES=nix-build-view.cpp Layout.cpp WindowManager.cpp TerminalWidget.cpp StatusWidget.cpp UrlWidget.cpp BuildWidget.cpp ColorManager.cpp HelpWidget.cpp VerticalSpacerWidget.cpp
-DEPS=AdvancedString.hpp ColorManager.hpp Layout.hpp TerminalWidget.hpp UrlWidget.hpp WindowManager.hpp BuildWidget.hpp HelpWidget.hpp StatusWidget.hpp Widget.hpp
+SOURCES=nix-build-view.cpp Layout.cpp WindowManager.cpp TerminalWidget.cpp StatusWidget.cpp FetchWidget.cpp BuildWidget.cpp ColorManager.cpp HelpWidget.cpp VerticalSpacerWidget.cpp BuildWidgetManager.cpp FetchWidgetManager.cpp
 
 
 OBJECTS=$(SOURCES:.cpp=.o)

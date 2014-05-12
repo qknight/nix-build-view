@@ -57,13 +57,13 @@ public:
     std::string render();
 };
 
-class UrlWidget : public Widget {
+class FetchWidget : public Widget {
 private:
     std::string m_url;
     float m_percent;
     int m_bits_per_sec;
 public:
-    UrlWidget(std::string url, float percent, int bits_per_sec) {
+    FetchWidget(std::string url, float percent, int bits_per_sec) {
         m_url=url;
         m_percent = percent;
         m_bits_per_sec = bits_per_sec;

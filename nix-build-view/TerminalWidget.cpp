@@ -6,7 +6,6 @@ TerminalWidget* TerminalWidget::Instance() {
 }
 
 TerminalWidget::TerminalWidget() {
-    terminal_rasterize();
 }
 
 int TerminalWidget::type() {

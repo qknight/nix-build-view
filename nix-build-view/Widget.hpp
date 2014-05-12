@@ -8,12 +8,12 @@ namespace WidgetName {
 enum {
     HelpWidget,
     TerminalWidget,
-    UrlWidgetManager,
-    UrlWidget,
-    BuildWidgetManager,
+    FetchWidget,
     BuildWidget,
     StatusWidget,
     VerticalSpacerWidget,
+    FetchWidgetManager,
+    BuildWidgetManager,
 };
 };
 

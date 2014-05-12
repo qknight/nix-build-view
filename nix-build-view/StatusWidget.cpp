@@ -37,3 +37,13 @@ void StatusWidget::setFocus(int focus) {
     m_focus = focus;
     update();
 }
+
+StatusWidget* StatusWidget::Instance() {
+    static StatusWidget* _instance = new StatusWidget;
+    return _instance;
+}
+
+StatusWidget::StatusWidget()
+{
+
+}

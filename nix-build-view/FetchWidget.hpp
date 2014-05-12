@@ -1,12 +1,12 @@
-#ifndef URLWIDGET__HPP
-#define URLWIDGET__HPP
+#ifndef FETCHWIDGET__HPP
+#define FETCHWIDGET__HPP
 
 #include "WindowManager.hpp"
 #include "Widget.hpp"
 
-class UrlWidget : public Widget {
+class FetchWidget : public Widget {
 public:
-    UrlWidget(std::string url, float percent, int bits_per_sec);
+    FetchWidget(std::string url, float percent, int bits_per_sec);
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type();
 private:
