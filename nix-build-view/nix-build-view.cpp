@@ -11,6 +11,7 @@
 
 #include "WindowManager.hpp"
 #include "AdvancedString.hpp"
+#include "TerminalWidget.hpp"
 
 
 
@@ -39,23 +40,22 @@ void keyboard_input_handler() {
     /////////// BEGIN global shortcuts //////////////////////////
     if (ch == 'Q' || ch == 'q') {
         main_loop = 0;
-	return;
+        return;
     }
     /////////// END global shortcuts //////////////////////////
-    
+
     // all other inputs are delegated to the windowmanager
     WindowManager::Instance()->keyboard_input_handler(ch);
 }
 
 void check_logfile() {
-    //FIXME read as much as possible
+    //FIXME read as much as possible in one go and not line by line....
     ssize_t read;
     do {
         if ((read = getline(&line, &len, fp)) != -1) {
             AdvancedStringContainer s;
             s << line;
-	    //FIXME currently broken
-//             lw->append(s);
+            TerminalWidget::Instance()->append(s);
         }
     } while (read > 0);
 }
@@ -80,7 +80,7 @@ int main(int argc, char *argv[]) {
 
     //FIXME think about pselect here...
     while (main_loop) {
-      //FIXME not working right now
+        //FIXME not working right now
         check_logfile();
         check_JSON();
         keyboard_input_handler();

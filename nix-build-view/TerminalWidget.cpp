@@ -1,5 +1,10 @@
 #include "TerminalWidget.hpp"
 
+TerminalWidget* TerminalWidget::Instance() {
+    static TerminalWidget* _instance = new TerminalWidget;
+    return _instance;
+}
+
 TerminalWidget::TerminalWidget() {
     terminal_rasterize();
 }
@@ -70,7 +75,7 @@ void TerminalWidget::terminal_rasterize() {
         }
 
         if (s[i] == '\n')  {
-            tmp += std::string(width()-tmp.size(), '?');
+            tmp += std::string(width()-tmp.size(), ' ');
             m_terminal.push_back(tmp);
             tmp="";
             continue;
@@ -85,7 +90,6 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
 
     //copy the last h elements from terminal to the out buffer
     AdvancedStringContainer out;
-    AdvancedStringContainer d;
 
     if ((m_width != width) || (m_height != height)) {
         m_width = width;
@@ -104,16 +108,6 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
             break;
         out << *it_b++;
     }
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
-//     d << "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiVVVVVVVVVVVVVVVVVVVVVVVVVV4444444444444444444444444499999999999999999999a";
-//     d << *m_terminal.begin();
-//     d << *m_terminal.begin();
-//     d << (float) height;
-//     return d;
 
     return out;
 }

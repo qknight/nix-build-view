@@ -41,7 +41,6 @@ private:
     ColorManager cm;
     unsigned int m_selectedLayout=0;
 
-    TerminalWidget* terminalWidget;
     StatusWidget* statusWidget;
     HelpWidget* helpWidget;
     VerticalSpacerWidget* verticalSpacer;

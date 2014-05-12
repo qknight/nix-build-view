@@ -39,7 +39,7 @@ WindowManager::WindowManager(WINDOW* win) {
 
     Layout* l2 = new Layout;
 
-    terminalWidget = new TerminalWidget();
+    TerminalWidget* terminalWidget = TerminalWidget::Instance();
     l2->addWidget(terminalWidget);
     l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
     l2->addWidget(new UrlWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
@@ -118,15 +118,7 @@ void WindowManager::update(Widget* w) {
 
     for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
         FixedWidget fw = r.m_fixedWidgets[i];
-
-        //FIXME ensure that w->render(width(), height)'s returned AbstractString does not exceed the given bounds!
         AdvancedStringContainer as = fw.widget->render(fw.width, fw.height);
-//         as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_MAGENTA);
-//         as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_GREEN);
-	/*
-        as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_YELLOW);
-        as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_BLUE);
-	as << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444");*/
         pos=0;
         for (unsigned int x=0; x < as.size(); ++x) {
             attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
@@ -155,12 +147,13 @@ void WindowManager::keyboard_input_handler(int ch) {
         statusWidget->setFocus(0);
         return;
     }
+    //FIXME for testing only
     if (ch == 't' || ch == 'T') {
         AdvancedStringContainer s;
         s << AdvancedString("**this should be colored in MAGENTA**\n", COLOR_MAGENTA);
-	s << AdvancedString("**this should be colored in GREEN**\n", COLOR_GREEN);
-	s << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444", COLOR_GREEN);
-        terminalWidget->append(s);
+        s << AdvancedString("**this should be colored in GREEN**\n", COLOR_GREEN);
+        s << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444\n", COLOR_GREEN);
+        TerminalWidget::Instance()->append(s);
         return;
     }
     // this event indicates a SIG 28 - SIGWINCH
@@ -172,7 +165,7 @@ void WindowManager::keyboard_input_handler(int ch) {
         return;
     }
     if (ch == KEY_HOME || ch == KEY_END || ch == KEY_UP || ch == KEY_DOWN || ch == KEY_PPAGE || ch == KEY_NPAGE) {
-        terminalWidget->keyboardInputHandler(ch);
+        TerminalWidget::Instance()->keyboardInputHandler(ch);
         return;
     }
     //FIXME, all unhandled events should be directed to the focus widget
