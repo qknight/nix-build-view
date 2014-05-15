@@ -48,10 +48,11 @@ RasterizedLayout Layout::rasterize(int width, int height) {
                 else
                     t = hH;
                 // if t now exceeds the available height, we need to limit it to what is still available
+                // marry x-mess code
                 if (t > height - rowsUsed)
                     t = height - rowsUsed + 1; // FIXME why does +1 work here?
                 if (t != 0)
-                rowsUsed += t-1; // FIXME why does -1 work here?
+                    rowsUsed += t-1; // FIXME why does -1 work here?
                 fw.height = t;
                 r.m_fixedWidgets[i] = fw;
             }

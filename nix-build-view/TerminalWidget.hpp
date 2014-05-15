@@ -25,7 +25,7 @@ public:
 private:
     TerminalWidget();
     AdvancedStringContainer m_logfile;
-    unsigned int m_line = 0;
+    int m_line = 0;
     std::vector<std::string> m_terminal;
     unsigned int width() {
         return m_width;

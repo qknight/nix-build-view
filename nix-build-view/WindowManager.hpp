@@ -32,9 +32,10 @@ public:
         return m_height;
     };
     static WindowManager* Instance();
-    void keyboard_input_handler(int ch);
+    void keyboardInputHandler(int ch);
 private:
     WindowManager(WINDOW *win);
+    void setKeyboardInputHandler(Widget* w);
     WINDOW* m_win;
     int m_width;
     int m_height;
@@ -46,6 +47,7 @@ private:
     VerticalSpacerWidget* verticalSpacer;
     
     std::vector<Layout*> m_layouts;
+    Widget* m_focusWidget = NULL;
 
 };
 

@@ -1,19 +1,13 @@
 #ifndef BUILDWIDGETMANAGER_H
 #define BUILDWIDGETMANAGER_H
 
-#include "Widget.hpp"
-class BuildWidget;
+#include "WidgetManagerBase.hpp"
 
-class BuildWidgetManager : public Widget {
+class BuildWidgetManager : public WidgetManagerBase {
 public:
-    static BuildWidgetManager* Instance();
-    void add(const char* arg1, const char* arg2);
     int type();
-    AdvancedStringContainer render(unsigned int width, unsigned int height);
-    unsigned int rowsWantedByWidget();
-private:
-    BuildWidgetManager();
-    std::vector<BuildWidget*> m_builds;
+    void add(const char* arg1, const char* arg2);
+
 };
 
 #endif // BUILDWIDGETMANAGER_H

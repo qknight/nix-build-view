@@ -31,7 +31,7 @@ public:
 //         m_visible = true;
 //     }
     virtual int type() = 0;
-    void keyboardInputHandler(int ch);
+    virtual void keyboardInputHandler(int ch) {};
     // interesting for nested widget rendering
     virtual unsigned int rowsWantedByWidget() {
       return 1;

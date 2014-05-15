@@ -42,13 +42,13 @@ WindowManager::WindowManager(WINDOW* win) {
 
     TerminalWidget* terminalWidget = TerminalWidget::Instance();
     l2->addWidget(terminalWidget);
-    
-    BuildWidgetManager* buildWidgetManager = BuildWidgetManager::Instance(); 
-    FetchWidgetManager* fetchWidgetManager = FetchWidgetManager::Instance(); 
-    
+
+    BuildWidgetManager* buildWidgetManager = BuildWidgetManager::Instance();
+    FetchWidgetManager* fetchWidgetManager = FetchWidgetManager::Instance();
+
     l2->addWidget(buildWidgetManager, 4);
     l2->addWidget(fetchWidgetManager, 4);
-    
+
     l2->addWidget(statusWidget);
 
     Layout* l3 = new Layout;
@@ -72,6 +72,7 @@ WindowManager::WindowManager(WINDOW* win) {
     addLayout(l5);
 
     setLayout(1);
+    setKeyboardInputHandler(TerminalWidget::Instance());
 }
 
 void WindowManager::addLayout(Layout* l) {
@@ -107,6 +108,7 @@ void WindowManager::update(Widget* w) {
     Layout* l = m_layouts[m_selectedLayout];
 
     // layout the widget in the current terminal width/height
+    //FIXME add check if width and height is not exceeded
     RasterizedLayout r = l->rasterize(width(), height());
 
     for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
@@ -124,15 +126,30 @@ void WindowManager::update(Widget* w) {
     wrefresh(m_win);//FIXME do i need this?
 }
 
-void WindowManager::keyboard_input_handler(int ch) {
+void WindowManager::keyboardInputHandler(int ch) {
 //      0 - help widget
     //      1 - composed view: input should be forwarded to the log
     //      2 - like 1 but log has fullscreen
     //      3 - fetch is fullscreen and is scrollable
     //      4 - build is fullscreen and is scrollable
     if (ch == '1' || ch == '2' || ch == '3' || ch == '4') {
-        setLayout(ch-48);
-        statusWidget->setFocus(ch-48);
+        int w = ch-48;
+        setLayout(w);
+        statusWidget->setFocus(w);
+        switch(w) {
+        case 1:
+        case 2:
+            setKeyboardInputHandler(TerminalWidget::Instance());
+            break;
+        case 3:
+            setKeyboardInputHandler(FetchWidgetManager::Instance());
+            break;
+        case 4:
+            setKeyboardInputHandler(BuildWidgetManager::Instance());
+            break;
+        default:
+            setKeyboardInputHandler(NULL);
+        };
         return;
     }
     if (ch == 'h' || ch == 'H') {
@@ -157,10 +174,12 @@ void WindowManager::keyboard_input_handler(int ch) {
         resize(size.ws_col, size.ws_row);
         return;
     }
-    if (ch == KEY_HOME || ch == KEY_END || ch == KEY_UP || ch == KEY_DOWN || ch == KEY_PPAGE || ch == KEY_NPAGE) {
-        TerminalWidget::Instance()->keyboardInputHandler(ch);
-        return;
-    }
-    //FIXME, all unhandled events should be directed to the focus widget
+    if (m_focusWidget)
+        m_focusWidget->keyboardInputHandler(ch);
 }
+
+void WindowManager::setKeyboardInputHandler(Widget* w) {
+    m_focusWidget = w;
+}
+
 

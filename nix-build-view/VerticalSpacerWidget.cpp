@@ -10,6 +10,6 @@ int VerticalSpacerWidget::type() {
 
 AdvancedStringContainer VerticalSpacerWidget::render(unsigned int width, unsigned int height) {
     AdvancedStringContainer a;
-    a << "hello world";
+//     a << "hello world";
     return a;
 }
