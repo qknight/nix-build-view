@@ -18,20 +18,22 @@ RasterizedLayout Layout::rasterize(int width, int height) {
     for(unsigned int i=0; i < m_layoutItems.size(); ++i) {
         FixedWidget fw;
         fw.widget = m_layoutItems[i]->widget;
-        fw.height = 1;
         if (fw.widget->rowsWantedByWidget() == 0)
             fw.height = 0;
+        else
+            fw.height = 1;
         rowsUsed += fw.height;
         fw.width = width;
         r.m_fixedWidgets.push_back(fw);
     }
 
+
     // expand dynamic widgets
     if(rowsUsed < height)
         for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
             FixedWidget fw = r.m_fixedWidgets[i];
-            int t = fw.widget->type();
-            if (t == WidgetName::BuildWidgetManager || t == WidgetName::FetchWidgetManager) {
+            int type = fw.widget->type();
+            if (type == WidgetName::BuildWidgetManager || type == WidgetName::FetchWidgetManager) {
                 int t = 0;
                 int hH = 0;
                 // search though the layout's highHint for the widget
@@ -48,6 +50,7 @@ RasterizedLayout Layout::rasterize(int width, int height) {
                 // if t now exceeds the available height, we need to limit it to what is still available
                 if (t > height - rowsUsed)
                     t = height - rowsUsed + 1; // FIXME why does +1 work here?
+                if (t != 0)
                 rowsUsed += t-1; // FIXME why does -1 work here?
                 fw.height = t;
                 r.m_fixedWidgets[i] = fw;
@@ -56,9 +59,9 @@ RasterizedLayout Layout::rasterize(int width, int height) {
     // expand dynamic widgets
     if(rowsUsed < height)
         for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
-            int t = r.m_fixedWidgets[i].widget->type();
+            int type = r.m_fixedWidgets[i].widget->type();
 
-            if (t == WidgetName::TerminalWidget) {
+            if (type == WidgetName::TerminalWidget) {
                 int n = height - rowsUsed;
                 r.m_fixedWidgets[i].height += n;
                 rowsUsed += n;
@@ -67,9 +70,9 @@ RasterizedLayout Layout::rasterize(int width, int height) {
     // expand dynamic widgets
     if(rowsUsed < height)
         for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
-            int t = r.m_fixedWidgets[i].widget->type();
+            int type = r.m_fixedWidgets[i].widget->type();
 
-            if (t == WidgetName::VerticalSpacerWidget) {
+            if (type == WidgetName::VerticalSpacerWidget) {
                 int n = height - rowsUsed;
                 r.m_fixedWidgets[i].height += n;
                 rowsUsed += n;
