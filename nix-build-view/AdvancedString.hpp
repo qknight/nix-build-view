@@ -65,7 +65,15 @@ public:
         sContainer.push_back(AdvancedString(s1));
         return *this;
     }
-    AdvancedStringContainer& operator<<( const int&  t ) {
+    AdvancedStringContainer& operator<<( const int& t ) {
+        sContainer.push_back(AdvancedString(std::to_string(t)));
+        return *this;
+    }
+    AdvancedStringContainer& operator<<( const size_t&  t ) {
+        sContainer.push_back(AdvancedString(std::to_string(t)));
+        return *this;
+    }
+    AdvancedStringContainer& operator<<( const unsigned int&  t ) {
         sContainer.push_back(AdvancedString(std::to_string(t)));
         return *this;
     }

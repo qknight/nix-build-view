@@ -12,7 +12,8 @@
 #include "WindowManager.hpp"
 #include "AdvancedString.hpp"
 #include "TerminalWidget.hpp"
-
+#include "FetchWidgetManager.hpp"
+#include "BuildWidgetManager.hpp"
 
 
 #define TIME_OUT 100
@@ -77,6 +78,93 @@ int main(int argc, char *argv[]) {
 
     noecho();
     WindowManager::Instance()->update();
+
+    BuildWidgetManager* buildWidgetManager = BuildWidgetManager::Instance();
+    FetchWidgetManager* fetchWidgetManager = FetchWidgetManager::Instance();
+
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045);
+    fetchWidgetManager->add("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045);
+
+    buildWidgetManager->add("/nix/store/wr14w8ksvfqr6992r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqdksvfqr6991j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj5ksvfqr69918yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr69ksvfqr6999bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/wr14w8ksvfqr6992r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqdksvfqr6991j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj5ksvfqr69918yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr69ksvfqr6999bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/wr14w8ksvfqr6992r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqdksvfqr6991j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj5ksvfqr69918yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr69ksvfqr6999bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/wr14w8ksvfqr6992r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqdksvfqr6991j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr699bc2a0bj5ksvfqr69918yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
+//     buildWidgetManager->add("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7");
+//     buildWidgetManager->add("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8");
+//     buildWidgetManager->add("/nix/store/zgyxksvfqr69ksvfqr6999bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8");
 
     //FIXME think about pselect here...
     while (main_loop) {

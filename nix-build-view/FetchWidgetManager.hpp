@@ -3,13 +3,19 @@
 
 #include "Widget.hpp"
 
+
+class FetchWidget;
+
 class FetchWidgetManager : public Widget {
 public:
     int type();
+    void add(const char* arg1, double arg2, int arg3);
     static FetchWidgetManager* Instance();
     AdvancedStringContainer render(unsigned int width, unsigned int height);
+    unsigned int rowsNeeded();
 private:
     FetchWidgetManager();
+    std::vector<FetchWidget*> m_fetches;
 };
 
 #endif // FETCHWIDGETMANAGER_H

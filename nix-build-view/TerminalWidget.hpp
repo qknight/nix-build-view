@@ -27,6 +27,14 @@ private:
     AdvancedStringContainer m_logfile;
     unsigned int m_line = 0;
     std::vector<std::string> m_terminal;
+    unsigned int width() {
+        return m_width;
+    }
+    unsigned int height() {
+        return m_height;
+    }
+    unsigned int m_width = 0;
+    unsigned int m_height = 0;
 };
 
 #endif

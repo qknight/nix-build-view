@@ -23,22 +23,19 @@ public:
     void update() {
         WindowManager::Instance()->update(this);
     }
-    unsigned int width()  {
-        return m_width;
-    }
-    unsigned int height() {
-        return m_height;
-    }
-    void hide() {
-        m_visible = false;
-    }
-    void show() {
-        m_visible = true;
-    }
+
+//     void hide() {
+//         m_visible = false;
+//     }
+//     void show() {
+//         m_visible = true;
+//     }
     virtual int type() = 0;
     void keyboardInputHandler(int ch);
-    unsigned int m_width = 0;
-    unsigned int m_height = 0;
+    virtual unsigned int rowsNeeded() {
+      return 1;
+    }
+
 private:
     bool m_visible = true;
 };

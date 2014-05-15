@@ -35,7 +35,7 @@ WindowManager::WindowManager(WINDOW* win) {
 
     helpWidget = new HelpWidget();
     l1->addWidget(helpWidget);
-    l1->addWidget(verticalSpacer);
+    l1->addWidget(verticalSpacer, 0);
     l1->addWidget(statusWidget);
 
     Layout* l2 = new Layout;
@@ -46,24 +46,9 @@ WindowManager::WindowManager(WINDOW* win) {
     BuildWidgetManager* buildWidgetManager = BuildWidgetManager::Instance(); 
     FetchWidgetManager* fetchWidgetManager = FetchWidgetManager::Instance(); 
     
-    l2->addWidget(buildWidgetManager);
-    l2->addWidget(fetchWidgetManager);
+    l2->addWidget(buildWidgetManager, 4);
+    l2->addWidget(fetchWidgetManager, 4);
     
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.4, 235));
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/07paqfjj437c0mhnkrbli70wlb5liqrnjcid81v66qlmy38r7ygx.nar.xz", 0.08, 234045));
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/0s57kyi85g7lb9irja2cslmh5vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 1.0, 234045));
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/23v55vc23i4q35dv8pi4gh19k0jc7nf3.nar.xz", 0.9, 234045));
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/0s5v8pi4gh19k0jc7nf3.nar.xz", 0.5, 234045));
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.01, 33234045));
-    l2->addWidget(new FetchWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.05, 33234045));
-    FetchWidget* uw = new FetchWidget("http://cache.nixos.org/nar/8pi4gh19k0jc7nf3.nar.xz", 0.1, 33234045);
-    l2->addWidget(uw);
-    l2->addWidget(new BuildWidget("/nix/store/wr14w82r2faqdmxq0k9f959lbz92mq41-etc", "installationPhase 5/8"));
-    l2->addWidget(new BuildWidget("/nix/store/z9xdx4kdhq0yy0vh8lf7ngpbcxvap03a-parley-4.11.5", "buildPhase 4/7"));
-    l2->addWidget(new BuildWidget("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8"));
-    l2->addWidget(new BuildWidget("/nix/store/zgyxksvfqr699bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8"));
-    BuildWidget* bw =  new BuildWidget("/nix/store/y3rjpblyrjs3xdhvkdgfw327m7594ann-nixos-14.04pre42009.3f1af5f", "barPhase 1/8");
-    l2->addWidget(bw);
     l2->addWidget(statusWidget);
 
     Layout* l3 = new Layout;
@@ -71,13 +56,13 @@ WindowManager::WindowManager(WINDOW* win) {
     l3->addWidget(statusWidget);
 
     Layout* l4 = new Layout;
-    l4->addWidget(verticalSpacer);
-    l4->addWidget(uw);
+    l4->addWidget(verticalSpacer,0);
+    l4->addWidget(fetchWidgetManager,400);
     l4->addWidget(statusWidget);
 
     Layout* l5 = new Layout;
-    l5->addWidget(verticalSpacer);
-    l5->addWidget(bw);
+    l5->addWidget(verticalSpacer,0);
+    l5->addWidget(buildWidgetManager,400);
     l5->addWidget(statusWidget);
 
     addLayout(l1);

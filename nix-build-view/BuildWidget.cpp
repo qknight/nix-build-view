@@ -16,9 +16,5 @@ AdvancedStringContainer BuildWidget::render(unsigned int width, unsigned int hei
     if (i < 0) i = 0;
     s << AdvancedString(m_name, COLOR_MAGENTA) << " " << std::string(i, '.') << " " << AdvancedString(m_status, COLOR_YELLOW);
 
-    //FIXME srly, needed?
-    m_width = width;
-    m_height = height;
-
     return s;
 }
