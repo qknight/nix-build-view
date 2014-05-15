@@ -6,7 +6,9 @@
 class FetchWidgetManager : public WidgetManagerBase {
 public:
     int type();
-    void add(const char* arg1, double arg2, int arg3);
+    static FetchWidgetManager* Instance();
+private:
+    FetchWidgetManager();
 };
 
 #endif // FETCHWIDGETMANAGER_H

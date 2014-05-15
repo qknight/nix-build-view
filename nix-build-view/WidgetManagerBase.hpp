@@ -3,17 +3,16 @@
 
 #include "Widget.hpp"
 
-template<typename TYPE>;
-
 class WidgetManagerBase : public Widget {
 public:
-    static WidgetManagerBase* Instance();
-    int type();
+    virtual int type() = 0;
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     unsigned int rowsWantedByWidget();
+    void add(Widget* w);
+//     WidgetManagerBase();
+//         virtual ~WidgetManagerBase();
 private:
-    WidgetManagerBase();
-    std::vector<TYPE*> m_builds;
+    std::vector<Widget*> m_widgets;
     int m_line = 0;
     void keyboardInputHandler(int ch);
     unsigned int width() {

@@ -1,9 +1,14 @@
 #include "FetchWidgetManager.hpp"
 
-int FetchWidgetManager::type() {
-    return WidgetName::BuildWidgetManager;
+FetchWidgetManager::FetchWidgetManager() {
 }
 
-void FetchWidgetManager::add(const char* arg1, double arg2, int arg3) {
-    m_fetches.push_back(new FetchWidget(arg1,arg2,arg3));
+
+int FetchWidgetManager::type() {
+    return WidgetName::FetchWidgetManager;
+}
+
+FetchWidgetManager* FetchWidgetManager::Instance() {
+    static FetchWidgetManager* _instance = new FetchWidgetManager;
+    return _instance;
 }

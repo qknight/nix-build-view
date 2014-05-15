@@ -6,8 +6,9 @@
 class BuildWidgetManager : public WidgetManagerBase {
 public:
     int type();
-    void add(const char* arg1, const char* arg2);
-
+    static BuildWidgetManager* Instance();
+private:
+    BuildWidgetManager();
 };
 
 #endif // BUILDWIDGETMANAGER_H
