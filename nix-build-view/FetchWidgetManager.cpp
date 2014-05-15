@@ -22,7 +22,7 @@ FetchWidgetManager* FetchWidgetManager::Instance() {
     return _instance;
 }
 
-unsigned int FetchWidgetManager::rowsNeeded() {
+unsigned int FetchWidgetManager::rowsWantedByWidget() {
     return m_fetches.size();
 }
 

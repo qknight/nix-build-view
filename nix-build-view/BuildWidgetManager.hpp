@@ -10,7 +10,7 @@ public:
     void add(const char* arg1, const char* arg2);
     int type();
     AdvancedStringContainer render(unsigned int width, unsigned int height);
-    unsigned int rowsNeeded();
+    unsigned int rowsWantedByWidget();
 private:
     BuildWidgetManager();
     std::vector<BuildWidget*> m_builds;

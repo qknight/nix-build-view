@@ -1,11 +1,5 @@
 #include "Layout.hpp"
 
-Layout::Layout(/*unsigned int width, unsigned int height*/) {
-//     m_width = width;
-//     m_height = height;
-}
-
-
 void Layout::addWidget(Widget* w, unsigned int heightHint) {
     m_layoutItems.push_back(new LayoutItem(w, heightHint));
 }
@@ -25,35 +19,57 @@ RasterizedLayout Layout::rasterize(int width, int height) {
         FixedWidget fw;
         fw.widget = m_layoutItems[i]->widget;
         fw.height = 1;
-        rowsUsed += 1;
+        if (fw.widget->rowsWantedByWidget() == 0)
+            fw.height = 0;
+        rowsUsed += fw.height;
         fw.width = width;
         r.m_fixedWidgets.push_back(fw);
     }
+
+    // expand dynamic widgets
+    if(rowsUsed < height)
+        for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
+            FixedWidget fw = r.m_fixedWidgets[i];
+            int t = fw.widget->type();
+            if (t == WidgetName::BuildWidgetManager || t == WidgetName::FetchWidgetManager) {
+                int t = 0;
+                int hH = 0;
+                // search though the layout's highHint for the widget
+                for(unsigned int i=0; i < m_layoutItems.size(); ++i) {
+                    if (m_layoutItems[i]->widget == fw.widget) {
+                        hH = m_layoutItems[i]->heightHint;
+                    }
+                }
+                // use height given by widget unless the layout says it must be less
+                if (fw.widget->rowsWantedByWidget() < hH)
+                    t = fw.widget->rowsWantedByWidget();
+                else
+                    t = hH;
+                // if t now exceeds the available height, we need to limit it to what is still available
+                if (t > height - rowsUsed)
+                    t = height - rowsUsed + 1; // FIXME why does +1 work here?
+                rowsUsed += t-1; // FIXME why does -1 work here?
+                fw.height = t;
+                r.m_fixedWidgets[i] = fw;
+            }
+        }
     // expand dynamic widgets
     if(rowsUsed < height)
         for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
             int t = r.m_fixedWidgets[i].widget->type();
 
-            if (t == WidgetName::BuildWidgetManager || WidgetName::FetchWidgetManager) {
-//                 unsigned int t=0;
-//                 FixedWidget fw = r.m_fixedWidgets[i];
-//                 unsigned int hH = 0;
-//                 for(unsigned int i=0; i < m_layoutItems.size(); ++i) {
-//                     if (m_layoutItems[i]->widget == fw.widget) {
-//                         hH = m_layoutItems[i]->heightHint;
-//                     }
-//                 }
-//                 if (fw.widget->rowsNeeded() < hH)
-//                     t = fw.widget->rowsNeeded();
-//                 else
-//                     t = hH;
-//                 if (t > height - rowsUsed)
-//                     t = height - rowsUsed;
-//                 rowsUsed += t;
-// //                 fw.height = t;
-//                 r.m_fixedWidgets[i] = fw;
+            if (t == WidgetName::TerminalWidget) {
+                int n = height - rowsUsed;
+                r.m_fixedWidgets[i].height += n;
+                rowsUsed += n;
             }
-            if (t == WidgetName::TerminalWidget || t == WidgetName::VerticalSpacerWidget) {
+        }
+    // expand dynamic widgets
+    if(rowsUsed < height)
+        for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
+            int t = r.m_fixedWidgets[i].widget->type();
+
+            if (t == WidgetName::VerticalSpacerWidget) {
                 int n = height - rowsUsed;
                 r.m_fixedWidgets[i].height += n;
                 rowsUsed += n;

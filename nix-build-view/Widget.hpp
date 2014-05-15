@@ -32,7 +32,8 @@ public:
 //     }
     virtual int type() = 0;
     void keyboardInputHandler(int ch);
-    virtual unsigned int rowsNeeded() {
+    // interesting for nested widget rendering
+    virtual unsigned int rowsWantedByWidget() {
       return 1;
     }
 

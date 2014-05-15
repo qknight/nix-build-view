@@ -17,7 +17,7 @@ int BuildWidgetManager::type() {
     return WidgetName::BuildWidgetManager;
 }
 
-unsigned int BuildWidgetManager::rowsNeeded() {
+unsigned int BuildWidgetManager::rowsWantedByWidget() {
     return m_builds.size();
 }
 

@@ -31,7 +31,6 @@ public:
 
 class Layout {
 public:
-    Layout(/*unsigned int width, unsigned int height*/);
     void addWidget(Widget* w, unsigned int sizeHint=1);
     RasterizedLayout rasterize(int width, int height);
 //     unsigned int width()  {

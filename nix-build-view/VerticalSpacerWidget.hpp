@@ -6,6 +6,7 @@
 class VerticalSpacerWidget : public Widget {
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type();
+    unsigned int rowsWantedByWidget();
 };
 
 #endif //VerticalSpacerWidget
