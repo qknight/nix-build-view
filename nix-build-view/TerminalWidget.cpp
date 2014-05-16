@@ -12,6 +12,7 @@ int TerminalWidget::type() {
     return WidgetName::TerminalWidget;
 }
 
+//FIXME this ignores ncurses coloring implemented in AdvancedString and AdvancedStringContainer!!!
 void TerminalWidget::splitString(std::vector<std::string> &v_str,const std::string &str,const char ch) {
     std::string sub;
     std::string::size_type pos = 0;
@@ -36,7 +37,6 @@ void TerminalWidget::terminal_rasterize() {
     // - render the text to a buffer
     // - do line-wrapping
     std::string s = m_logfile.str();
-
     {
         /////// BEGIN: trim end of each string!
         std::stringstream s_tmp;
@@ -111,22 +111,23 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
     return out;
 }
 
-//FIXME do not recompute the whole buffer every time but instead scan for the last newline and go from there...
 void TerminalWidget::append(AdvancedStringContainer line) {
     // replace all \t with '        ' (8 spaces)
     // you can't use copy'n'paste from that terminal, so Makefiles for example will be broken when being copied this way
     AdvancedStringContainer buf;
 
-    //FIXME broken
-//     for(int i=0; i < line.size(); ++i) {
-//         if (line[i] == '\t')
-//             buf << "        ";
-//         else
-//             buf << line[i];
-//     }
-    //FIXME filter for \t is not included right now!
-//     buf << "FIXME filter for '\\t' is not included right now!\n";
-    buf << line;
+    for(int i=0; i < line.size(); ++i) {
+        AdvancedString a = line[i];
+        std::string s = a.str();
+        std::stringstream ss;
+        for(int x=0; x < s.size(); ++x) {
+            if (s[x] == '\t')
+                ss << "        ";
+            else
+                ss << s[x];
+        }
+        buf << AdvancedString(ss.str(), a.fontColor(), a.attributes(), a.bgColor());
+    }
 
     // add the new string
     m_logfile << buf;

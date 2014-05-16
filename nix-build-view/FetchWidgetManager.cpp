@@ -3,7 +3,6 @@
 FetchWidgetManager::FetchWidgetManager() {
 }
 
-
 int FetchWidgetManager::type() {
     return WidgetName::FetchWidgetManager;
 }

@@ -5,7 +5,6 @@
 
 #include <string>
 
-
 class AdvancedString {
 public:
     AdvancedString() {}

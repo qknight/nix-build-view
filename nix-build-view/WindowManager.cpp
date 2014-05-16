@@ -14,7 +14,6 @@
 
 #include <sys/ioctl.h>
 
-
 WindowManager* WindowManager::Instance() {
     static WindowManager* _instance = new WindowManager(stdscr);
     return _instance;
@@ -57,12 +56,12 @@ WindowManager::WindowManager(WINDOW* win) {
 
     Layout* l4 = new Layout;
     l4->addWidget(verticalSpacer,0);
-    l4->addWidget(fetchWidgetManager,400);
+    l4->addWidget(fetchWidgetManager,4000);
     l4->addWidget(statusWidget);
 
     Layout* l5 = new Layout;
     l5->addWidget(verticalSpacer,0);
-    l5->addWidget(buildWidgetManager,400);
+    l5->addWidget(buildWidgetManager,4000);
     l5->addWidget(statusWidget);
 
     addLayout(l1);

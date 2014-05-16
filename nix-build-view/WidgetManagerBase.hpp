@@ -3,14 +3,14 @@
 
 #include "Widget.hpp"
 
+
 class WidgetManagerBase : public Widget {
 public:
     virtual int type() = 0;
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     unsigned int rowsWantedByWidget();
     void add(Widget* w);
-//     WidgetManagerBase();
-//         virtual ~WidgetManagerBase();
+//     virtual ~WidgetManagerBase();
 private:
     std::vector<Widget*> m_widgets;
     int m_line = 0;

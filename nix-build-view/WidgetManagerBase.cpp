@@ -18,9 +18,6 @@ unsigned int WidgetManagerBase::rowsWantedByWidget() {
     return m_widgets.size();
 }
 
-// WidgetManagerBase::WidgetManagerBase() {
-// }
-
 void WidgetManagerBase::keyboardInputHandler(int ch) {
     switch(ch) {
     case(KEY_HOME): 
