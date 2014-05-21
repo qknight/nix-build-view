@@ -5,81 +5,55 @@ TerminalWidget* TerminalWidget::Instance() {
     return _instance;
 }
 
-TerminalWidget::TerminalWidget() {
-}
-
 int TerminalWidget::type() {
     return WidgetName::TerminalWidget;
 }
 
-//FIXME this ignores ncurses coloring implemented in AdvancedString and AdvancedStringContainer!!!
-void TerminalWidget::splitString(std::vector<std::string> &v_str,const std::string &str,const char ch) {
-    std::string sub;
-    std::string::size_type pos = 0;
-    std::string::size_type old_pos = 0;
-    bool flag=true;
-
-    while(flag) {
-        pos=str.find_first_of(ch,pos);
-        if(pos == std::string::npos)
-        {
-            flag = false;
-            pos = str.size();
-        }
-        sub = str.substr(old_pos,pos-old_pos);  // Disregard the '.'
-        v_str.push_back(sub);
-        old_pos = ++pos;
-    }
-}
-
-//FIXME this ignores ncurses coloring implemented in AdvancedString and AdvancedStringContainer!!!
-void TerminalWidget::terminal_rasterize() {
+// translates the m_logfile into a fixed width vector for later displaying
+void TerminalWidget::terminal_rasterize(std::vector<AdvancedStringContainer> &terminal, int width) {
     // - render the text to a buffer
     // - do line-wrapping
-    std::string s = m_logfile.str();
-    {
-        /////// BEGIN: trim end of each string!
-        std::stringstream s_tmp;
-        std::vector<std::string> tmp;
-        splitString(tmp, s, '\n');
+    std::vector<AdvancedStringContainer> buf;
 
-        for(unsigned int i=0; i < tmp.size(); ++i) {
-            std::string::const_iterator it_b = tmp[i].begin();
-            std::string::const_iterator it_e = tmp[i].end();
-            std::string::const_iterator it_tmp = it_e-1;
+    // trims trailing newlines and writes result to buf
+    m_logfile.trimTrailingNewlines(buf);
 
-            while(it_tmp < it_e && it_tmp >= it_b) {
-                if (*it_tmp == ' ') {
-                    --it_tmp;
-                } else {
-                    s_tmp << std::string(it_b, it_tmp+1);
-                    break;
-                }
+    // render the m_logfile into a terminal with width()
+    terminal.clear();
+
+    AdvancedStringContainer tmp;
+    // process vector of sentences (buf)
+    //FIXME there is still some bugs in here but it works 90% ;-)
+    for(int i=0; i < buf.size(); ++i) {
+        AdvancedStringContainer asc = buf[i];
+        // process all words, inside a single sentence,
+        for(int x=0; x < asc.size(); x++) {
+            AdvancedString as = asc[x];
+
+            std::string::iterator it_b = as.str().begin();
+            std::string::iterator it_e = as.str().end();
+
+            AdvancedString atmp;
+            if (width-tmp.str_size() < it_e - it_b) {
+                int size = 0;
+                if (it_e - it_b > width-tmp.str_size())
+                    size = width-tmp.str_size();
+                else
+                    size = it_e - it_b;
+                std::string reset = as.str().substr(/*it_b - as.str().begin()*/0, size);
+                atmp = AdvancedString(reset, as.fontColor(), as.attributes(), as.bgColor());
+            } else {
+                atmp = as;
             }
-            if(i < tmp.size()-1)
-                s_tmp << std::endl;
+            // check if padding is needed
+            tmp << atmp;
+            it_b += atmp.size();
+            if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
+                tmp << std::string(width-tmp.str_size(), ' ');
+                terminal.push_back(tmp);
+                tmp.clear();
+            }
         }
-        /////// END: trim end of each string!
-        s = s_tmp.str();
-    }
-
-
-    //render the m_logfile into a terminal with width w
-    m_terminal.clear();
-    std::string tmp;
-    for (unsigned int i=0; i <= s.size(); ++i) {
-        if (tmp.size() == width()) {
-            m_terminal.push_back(tmp);
-            tmp="";
-        }
-
-        if (s[i] == '\n')  {
-            tmp += std::string(width()-tmp.size(), ' ');
-            m_terminal.push_back(tmp);
-            tmp="";
-            continue;
-        }
-        tmp += s[i];
     }
 }
 
@@ -90,14 +64,15 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
     //copy the last h elements from terminal to the out buffer
     AdvancedStringContainer out;
 
+    //caches the output for better performance
     if ((m_width != width) || (m_height != height)) {
         m_width = width;
         m_height = height;
-        terminal_rasterize();
+        terminal_rasterize(m_terminal, this->width());
     }
 
-    std::vector<std::string>::const_iterator it_b = m_terminal.begin();
-    std::vector<std::string>::const_iterator it_e = m_terminal.end();
+    std::vector<AdvancedStringContainer>::const_iterator it_b = m_terminal.begin();
+    std::vector<AdvancedStringContainer>::const_iterator it_e = m_terminal.end();
 
     if (it_e - height - m_line >= it_b)
         it_b = it_e - height - m_line;
@@ -105,7 +80,8 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
     for(unsigned int i=0; i < height; ++i) {
         if (it_b >= it_e)
             break;
-        out << *it_b++;
+        AdvancedStringContainer t = *it_b++;
+        out << t;
     }
 
     return out;
@@ -120,6 +96,8 @@ void TerminalWidget::append(AdvancedStringContainer line) {
         AdvancedString a = line[i];
         std::string s = a.str();
         std::stringstream ss;
+
+        //FIXME could be implemented more efficiently
         for(int x=0; x < s.size(); ++x) {
             if (s[x] == '\t')
                 ss << "        ";
@@ -131,7 +109,7 @@ void TerminalWidget::append(AdvancedStringContainer line) {
 
     // add the new string
     m_logfile << buf;
-    terminal_rasterize();
+    terminal_rasterize(m_terminal, width());
 
     update();
 }

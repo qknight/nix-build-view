@@ -103,6 +103,81 @@ public:
         }
         return s;
     }
+    void clear() {
+        sContainer.clear();
+    }
+    void containerStringSplit(std::vector<AdvancedStringContainer> &v_str, const char ch) {
+//         std::vector<AdvancedStringContainer> zzz;
+        AdvancedStringContainer tmp;
+        for (int i=0; i < this->size(); i++) {
+            AdvancedString as = (*this)[i];
+            std::string str = as.str();
+            std::string sub;
+            std::string::size_type pos = 0;
+            std::string::size_type old_pos = 0;
+            bool flag=true;
+
+            while(flag) {
+                pos=str.find_first_of(ch,pos);
+                if(pos == std::string::npos)
+                {
+                    flag = false;
+                    pos = str.size();
+                }
+                sub = str.substr(old_pos,pos-old_pos);  // Disregard the '.'
+                tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
+                if (pos != str.size() || i == this->size()-1) {
+                    if(tmp.str_size() > 0)
+                        v_str.push_back(tmp);
+                    tmp.clear();
+                }
+                old_pos = ++pos;
+            }
+        }
+    }
+    void trimTrailingNewlines(std::vector<AdvancedStringContainer> &v_str) {
+        std::vector<AdvancedStringContainer> tmp;
+        AdvancedStringContainer tmp2;
+        AdvancedStringContainer asc_tmp;
+        (*this).containerStringSplit(tmp, '\n');
+        bool run = true;
+
+        // process vector of sentences (tmp)
+        for(int i=0; i < tmp.size(); ++i) {
+            AdvancedStringContainer asc = tmp[i];
+            if (asc.size()) {
+                // process all words, inside a single sentence, in reverse and remove traling white spaces (including words built of white spaces)
+                for(int x=asc.size() - 1; x >= 0; x--) {
+                    AdvancedString as = asc[x];
+                    if(as.size()) {
+                        // process a single word in reverse and find all whitespaces
+                        for(int y=as.size()-1; y >= 0; y--) {
+                            std::string s = as.str();
+                            if(s[y] != ' ') {
+                                std::string sub = s.substr(0,y);
+                                AdvancedString n = AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
+                                for(int t = 0; t < x; ++t) {
+                                    asc_tmp << asc[t];
+                                }
+                                asc_tmp << n;
+                                v_str.push_back(asc_tmp);
+                                run = false;
+                                asc_tmp.clear();
+                                break;
+                            }
+                        }
+                        if (!run)
+                            break;
+                    }
+                }
+                run = true;
+            }
+        }
+    }
+//     void subString(std::vector<AdvancedStringContainer> &v_str) {
+//
+//     }
+
 private:
     std::vector<AdvancedString> sContainer;
 };

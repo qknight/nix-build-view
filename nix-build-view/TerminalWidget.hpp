@@ -12,10 +12,9 @@
 
 class TerminalWidget : public Widget {
 public:
-    void splitString(std::vector<std::string> &v_str,const std::string &str,const char ch);
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     void append(AdvancedStringContainer line);
-    void terminal_rasterize();
+    void terminal_rasterize(std::vector<AdvancedStringContainer> &terminal, int width);
     int type();
     void keyboardInputHandler(int ch);
     AdvancedStringContainer log() {
@@ -23,10 +22,9 @@ public:
     };
     static TerminalWidget* Instance();
 private:
-    TerminalWidget();
     AdvancedStringContainer m_logfile;
     int m_line = 0;
-    std::vector<std::string> m_terminal;
+    std::vector<AdvancedStringContainer> m_terminal;
     unsigned int width() {
         return m_width;
     }
