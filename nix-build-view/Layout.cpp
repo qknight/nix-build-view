@@ -57,12 +57,24 @@ RasterizedLayout Layout::rasterize(int width, int height) {
                 r.m_fixedWidgets[i] = fw;
             }
         }
+    //FIXME this code can be consolidated
     // expand dynamic widgets
     if(rowsUsed < height)
         for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
             int type = r.m_fixedWidgets[i].widget->type();
 
             if (type == WidgetName::TerminalWidget) {
+                int n = height - rowsUsed;
+                r.m_fixedWidgets[i].height += n;
+                rowsUsed += n;
+            }
+        }
+    // expand help widgets
+    if(rowsUsed < height)
+        for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
+            int type = r.m_fixedWidgets[i].widget->type();
+
+            if (type == WidgetName::HelpWidget) {
                 int n = height - rowsUsed;
                 r.m_fixedWidgets[i].height += n;
                 rowsUsed += n;

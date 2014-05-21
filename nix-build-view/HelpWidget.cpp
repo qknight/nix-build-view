@@ -5,12 +5,15 @@ int HelpWidget::type() {
 }
 
 AdvancedStringContainer HelpWidget::render(unsigned int width, unsigned int height) {
-    AdvancedStringContainer s;
+    //copy the last h elements from terminal to the out buffer
+    AdvancedStringContainer out;
 
-    s << AdvancedString("nix-build-view $version (C) 2014++ Joachim Schiele\n", COLOR_CYAN);
+    AdvancedStringContainer s;
+    s << AdvancedString("nix-build-view $version (c) 2014++ Joachim Schiele\n", COLOR_CYAN);
     s << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN);
     s << "\n";
-    s << "         " << "keyboard shortcuts: \n";
+    s << "\n";
+    s << "     " << "keyboard shortcuts: \n";
     s << "\n";
     s << "         " << AdvancedString("q", COLOR_CYAN) << " - quit the program\n";
     s << "\n";
@@ -27,10 +30,27 @@ AdvancedStringContainer HelpWidget::render(unsigned int width, unsigned int heig
     s << "         " << AdvancedString("pos1", COLOR_CYAN) << " - scrolls view to beginning\n";
     s << "         " << AdvancedString("end", COLOR_CYAN) << " - scrolls view to end\n";
 
-//     AdvancedStringContainer out;
-//     for(int i=0; i < s.size(); ++i) {
-//       int n = s[i].size();
-//       out << s[i] << std::string(1,'!');
-//     }
-    return s;
+    //caches the output for better performance
+    if ((m_width != width) || (m_height != height)) {
+        m_width = width;
+        m_height = height;
+        AdvancedStringContainer::terminal_rasterize(m_terminal, s, width);
+    }
+
+    std::vector<AdvancedStringContainer>::const_iterator it_b = m_terminal.begin();
+    std::vector<AdvancedStringContainer>::const_iterator it_e = m_terminal.end();
+
+    int m_line = 0;
+
+    if (it_e - height - m_line >= it_b)
+        it_b = it_e - height - m_line;
+
+    for(unsigned int i=0; i < height; ++i) {
+        if (it_b >= it_e)
+            break;
+        AdvancedStringContainer t = *it_b++;
+        out << t;
+    }
+
+    return out;
 }

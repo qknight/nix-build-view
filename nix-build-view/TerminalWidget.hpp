@@ -14,7 +14,6 @@ class TerminalWidget : public Widget {
 public:
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     void append(AdvancedStringContainer line);
-    void terminal_rasterize(std::vector<AdvancedStringContainer> &terminal, int width);
     int type();
     void keyboardInputHandler(int ch);
     AdvancedStringContainer log() {

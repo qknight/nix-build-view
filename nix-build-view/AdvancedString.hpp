@@ -106,6 +106,7 @@ public:
     void clear() {
         sContainer.clear();
     }
+    //FIXME make this static
     void containerStringSplit(std::vector<AdvancedStringContainer> &v_str, const char ch) {
         AdvancedStringContainer tmp;
         for (int i=0; i < this->size(); i++) {
@@ -126,14 +127,15 @@ public:
                 sub = str.substr(old_pos, pos-old_pos);
                 tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
                 if (pos != str.size() || i == this->size()-1) {
-//                     if(tmp.str_size() > 0) 
-                        v_str.push_back(tmp);
+//                     if(tmp.str_size() > 0)
+                    v_str.push_back(tmp);
                     tmp.clear();
                 }
                 old_pos = ++pos;
             }
         }
     }
+    //FIXME make this static
     void trimTrailingNewlines(std::vector<AdvancedStringContainer> &v_str) {
         std::vector<AdvancedStringContainer> tmp;
         AdvancedStringContainer tmp2;
@@ -173,9 +175,63 @@ public:
             }
         }
     }
-//     void subString(std::vector<AdvancedStringContainer> &v_str) {
-//
-//     }
+    // translates the m_logfile into a fixed width vector for later displaying
+    static void terminal_rasterize(std::vector<AdvancedStringContainer> &terminal, AdvancedStringContainer &in, int width) {
+        // - render the text to a buffer
+        // - do line-wrapping
+        std::vector<AdvancedStringContainer> buf;
+
+        // trims trailing newlines and writes result to buf
+        in.trimTrailingNewlines(buf);
+
+        // render the m_logfile into a terminal with width()
+        terminal.clear();
+
+        AdvancedStringContainer tmp;
+        // process vector of sentences (buf)
+        //FIXME there is still some bugs in here but it works 90% ;-)
+        for(int i=0; i < buf.size(); ++i) {
+            AdvancedStringContainer asc = buf[i];
+            // process all words, inside a single sentence,
+            for(int x=0; x < asc.size(); x++) {
+                AdvancedString as = asc[x];
+
+                std::string::iterator it_b = as.str().begin();
+                std::string::iterator it_e = as.str().end();
+
+                while(true) {
+                    AdvancedString atmp;
+                    int size = 0;
+                    if (width-tmp.str_size() < it_e - it_b) {
+                        if (it_e - it_b > width-tmp.str_size()) // if string is bigger than available size
+                            size = width-tmp.str_size();
+                        else
+                            size = it_e - it_b;
+                        //FIXME begin isn't always correct
+//                     std::string reset = as.str().substr(it_b - as.str().begin(), size);
+                        std::string reset = as.str().substr(0, size);
+                        atmp = AdvancedString(reset, as.fontColor(), as.attributes(), as.bgColor());
+                    } else {
+                        atmp = as;
+                    }
+                    tmp << atmp;
+                    it_b += size;
+                    // check if padding is needed
+                    if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
+                        int f = width-tmp.str_size();
+                        if (f > 0) {
+                            f-=1;
+                            tmp << AdvancedString(std::string(f, '?'), COLOR_BLUE);
+                            tmp << AdvancedString("!", COLOR_RED);
+                        }
+                        terminal.push_back(tmp);
+                        tmp.clear();
+                    }
+                    break;//FIXME find the condition we need to break which should be that all parts of as were consumed into tmp
+                }
+            }
+        }
+    }
 
 private:
     std::vector<AdvancedString> sContainer;

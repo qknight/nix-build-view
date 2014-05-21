@@ -9,63 +9,7 @@ int TerminalWidget::type() {
     return WidgetName::TerminalWidget;
 }
 
-// translates the m_logfile into a fixed width vector for later displaying
-void TerminalWidget::terminal_rasterize(std::vector<AdvancedStringContainer> &terminal, int width) {
-    // - render the text to a buffer
-    // - do line-wrapping
-    std::vector<AdvancedStringContainer> buf;
 
-    // trims trailing newlines and writes result to buf
-    m_logfile.trimTrailingNewlines(buf);
-
-    // render the m_logfile into a terminal with width()
-    terminal.clear();
-
-    AdvancedStringContainer tmp;
-    // process vector of sentences (buf)
-    //FIXME there is still some bugs in here but it works 90% ;-)
-    for(int i=0; i < buf.size(); ++i) {
-        AdvancedStringContainer asc = buf[i];
-        // process all words, inside a single sentence,
-        for(int x=0; x < asc.size(); x++) {
-            AdvancedString as = asc[x];
-
-            std::string::iterator it_b = as.str().begin();
-            std::string::iterator it_e = as.str().end();
-
-            while(true) {
-                AdvancedString atmp;
-                int size = 0;
-                if (width-tmp.str_size() < it_e - it_b) {
-                    if (it_e - it_b > width-tmp.str_size()) // if string is bigger than available size
-                        size = width-tmp.str_size();
-                    else
-                        size = it_e - it_b;
-                    //FIXME begin isn't always correct
-//                     std::string reset = as.str().substr(it_b - as.str().begin(), size);
-                    std::string reset = as.str().substr(0, size);
-                    atmp = AdvancedString(reset, as.fontColor(), as.attributes(), as.bgColor());
-                } else {
-                    atmp = as;
-                }
-                tmp << atmp;
-                it_b += size;
-                // check if padding is needed
-                if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
-                    int f = width-tmp.str_size();
-                    if (f > 0) {
-                        f-=1;
-                        tmp << AdvancedString(std::string(f, '?'), COLOR_BLUE);
-			tmp << AdvancedString("!", COLOR_RED);
-                    }
-                    terminal.push_back(tmp);
-                    tmp.clear();
-                }
-                break;//FIXME find the condition we need to break which should be that all parts of as were consumed into tmp
-            }
-        }
-    }
-}
 
 //FIXME only auto-scroll the view when m_line==0
 AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int height) {
@@ -78,7 +22,7 @@ AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int 
     if ((m_width != width) || (m_height != height)) {
         m_width = width;
         m_height = height;
-        terminal_rasterize(m_terminal, this->width());
+        AdvancedStringContainer::terminal_rasterize(m_terminal, m_logfile, this->width());
     }
 
     std::vector<AdvancedStringContainer>::const_iterator it_b = m_terminal.begin();
@@ -119,7 +63,7 @@ void TerminalWidget::append(AdvancedStringContainer line) {
 
     // add the new string
     m_logfile << buf;
-    terminal_rasterize(m_terminal, width());
+    AdvancedStringContainer::terminal_rasterize(m_terminal, m_logfile, this->width());
 
     update();
 }
