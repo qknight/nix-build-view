@@ -459,17 +459,20 @@ int main(int argc, char *argv[]) {
 
 
 
-// unit test for AdvancedStringContainer::containerStringSplit(..)
+//     std::cout << "---------------------------BEGIN TEST 1----------------------------------------------" << std::endl;
 //     AdvancedStringContainer a;
-//     a << AdvancedString("\n11akf__\n__jaffka22") << AdvancedString("33akfkafk44\n55asdkfasdfk66") << AdvancedString("77afafaf88\n\n\n");
+//     a << AdvancedString("\n11akf__\n__jaffka22") << AdvancedString("33akfkafk44\n55asdkfasdfk66") << AdvancedString("77afafaf88\n\n\nf");
 //     std::vector<AdvancedStringContainer> tmp;
 //     a.containerStringSplit(tmp, '\n');
-
+// 
 //     for (int i=0; i < tmp.size(); ++i) {
 //         std::cout << tmp[i].str() << std::endl;
 //     }
-
-    /////////////////////// UNIT TEST for AdvancedStringContainer::trimTrailingNewlines /////////////////////
+//     
+//     std::cout << "---------------------------END TEST 1----------------------------------------------" << std::endl;
+// 
+//     ///////////////////// UNIT TEST for AdvancedStringContainer::trimTrailingNewlines /////////////////////
+//     std::cout << "---------------------------BEGIN TEST 2----------------------------------------------" << std::endl;
 //     AdvancedStringContainer b;
 //     b << AdvancedString("11akfjaffka22                          ");
 //     b << AdvancedString("33akfkafk44        55asdkfasdfk66  ");
@@ -481,6 +484,7 @@ int main(int argc, char *argv[]) {
 //     for (int i=0; i < tmp2.size(); ++i) {
 //         std::cout << "'" << tmp2[i].str() << "'" << std::endl;
 //     }
+//     std::cout << "---------------------------END TEST 2----------------------------------------------" << std::endl;
 
     return 0;
 }

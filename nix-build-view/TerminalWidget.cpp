@@ -33,25 +33,35 @@ void TerminalWidget::terminal_rasterize(std::vector<AdvancedStringContainer> &te
             std::string::iterator it_b = as.str().begin();
             std::string::iterator it_e = as.str().end();
 
-            AdvancedString atmp;
-            if (width-tmp.str_size() < it_e - it_b) {
+            while(true) {
+                AdvancedString atmp;
                 int size = 0;
-                if (it_e - it_b > width-tmp.str_size())
-                    size = width-tmp.str_size();
-                else
-                    size = it_e - it_b;
-                std::string reset = as.str().substr(/*it_b - as.str().begin()*/0, size);
-                atmp = AdvancedString(reset, as.fontColor(), as.attributes(), as.bgColor());
-            } else {
-                atmp = as;
-            }
-            // check if padding is needed
-            tmp << atmp;
-            it_b += atmp.size();
-            if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
-                tmp << std::string(width-tmp.str_size(), ' ');
-                terminal.push_back(tmp);
-                tmp.clear();
+                if (width-tmp.str_size() < it_e - it_b) {
+                    if (it_e - it_b > width-tmp.str_size()) // if string is bigger than available size
+                        size = width-tmp.str_size();
+                    else
+                        size = it_e - it_b;
+                    //FIXME begin isn't always correct
+//                     std::string reset = as.str().substr(it_b - as.str().begin(), size);
+                    std::string reset = as.str().substr(0, size);
+                    atmp = AdvancedString(reset, as.fontColor(), as.attributes(), as.bgColor());
+                } else {
+                    atmp = as;
+                }
+                tmp << atmp;
+                it_b += size;
+                // check if padding is needed
+                if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
+                    int f = width-tmp.str_size();
+                    if (f > 0) {
+                        f-=1;
+                        tmp << AdvancedString(std::string(f, '?'), COLOR_BLUE);
+			tmp << AdvancedString("!", COLOR_RED);
+                    }
+                    terminal.push_back(tmp);
+                    tmp.clear();
+                }
+                break;//FIXME find the condition we need to break which should be that all parts of as were consumed into tmp
             }
         }
     }
@@ -153,4 +163,6 @@ void TerminalWidget::keyboardInputHandler(int ch) {
         break;
     }
 }
+
+
 

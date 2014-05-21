@@ -107,7 +107,6 @@ public:
         sContainer.clear();
     }
     void containerStringSplit(std::vector<AdvancedStringContainer> &v_str, const char ch) {
-//         std::vector<AdvancedStringContainer> zzz;
         AdvancedStringContainer tmp;
         for (int i=0; i < this->size(); i++) {
             AdvancedString as = (*this)[i];
@@ -124,10 +123,10 @@ public:
                     flag = false;
                     pos = str.size();
                 }
-                sub = str.substr(old_pos,pos-old_pos);  // Disregard the '.'
+                sub = str.substr(old_pos, pos-old_pos);
                 tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
                 if (pos != str.size() || i == this->size()-1) {
-                    if(tmp.str_size() > 0)
+//                     if(tmp.str_size() > 0) 
                         v_str.push_back(tmp);
                     tmp.clear();
                 }
