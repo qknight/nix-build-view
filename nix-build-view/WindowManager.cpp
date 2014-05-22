@@ -162,6 +162,7 @@ void WindowManager::keyboardInputHandler(int ch) {
         s << AdvancedString("**this should be colored in MAGENTA**\n", COLOR_MAGENTA);
         s << AdvancedString("**this should be colored in GREEN**\n", COLOR_GREEN);
         s << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444\n", COLOR_GREEN);
+	s << AdvancedString("\n\na");
         TerminalWidget::Instance()->append(s);
         return;
     }

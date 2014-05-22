@@ -106,11 +106,10 @@ public:
     void clear() {
         sContainer.clear();
     }
-    //FIXME make this static
-    void containerStringSplit(std::vector<AdvancedStringContainer> &v_str, const char ch) {
+    static void containerStringSplit(std::vector<AdvancedStringContainer> &v_str, AdvancedStringContainer &in, const char ch) {
         AdvancedStringContainer tmp;
-        for (int i=0; i < this->size(); i++) {
-            AdvancedString as = (*this)[i];
+        for (int i=0; i < in.size(); i++) {
+            AdvancedString as = in[i];
             std::string str = as.str();
             std::string sub;
             std::string::size_type pos = 0;
@@ -126,8 +125,7 @@ public:
                 }
                 sub = str.substr(old_pos, pos-old_pos);
                 tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
-                if (pos != str.size() || i == this->size()-1) {
-//                     if(tmp.str_size() > 0)
+                if (flag || i == in.size()-1) {
                     v_str.push_back(tmp);
                     tmp.clear();
                 }
@@ -135,12 +133,11 @@ public:
             }
         }
     }
-    //FIXME make this static
-    void trimTrailingNewlines(std::vector<AdvancedStringContainer> &v_str) {
+    static void trimTrailingNewlines(std::vector<AdvancedStringContainer> &v_str, AdvancedStringContainer &in) {
         std::vector<AdvancedStringContainer> tmp;
         AdvancedStringContainer tmp2;
         AdvancedStringContainer asc_tmp;
-        (*this).containerStringSplit(tmp, '\n');
+        containerStringSplit(tmp, in, '\n');
         bool run = true;
 
         // process vector of sentences (tmp)
@@ -155,7 +152,7 @@ public:
                         for(int y=as.size()-1; y >= 0; y--) {
                             std::string s = as.str();
                             if(s[y] != ' ') {
-                                std::string sub = s.substr(0,y);
+                                std::string sub = s.substr(0,y+1);
                                 AdvancedString n = AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
                                 for(int t = 0; t < x; ++t) {
                                     asc_tmp << asc[t];
@@ -166,9 +163,20 @@ public:
                                 asc_tmp.clear();
                                 break;
                             }
+                            if (y == 0 && s[0] == ' ') {
+                                AdvancedString n = AdvancedString("", COLOR_YELLOW, as.attributes(), as.bgColor());
+                                asc_tmp << n;
+                                v_str.push_back(asc_tmp);
+                                asc_tmp.clear();
+                            }
                         }
                         if (!run)
                             break;
+                    } else {
+                        asc_tmp.clear();
+                        asc_tmp << as;
+                        v_str.push_back(asc_tmp);
+                        asc_tmp.clear();
                     }
                 }
                 run = true;
@@ -182,52 +190,52 @@ public:
         std::vector<AdvancedStringContainer> buf;
 
         // trims trailing newlines and writes result to buf
-        in.trimTrailingNewlines(buf);
+        trimTrailingNewlines(buf, in);
 
         // render the m_logfile into a terminal with width()
         terminal.clear();
 
         AdvancedStringContainer tmp;
         // process vector of sentences (buf)
-        //FIXME there is still some bugs in here but it works 90% ;-)
         for(int i=0; i < buf.size(); ++i) {
             AdvancedStringContainer asc = buf[i];
             // process all words, inside a single sentence,
             for(int x=0; x < asc.size(); x++) {
                 AdvancedString as = asc[x];
+                AdvancedString atmp;
 
-                std::string::iterator it_b = as.str().begin();
+                std::string::iterator it_begin = as.str().begin();
+                std::string::iterator it_p = as.str().begin();
                 std::string::iterator it_e = as.str().end();
 
-                while(true) {
-                    AdvancedString atmp;
+                if (as.size() == 0 && x == asc.size()-1) {
+                    tmp << AdvancedString(std::string(width, '-'), COLOR_BLUE);
+                    terminal.push_back(tmp);
+                    tmp.clear();
+                }
+
+                while(as.size()) {
                     int size = 0;
-                    if (width-tmp.str_size() < it_e - it_b) {
-                        if (it_e - it_b > width-tmp.str_size()) // if string is bigger than available size
-                            size = width-tmp.str_size();
-                        else
-                            size = it_e - it_b;
-                        //FIXME begin isn't always correct
-//                     std::string reset = as.str().substr(it_b - as.str().begin(), size);
-                        std::string reset = as.str().substr(0, size);
-                        atmp = AdvancedString(reset, as.fontColor(), as.attributes(), as.bgColor());
-                    } else {
-                        atmp = as;
-                    }
+                    if (as.size() > width-tmp.str_size()) // if string is bigger than available size
+                        size = width-tmp.str_size();
+                    else
+                        size = as.size();
+                    std::string sub1 = as.str().substr(0, size);
+                    atmp = AdvancedString(sub1, as.fontColor(), as.attributes(), as.bgColor());
+                    std::string sub2 = as.str().substr(size, as.size()-size);
+                    as = AdvancedString(sub2, as.fontColor(), as.attributes(), as.bgColor());
                     tmp << atmp;
-                    it_b += size;
                     // check if padding is needed
                     if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
                         int f = width-tmp.str_size();
                         if (f > 0) {
                             f-=1;
-                            tmp << AdvancedString(std::string(f, '?'), COLOR_BLUE);
-                            tmp << AdvancedString("!", COLOR_RED);
+                            tmp << AdvancedString(std::string(f, '.'), COLOR_BLUE);
+                            tmp << AdvancedString(",", COLOR_RED);
                         }
                         terminal.push_back(tmp);
                         tmp.clear();
                     }
-                    break;//FIXME find the condition we need to break which should be that all parts of as were consumed into tmp
                 }
             }
         }
@@ -238,3 +246,10 @@ private:
 };
 
 #endif
+
+
+
+
+
+
+
