@@ -23,7 +23,7 @@
 
 int main_loop = 1;
 
-#define UNITTEST
+// #define UNITTEST
 
 void keyboard_input_handler();
 void check_logfile();
@@ -106,7 +106,7 @@ void test1(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res,
 
 void test2(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res, int num) {
     std::vector<AdvancedStringContainer> t;
-    AdvancedStringContainer::trimTrailingNewlines(t, a);
+    AdvancedStringContainer::trimEndAndRemoveNewlineChars(t, a);
 
     bool r = true;
 
@@ -122,7 +122,7 @@ void test2(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res,
         }
     }
     if (!r) {
-        std::cout << YELLOW << "---------------------------BEGIN TEST trimTrailingNewlines----------------------------------------------" << RESET << std::endl;
+        std::cout << YELLOW << "---------------------------BEGIN TEST trimEndAndRemoveNewlineChars----------------------------------------------" << RESET << std::endl;
         std::cout << RED << "TEST " << num << " WAS A FAILURE" << RESET << std::endl;
         std::cout << "==== input was: ====" << std::endl;
         for (int i=0; i < a.size(); ++i) {
@@ -136,7 +136,7 @@ void test2(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res,
         for (int i=0; i < res.size(); ++i) {
             std::cout << "'" << GREEN << res[i].str() << RESET <<"'" << std::endl;
         }
-        std::cout << YELLOW << "---------------------------END TEST trimTrailingNewlines----------------------------------------------" << RESET << std::endl<< std::endl<< std::endl;
+        std::cout << YELLOW << "---------------------------END TEST trimEndAndRemoveNewlineChars----------------------------------------------" << RESET << std::endl<< std::endl<< std::endl;
     }
 }
 
@@ -336,6 +336,43 @@ int main(int argc, char *argv[]) {
         test1(a, res, 10);
     }
     {
+        AdvancedStringContainer a;
+        a << AdvancedString("**this should be colored in MAGENTA**\n", COLOR_MAGENTA);
+        a << AdvancedString("**this should be colored in GREEN**\n", COLOR_GREEN);
+        a << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444\n", COLOR_GREEN);
+        a << AdvancedString("\n\na");
+        std::vector<AdvancedStringContainer> res;
+        AdvancedStringContainer e,e1,e2,e3,e4;
+        e << AdvancedString("**this should be colored in MAGENTA**");
+        res.push_back(e);
+        e1 << AdvancedString("**this should be colored in GREEN**");
+        res.push_back(e1);
+        e2 << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444");
+        res.push_back(e2);
+        e3 << AdvancedString("");
+        res.push_back(e3);
+        res.push_back(e3);
+        e4 << AdvancedString("a");
+        res.push_back(e4);
+        test1(a, res, 11);
+    }
+    {
+        AdvancedStringContainer a;
+        a << AdvancedString("  foo\n");
+        a << AdvancedString(" bar  ");
+        a << AdvancedString("   ");
+        std::vector<AdvancedStringContainer> res;
+        AdvancedStringContainer e,e1;
+        e << AdvancedString("  foo");
+        res.push_back(e);
+        e1 << AdvancedString(" bar  ");
+        e1 << AdvancedString("   ");
+
+        res.push_back(e1);
+        test1(a, res, 12);
+    }
+
+    {
         AdvancedStringContainer b;
         b << AdvancedString("linux                          ");
         b << AdvancedString("for  \n      the  ");
@@ -377,9 +414,6 @@ int main(int argc, char *argv[]) {
         AdvancedStringContainer e;
         e << AdvancedString("");
         res.push_back(e);
-        res.push_back(e);
-        res.push_back(e);
-        res.push_back(e);
         test2(b, res, 53);
     }
     {
@@ -390,8 +424,6 @@ int main(int argc, char *argv[]) {
         b << AdvancedString(" bar  ");
         std::vector<AdvancedStringContainer> res;
         AdvancedStringContainer e,e1,e2,e3;
-        e << AdvancedString("");
-        res.push_back(e);
         e << AdvancedString("");
         res.push_back(e);
         e1 << AdvancedString("   foo");
@@ -406,6 +438,7 @@ int main(int argc, char *argv[]) {
         b << AdvancedString("**this should be colored in GREEN**\n", COLOR_GREEN);
         b << AdvancedString("----------------------1111111111111111111111111122222222222222222222222222222222233333333333333333333333333333333334444444\n", COLOR_GREEN);
         b << AdvancedString("\n\na");
+
         std::vector<AdvancedStringContainer> res;
         AdvancedStringContainer e,e1,e2,e3,e4;
         e << AdvancedString("**this should be colored in MAGENTA**");
@@ -421,7 +454,34 @@ int main(int argc, char *argv[]) {
         res.push_back(e4);
         test2(b, res, 55);
     }
-
+    {
+        AdvancedStringContainer b;
+        b << AdvancedString("  foo\n");
+        b << AdvancedString(" bar  ");
+        b << AdvancedString("   ");
+        std::vector<AdvancedStringContainer> res;
+        AdvancedStringContainer e1,e2;
+        e1 << AdvancedString("  foo");
+        res.push_back(e1);
+        e2 << AdvancedString(" bar");
+        res.push_back(e2);
+        test2(b, res, 56);
+    }
+    {
+        AdvancedStringContainer b;
+        b << AdvancedString("123  \n");
+        b << AdvancedString("  \n");
+        b << AdvancedString("1lk2j312k3j");
+        std::vector<AdvancedStringContainer> res;
+        AdvancedStringContainer e1,e2,e3;
+        e1 << AdvancedString("123");
+        res.push_back(e1);
+        e2 << AdvancedString("");
+        res.push_back(e2);
+        e3 << AdvancedString("1lk2j312k3j");
+        res.push_back(e3);
+        test2(b, res, 57);
+    }
     ///////////////////////////////////////////// terminal_rasterize /////////////////////////////////////////////
     {
         AdvancedStringContainer c;
@@ -438,17 +498,14 @@ int main(int argc, char *argv[]) {
         res.push_back(e1);
         e2 << AdvancedString("is funny stuff..,");
         res.push_back(e2);
-        res.push_back(e);
         e3 << AdvancedString("bye bye world...,");
         res.push_back(e3);
         test3(c, res, 17, 71);
-
-
     }
     {
         AdvancedStringContainer c;
         c << AdvancedString("\n\nmore and more\n questions arise?");
-        c << AdvancedString("due to broken code\n");
+        c << AdvancedString("due to broken code\n\n");
         c << AdvancedString("so \nbye bye world\n");
         std::vector<AdvancedStringContainer> res;
         AdvancedStringContainer e,e0,e1,e2,e3,e4,e5;
@@ -497,11 +554,31 @@ int main(int argc, char *argv[]) {
         test3(c, res, 50, 73);
         std::vector<AdvancedStringContainer> buf;
 
-        AdvancedStringContainer::trimTrailingNewlines(buf, c);
+        AdvancedStringContainer::trimEndAndRemoveNewlineChars(buf, c);
         std::cout << "==== NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ====" << std::endl;
         for (int i=0; i < buf.size(); ++i) {
             std::cout  << "'" << YELLOW << buf[i].str() << RESET << "'" << std::endl;
         }
+//     {
+//         AdvancedStringContainer c;
+//         c << AdvancedString("\nhello worldhow are you today?");
+//         c << AdvancedString("this is funny stuff\n");
+//         c << AdvancedString("bye bye world");
+//         std::vector<AdvancedStringContainer> res;
+//         AdvancedStringContainer e,e0,e1,e2,e3;
+//         e << AdvancedString(std::string(17, '-'));
+//         res.push_back(e);
+//         e0 << AdvancedString("hello worldhow ar");
+//         res.push_back(e0);
+//         e1 << AdvancedString("e you today?this ");
+//         res.push_back(e1);
+//         e2 << AdvancedString("is funny stuff..,");
+//         res.push_back(e2);
+//         e3 << AdvancedString("bye bye world...,");
+//         res.push_back(e3);
+//         test3(c, res, 17, 74);
+//     }
+
     }
     exit(0);
 #endif

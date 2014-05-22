@@ -2,9 +2,12 @@
 #define ADVANCEDSTRING_HPP
 
 #include "ncurses.h"
-
+#include "ColorCodes.h"
 #include <string>
 
+/*
+ * to get an idea what this is all about have a look at the unit test which illustrates the concepts with lots of examples
+ */
 class AdvancedString {
 public:
     AdvancedString() {}
@@ -106,7 +109,11 @@ public:
     void clear() {
         sContainer.clear();
     }
-    static void containerStringSplit(std::vector<AdvancedStringContainer> &v_str, AdvancedStringContainer &in, const char ch) {
+
+    /*
+     * removes newline characters by transforming a AdvancedStringContainer (a list of words) into vector<AdvancedStringContainer> (a vector of sentences)
+     */
+    static void containerStringSplit(std::vector<AdvancedStringContainer> &v_str,  AdvancedStringContainer  &in , const char ch) {
         AdvancedStringContainer tmp;
         for (int i=0; i < in.size(); i++) {
             AdvancedString as = in[i];
@@ -133,24 +140,29 @@ public:
             }
         }
     }
-    static void trimTrailingNewlines(std::vector<AdvancedStringContainer> &v_str, AdvancedStringContainer &in) {
+
+    /*
+     * trimes right side of a sentence (AdvancedStringContainer are considered sentences) and removes newline characters using containerStringSplit
+     */
+    static void trimEndAndRemoveNewlineChars(std::vector<AdvancedStringContainer> &out,  AdvancedStringContainer  &in) {
         std::vector<AdvancedStringContainer> tmp;
         AdvancedStringContainer tmp2;
         AdvancedStringContainer asc_tmp;
         containerStringSplit(tmp, in, '\n');
+
         bool run = true;
 
         // process vector of sentences (tmp)
         for(int i=0; i < tmp.size(); ++i) {
             AdvancedStringContainer asc = tmp[i];
-            if (asc.size()) {
+            if (asc.str_size()) {
                 // process all words, inside a single sentence, in reverse and remove traling white spaces (including words built of white spaces)
                 for(int x=asc.size() - 1; x >= 0; x--) {
                     AdvancedString as = asc[x];
                     if(as.size()) {
                         // process a single word in reverse and find all whitespaces
+                        std::string s = as.str();
                         for(int y=as.size()-1; y >= 0; y--) {
-                            std::string s = as.str();
                             if(s[y] != ' ') {
                                 std::string sub = s.substr(0,y+1);
                                 AdvancedString n = AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
@@ -158,42 +170,52 @@ public:
                                     asc_tmp << asc[t];
                                 }
                                 asc_tmp << n;
-                                v_str.push_back(asc_tmp);
+                                out.push_back(asc_tmp);
                                 run = false;
                                 asc_tmp.clear();
                                 break;
                             }
-                            if (y == 0 && s[0] == ' ') {
-                                AdvancedString n = AdvancedString("", COLOR_YELLOW, as.attributes(), as.bgColor());
-                                asc_tmp << n;
-                                v_str.push_back(asc_tmp);
-                                asc_tmp.clear();
-                            }
+
                         }
-                        if (!run)
+
+                        if (!run) {
+                            run = true;
                             break;
-                    } else {
-                        asc_tmp.clear();
-                        asc_tmp << as;
-                        v_str.push_back(asc_tmp);
+                        }
+                    }
+                    if ((x == 0)/*|| s[0] == ' '*/) {
+                        AdvancedString n = AdvancedString("", COLOR_YELLOW, as.attributes(), as.bgColor());
+                        asc_tmp << n;
+                        out.push_back(asc_tmp);
                         asc_tmp.clear();
                     }
                 }
-                run = true;
+            } else {		//p hinzu
+
+                AdvancedString n = AdvancedString("", COLOR_YELLOW);
+                asc_tmp << n;
+                out.push_back(asc_tmp);
+                asc_tmp.clear();
             }
         }
     }
-    // translates the m_logfile into a fixed width vector for later displaying
-    static void terminal_rasterize(std::vector<AdvancedStringContainer> &terminal, AdvancedStringContainer &in, int width) {
+    /*
+     * translates AdvancedStringContainer (a list of words) into a fixed width vector of AdvancedStringContainer for later displaying
+     * - each vector element holds exactly width chars
+     * - if the input doesn't fill the whole line it is padded with white spaces
+     *
+     * this function is used by the Widget::render() call to compute the width x height chars needed for filling the widget space on the terminal
+     */
+    static void terminal_rasterize(std::vector<AdvancedStringContainer> &out, AdvancedStringContainer &in, int width) {
         // - render the text to a buffer
         // - do line-wrapping
         std::vector<AdvancedStringContainer> buf;
 
         // trims trailing newlines and writes result to buf
-        trimTrailingNewlines(buf, in);
+        trimEndAndRemoveNewlineChars(buf, in);
 
         // render the m_logfile into a terminal with width()
-        terminal.clear();
+        out.clear();
 
         AdvancedStringContainer tmp;
         // process vector of sentences (buf)
@@ -210,7 +232,7 @@ public:
 
                 if (as.size() == 0 && x == asc.size()-1) {
                     tmp << AdvancedString(std::string(width, '-'), COLOR_BLUE);
-                    terminal.push_back(tmp);
+                    out.push_back(tmp);
                     tmp.clear();
                 }
 
@@ -233,7 +255,7 @@ public:
                             tmp << AdvancedString(std::string(f, '.'), COLOR_BLUE);
                             tmp << AdvancedString(",", COLOR_RED);
                         }
-                        terminal.push_back(tmp);
+                        out.push_back(tmp);
                         tmp.clear();
                     }
                 }
