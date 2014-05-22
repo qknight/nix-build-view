@@ -8,6 +8,7 @@ class HelpWidget : public Widget {
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type();
 private:
+  std::string p(std::string s);
       unsigned int width() {
         return m_width;
     }

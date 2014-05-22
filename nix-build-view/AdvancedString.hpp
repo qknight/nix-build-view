@@ -207,7 +207,7 @@ public:
      * this function is used by the Widget::render() call to compute the width x height chars needed for filling the widget space on the terminal
      */
     static void terminal_rasterize(std::vector<AdvancedStringContainer> &out, AdvancedStringContainer &in, int width) {
-        // - render the text to a buffer
+        // - render the text to a buffer4
         // - do line-wrapping
         std::vector<AdvancedStringContainer> buf;
 
@@ -230,8 +230,8 @@ public:
                 std::string::iterator it_p = as.str().begin();
                 std::string::iterator it_e = as.str().end();
 
-                if (as.size() == 0 && x == asc.size()-1) {
-                    tmp << AdvancedString(std::string(width, '-'), COLOR_BLUE);
+                if ((as.size() == 0) && (x == asc.size()-1) && (i != buf.size()-1)) {
+                    tmp << AdvancedString(std::string(width, ' '), COLOR_BLUE);
                     out.push_back(tmp);
                     tmp.clear();
                 }
@@ -251,9 +251,7 @@ public:
                     if ((width-tmp.str_size() == 0) || (x == asc.size()-1)) {
                         int f = width-tmp.str_size();
                         if (f > 0) {
-                            f-=1;
-                            tmp << AdvancedString(std::string(f, '.'), COLOR_BLUE);
-                            tmp << AdvancedString(",", COLOR_RED);
+                            tmp << AdvancedString(std::string(f, ' '));
                         }
                         out.push_back(tmp);
                         tmp.clear();
