@@ -35,7 +35,7 @@ RasterizedLayout Layout::rasterize(int width, int height) {
             int type = fw.widget->type();
             if (type == WidgetName::BuildWidgetManager || type == WidgetName::FetchWidgetManager) {
                 int t = 0;
-                int hH = 0;
+                unsigned int hH = 0;
                 // search though the layout's highHint for the widget
                 for(unsigned int i=0; i < m_layoutItems.size(); ++i) {
                     if (m_layoutItems[i]->widget == fw.widget) {

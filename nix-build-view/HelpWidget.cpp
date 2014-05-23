@@ -63,6 +63,7 @@ AdvancedStringContainer HelpWidget::render(unsigned int width, unsigned int heig
         AdvancedStringContainer t = *it_b++;
         out << t;
     }
-
+  
     return out;
 }
+

@@ -9,8 +9,6 @@ int TerminalWidget::type() {
     return WidgetName::TerminalWidget;
 }
 
-
-
 //FIXME only auto-scroll the view when m_line==0
 AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int height) {
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
@@ -46,13 +44,13 @@ void TerminalWidget::append(AdvancedStringContainer line) {
     // you can't use copy'n'paste from that terminal, so Makefiles for example will be broken when being copied this way
     AdvancedStringContainer buf;
 
-    for(int i=0; i < line.size(); ++i) {
+    for(unsigned int i=0; i < line.size(); ++i) {
         AdvancedString a = line[i];
         std::string s = a.str();
         std::stringstream ss;
 
         //FIXME could be implemented more efficiently
-        for(int x=0; x < s.size(); ++x) {
+        for(unsigned int x=0; x < s.size(); ++x) {
             if (s[x] == '\t')
                 ss << "        ";
             else
@@ -63,7 +61,14 @@ void TerminalWidget::append(AdvancedStringContainer line) {
 
     // add the new string
     m_logfile << buf;
-    AdvancedStringContainer::terminal_rasterize(m_terminal, m_logfile, this->width());
+    std::vector<AdvancedStringContainer> m;
+    AdvancedStringContainer::terminal_rasterize(m, buf, this->width());
+    for(unsigned int i=0; i < m.size(); ++i) {
+       m_terminal.push_back(m[i]);
+    }
+
+    if (m_line != 0)
+      m_line += m.size();
 
     update();
 }

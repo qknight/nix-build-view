@@ -115,7 +115,7 @@ public:
      */
     static void containerStringSplit(std::vector<AdvancedStringContainer> &v_str,  AdvancedStringContainer  &in , const char ch) {
         AdvancedStringContainer tmp;
-        for (int i=0; i < in.size(); i++) {
+        for (unsigned int i=0; i < in.size(); i++) {
             AdvancedString as = in[i];
             std::string str = as.str();
             std::string sub;
@@ -153,7 +153,7 @@ public:
         bool run = true;
 
         // process vector of sentences (tmp)
-        for(int i=0; i < tmp.size(); ++i) {
+        for(unsigned int i=0; i < tmp.size(); ++i) {
             AdvancedStringContainer asc = tmp[i];
             if (asc.str_size()) {
                 // process all words, inside a single sentence, in reverse and remove traling white spaces (including words built of white spaces)
@@ -219,10 +219,10 @@ public:
 
         AdvancedStringContainer tmp;
         // process vector of sentences (buf)
-        for(int i=0; i < buf.size(); ++i) {
+        for(unsigned int i=0; i < buf.size(); ++i) {
             AdvancedStringContainer asc = buf[i];
             // process all words, inside a single sentence,
-            for(int x=0; x < asc.size(); x++) {
+            for(unsigned int x=0; x < asc.size(); x++) {
                 AdvancedString as = asc[x];
                 AdvancedString atmp;
 

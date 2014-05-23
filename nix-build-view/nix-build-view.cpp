@@ -490,15 +490,15 @@ int main(int argc, char *argv[]) {
         c << AdvancedString("bye bye world");
         std::vector<AdvancedStringContainer> res;
         AdvancedStringContainer e,e0,e1,e2,e3;
-        e << AdvancedString(std::string(17, '-'));
+        e << AdvancedString(std::string(17, ' '));
         res.push_back(e);
         e0 << AdvancedString("hello worldhow ar");
         res.push_back(e0);
         e1 << AdvancedString("e you today?this ");
         res.push_back(e1);
-        e2 << AdvancedString("is funny stuff..,");
+        e2 << AdvancedString("is funny stuff   ");
         res.push_back(e2);
-        e3 << AdvancedString("bye bye world...,");
+        e3 << AdvancedString("bye bye world    ");
         res.push_back(e3);
         test3(c, res, 17, 71);
     }
@@ -509,23 +509,23 @@ int main(int argc, char *argv[]) {
         c << AdvancedString("so \nbye bye world\n");
         std::vector<AdvancedStringContainer> res;
         AdvancedStringContainer e,e0,e1,e2,e3,e4,e5;
-        e << AdvancedString(std::string(17, '-'));
+        e << AdvancedString(std::string(17, ' '));
         res.push_back(e);
         res.push_back(e);
-        e0 << AdvancedString("more and more...,");
+        e0 << AdvancedString("more and more    ");
         res.push_back(e0);
         e1 << AdvancedString(" questions arise?");
         res.push_back(e1);
         e2 << AdvancedString("due to broken cod");
         res.push_back(e2);
-        e3 << AdvancedString("e...............,");
+        e3 << AdvancedString("e                ");
         res.push_back(e3);
         res.push_back(e);
-        e4 << AdvancedString("so..............,");
+        e4 << AdvancedString("so               ");
         res.push_back(e4);
-        e5 << AdvancedString("bye bye world...,");
+        e5 << AdvancedString("bye bye world    ");
         res.push_back(e5);
-        res.push_back(e);
+//         res.push_back(e);
         test3(c, res, 17, 72);
     }
     {
@@ -536,49 +536,29 @@ int main(int argc, char *argv[]) {
         c << AdvancedString("\n\na");
         std::vector<AdvancedStringContainer> res;
         AdvancedStringContainer e,e0,e1,e2,e3,e4,e5;
-        e << AdvancedString(std::string(50, '-'));
-        e0 << AdvancedString("**this should be colored in MAGENTA**............,");
+        e << AdvancedString(std::string(50, ' '));
+        e0 << AdvancedString("**this should be colored in MAGENTA**             ");
         res.push_back(e0);
-        e1 << AdvancedString("**this should be colored in GREEN**..............,");
+        e1 << AdvancedString("**this should be colored in GREEN**               ");
         res.push_back(e1);
         e2 << AdvancedString("----------------------1111111111111111111111111122");
         res.push_back(e2);
         e3 << AdvancedString("22222222222222222222222222222223333333333333333333");
         res.push_back(e3);
-        e4 << AdvancedString("3333333333333334444444...........................,");
+        e4 << AdvancedString("3333333333333334444444                            ");
         res.push_back(e4);
         res.push_back(e);
         res.push_back(e);
-        e5 << AdvancedString("a................................................,");
+        e5 << AdvancedString("a                                                 ");
         res.push_back(e5);
         test3(c, res, 50, 73);
         std::vector<AdvancedStringContainer> buf;
 
-        AdvancedStringContainer::trimEndAndRemoveNewlineChars(buf, c);
-        std::cout << "==== NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ====" << std::endl;
-        for (int i=0; i < buf.size(); ++i) {
-            std::cout  << "'" << YELLOW << buf[i].str() << RESET << "'" << std::endl;
-        }
-//     {
-//         AdvancedStringContainer c;
-//         c << AdvancedString("\nhello worldhow are you today?");
-//         c << AdvancedString("this is funny stuff\n");
-//         c << AdvancedString("bye bye world");
-//         std::vector<AdvancedStringContainer> res;
-//         AdvancedStringContainer e,e0,e1,e2,e3;
-//         e << AdvancedString(std::string(17, '-'));
-//         res.push_back(e);
-//         e0 << AdvancedString("hello worldhow ar");
-//         res.push_back(e0);
-//         e1 << AdvancedString("e you today?this ");
-//         res.push_back(e1);
-//         e2 << AdvancedString("is funny stuff..,");
-//         res.push_back(e2);
-//         e3 << AdvancedString("bye bye world...,");
-//         res.push_back(e3);
-//         test3(c, res, 17, 74);
-//     }
-
+//         AdvancedStringContainer::trimEndAndRemoveNewlineChars(buf, c);
+//         std::cout << "==== NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN: ====" << std::endl;
+//         for (int i=0; i < buf.size(); ++i) {
+//             std::cout  << "'" << YELLOW << buf[i].str() << RESET << "'" << std::endl;
+//         }
     }
     exit(0);
 #endif

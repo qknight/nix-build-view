@@ -9,6 +9,7 @@ public:
     static BuildWidgetManager* Instance();
 private:
     BuildWidgetManager();
+    void sort();
 };
 
 #endif // BUILDWIDGETMANAGER_H

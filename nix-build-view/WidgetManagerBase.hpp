@@ -23,6 +23,7 @@ private:
     }
     unsigned int m_width = 0;
     unsigned int m_height = 0;
+    virtual void sort() = 0;
 };
 
 #endif // WIDGETMANAGERBASE_H

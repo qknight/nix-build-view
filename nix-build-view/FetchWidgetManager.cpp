@@ -1,5 +1,8 @@
 #include "FetchWidgetManager.hpp"
 
+#include <iostream>
+#include <algorithm>
+
 FetchWidgetManager::FetchWidgetManager() {
 }
 
@@ -10,4 +13,7 @@ int FetchWidgetManager::type() {
 FetchWidgetManager* FetchWidgetManager::Instance() {
     static FetchWidgetManager* _instance = new FetchWidgetManager;
     return _instance;
+}
+
+void FetchWidgetManager::sort() {
 }

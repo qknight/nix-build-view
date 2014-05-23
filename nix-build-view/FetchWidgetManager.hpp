@@ -9,6 +9,7 @@ public:
     static FetchWidgetManager* Instance();
 private:
     FetchWidgetManager();
+    void sort();
 };
 
 #endif // FETCHWIDGETMANAGER_H

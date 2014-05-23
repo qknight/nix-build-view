@@ -1,9 +1,13 @@
 #include "WidgetManagerBase.hpp"
 
+
+
 AdvancedStringContainer WidgetManagerBase::render(unsigned int width, unsigned int height) {
     m_width = width;
     m_height = height;
-    
+
+    sort();
+
     AdvancedStringContainer s;
     for(unsigned int i=m_line; i < m_line+height; ++i) {
         if (i >= m_widgets.size())
@@ -20,7 +24,7 @@ unsigned int WidgetManagerBase::rowsWantedByWidget() {
 
 void WidgetManagerBase::keyboardInputHandler(int ch) {
     switch(ch) {
-    case(KEY_HOME): 
+    case(KEY_HOME):
         m_line = 0;
         update();
         break;

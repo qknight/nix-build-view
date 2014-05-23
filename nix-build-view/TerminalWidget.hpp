@@ -22,7 +22,7 @@ public:
     static TerminalWidget* Instance();
 private:
     AdvancedStringContainer m_logfile;
-    int m_line = 0;
+    unsigned int m_line = 0;
     std::vector<AdvancedStringContainer> m_terminal;
     unsigned int width() {
         return m_width;
