@@ -8,7 +8,7 @@ class BuildWidget : public Widget {
 public:
     BuildWidget(std::string name, std::string status);
     AdvancedStringContainer render(unsigned int width, unsigned int height);
-    int type();
+    int type() const;
 private:
     std::string m_name;
     std::string m_status;

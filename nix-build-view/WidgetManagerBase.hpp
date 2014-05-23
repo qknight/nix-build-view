@@ -6,13 +6,13 @@
 
 class WidgetManagerBase : public Widget {
 public:
-    virtual int type() = 0;
+    virtual int type() const = 0;
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     unsigned int rowsWantedByWidget();
     void add(Widget* w);
 //     virtual ~WidgetManagerBase();
-private:
     std::vector<Widget*> m_widgets;
+private:
     int m_line = 0;
     void keyboardInputHandler(int ch);
     unsigned int width() {

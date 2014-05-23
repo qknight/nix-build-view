@@ -13,7 +13,7 @@ FetchWidget::FetchWidget(std::string url, float percent, int bits_per_sec) {
     m_bits_per_sec = bits_per_sec;
 };
 
-int FetchWidget::type() {
+int FetchWidget::type() const {
     return WidgetName::FetchWidget;
 }
 

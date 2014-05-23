@@ -14,7 +14,7 @@ class TerminalWidget : public Widget {
 public:
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     void append(AdvancedStringContainer line);
-    int type();
+    int type() const;
     void keyboardInputHandler(int ch);
     AdvancedStringContainer log() {
         return m_logfile;

@@ -7,7 +7,7 @@ class StatusWidget : public Widget {
     AdvancedStringContainer render(unsigned int width, unsigned int height);
 public:
     void setFocus(int arg1);
-    int type();
+    int type() const;
     static StatusWidget* Instance();
 private:
     StatusWidget();

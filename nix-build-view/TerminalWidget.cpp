@@ -5,7 +5,7 @@ TerminalWidget* TerminalWidget::Instance() {
     return _instance;
 }
 
-int TerminalWidget::type() {
+int TerminalWidget::type() const {
     return WidgetName::TerminalWidget;
 }
 
@@ -64,11 +64,11 @@ void TerminalWidget::append(AdvancedStringContainer line) {
     std::vector<AdvancedStringContainer> m;
     AdvancedStringContainer::terminal_rasterize(m, buf, this->width());
     for(unsigned int i=0; i < m.size(); ++i) {
-       m_terminal.push_back(m[i]);
+        m_terminal.push_back(m[i]);
     }
 
     if (m_line != 0)
-      m_line += m.size();
+        m_line += m.size();
 
     update();
 }

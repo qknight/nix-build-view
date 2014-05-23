@@ -2,7 +2,7 @@
 #include "AdvancedString.hpp"
 #include <string>
 
-int StatusWidget::type() {
+int StatusWidget::type() const {
     return WidgetName::StatusWidget;
 }
 

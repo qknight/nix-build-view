@@ -4,7 +4,7 @@ unsigned int VerticalSpacerWidget::rowsWantedByWidget() {
   return 0; 
 }
 
-int VerticalSpacerWidget::type() {
+int VerticalSpacerWidget::type() const {
     return WidgetName::VerticalSpacerWidget;
 }
 

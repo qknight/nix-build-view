@@ -3,7 +3,7 @@
 BuildWidgetManager::BuildWidgetManager() {
 }
 
-int BuildWidgetManager::type() {
+int BuildWidgetManager::type() const {
     return WidgetName::BuildWidgetManager;
 }
 

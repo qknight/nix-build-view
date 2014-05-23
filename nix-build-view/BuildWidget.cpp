@@ -6,7 +6,7 @@ BuildWidget::BuildWidget(std::string name, std::string status) {
     m_status = status;
 }
 
-int BuildWidget::type() {
+int BuildWidget::type() const {
     return WidgetName::BuildWidget;
 }
 

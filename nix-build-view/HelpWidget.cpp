@@ -4,7 +4,7 @@
 #include <iostream>
 #include <iomanip>
 
-int HelpWidget::type() {
+int HelpWidget::type() const {
     return WidgetName::HelpWidget;
 }
 

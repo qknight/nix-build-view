@@ -5,7 +5,7 @@
 
 class BuildWidgetManager : public WidgetManagerBase {
 public:
-    int type();
+    int type() const;
     static BuildWidgetManager* Instance();
 private:
     BuildWidgetManager();

@@ -30,7 +30,7 @@ public:
 //     void show() {
 //         m_visible = true;
 //     }
-    virtual int type() = 0;
+    virtual int type() const = 0;
     virtual void keyboardInputHandler(int ch) {};
     // interesting for nested widget rendering
     virtual unsigned int rowsWantedByWidget() {
