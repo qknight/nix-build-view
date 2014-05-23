@@ -110,10 +110,47 @@ public:
         sContainer.clear();
     }
 
+     /*
+      * like std::string.substr this function builds a substring starting at b and ending at e
+      *  - if b > e, an empty AdvancedStringContainer is returned
+      *  - if b or e is outside in, then an empty AdvancedStringContainer is returned
+      *  - if [ 0 <= b < e <= in.str_size ], then it will return a AdvancedStringContainer with at least one element in it
+      *
+      * WARNING: it is assumed that the string is free of \n or \t chars!
+      */
+     //FIXME implement this and write unit tests for it, finally make us of it in the render() function to limit the string!
+    static void substr(std::vector<AdvancedStringContainer> &out,  AdvancedStringContainer  &in , unsigned int b, unsigned int e) {
+//         AdvancedStringContainer tmp;
+//         for (unsigned int i=0; i < in.size(); i++) {
+//             AdvancedString as = in[i];
+//             std::string str = as.str();
+//             std::string sub;
+//             std::string::size_type pos = 0;
+//             std::string::size_type old_pos = 0;
+//             bool flag=true;
+// 
+//             while(flag) {
+//                 pos=str.find_first_of(ch,pos);
+//                 if(pos == std::string::npos)
+//                 {
+//                     flag = false;
+//                     pos = str.size();
+//                 }
+//                 sub = str.substr(old_pos, pos-old_pos);
+//                 tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
+//                 if (flag || i == in.size()-1) {
+//                     out.push_back(tmp);
+//                     tmp.clear();
+//                 }
+//                 old_pos = ++pos;
+//             }
+//         }
+    }
+    
     /*
      * removes newline characters by transforming a AdvancedStringContainer (a list of words) into vector<AdvancedStringContainer> (a vector of sentences)
      */
-    static void containerStringSplit(std::vector<AdvancedStringContainer> &v_str,  AdvancedStringContainer  &in , const char ch) {
+    static void containerStringSplit(std::vector<AdvancedStringContainer> &out,  AdvancedStringContainer  &in , const char ch) {
         AdvancedStringContainer tmp;
         for (unsigned int i=0; i < in.size(); i++) {
             AdvancedString as = in[i];
@@ -133,7 +170,7 @@ public:
                 sub = str.substr(old_pos, pos-old_pos);
                 tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
                 if (flag || i == in.size()-1) {
-                    v_str.push_back(tmp);
+                    out.push_back(tmp);
                     tmp.clear();
                 }
                 old_pos = ++pos;

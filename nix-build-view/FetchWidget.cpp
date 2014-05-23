@@ -20,10 +20,8 @@ int FetchWidget::type() const {
 
 AdvancedStringContainer FetchWidget::render(unsigned int width, unsigned int height) {
 
-    int size = m_url.size();
     AdvancedStringContainer url_progress;
-    float end = m_percent * size;
-    url_progress << AdvancedString(m_url.substr(0, (int)end), COLOR_GREEN) << m_url.substr((int)end, size-(int)end);
+
 
     //FIXME compute kib/Mib/Gib labels from input
     stringstream s1;
@@ -31,9 +29,17 @@ AdvancedStringContainer FetchWidget::render(unsigned int width, unsigned int hei
     AdvancedStringContainer s2;
 
     // dynamic spacer
-    int i = width - url_progress.str_size() - s1.str().size() - 2;
+    int i = width - m_url.size() - s1.str().size() - 1;
     if (i < 0) i = 0;
-    s2 << url_progress << " " << std::string(i, '.') << " " << AdvancedString(s1.str(), COLOR_YELLOW);
+
+    std::stringstream t;
+    t << m_url << " " << std::string(i+1, '.');
+
+    int size = t.str().size()-2;
+    float end = m_percent * size;
+
+    url_progress << AdvancedString(t.str().substr(0, (int)end), COLOR_GREEN) << t.str().substr((int)end, size-(int)end);
+    s2 << url_progress << " " << AdvancedString(s1.str(), COLOR_YELLOW);
 
     return s2;
 }
