@@ -23,7 +23,6 @@
 int main_loop = 1;
 
 void keyboard_input_handler();
-void check_logfile();
 void check_JSON();
 
 FILE* fp;
@@ -49,20 +48,16 @@ void keyboard_input_handler() {
     WindowManager::Instance()->keyboardInputHandler(ch);
 }
 
-void check_logfile() {
-    //FIXME read as much as possible in one go and not line by line....
-    ssize_t read;
-    do {
-        if ((read = getline(&line, &len, fp)) != -1) {
-            AdvancedStringContainer s;
-            s << line;
-            TerminalWidget::Instance()->append(s);
-        }
-    } while (read > 0);
-}
-
 void check_JSON() {
-
+    //FIXME read as much as possible in one go and not line by line....
+//     ssize_t read;
+//     do {
+//         if ((read = getline(&line, &len, fp)) != -1) {
+//             AdvancedStringContainer s;
+//             s << line;
+//             TerminalWidget::Instance()->append(s);
+//         }
+//     } while (read > 0);
 }
 
 int main(int argc, char *argv[]) {
@@ -79,6 +74,61 @@ int main(int argc, char *argv[]) {
     noecho();
 
     WindowManager::Instance()->update();
+    AdvancedStringContainer s;
+
+    s << AdvancedString("nix-build-view ", COLOR_CYAN, WA_BOLD) << AdvancedString(WindowManager::Instance()->version(), COLOR_CYAN) << AdvancedString(" (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD);
+    s << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN, WA_BOLD);
+    s << AdvancedString("\n");
+    s << AdvancedString("building Nix...\n");
+    s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
+    s << AdvancedString("  /nix/store/4hh3935anmmhl13q8lmdkgdsxzh46gq6-") << AdvancedString("tig-1.1.drv\n", COLOR_MAGENTA);
+    s << AdvancedString("  /nix/store/9brfbp9gk7x3qim52q49rckhw7vw08h2-") << AdvancedString("asciidoc-8.6.8.drv\n", COLOR_MAGENTA);
+    s << AdvancedString("  /nix/store/ckn6dnnb0ayjbdn3avpqvqa5rs35k2w1-") << AdvancedString("tig-1.1.tar.gz.drv\n", COLOR_MAGENTA);
+    s << AdvancedString("  /nix/store/j9bgfp4q6h8gdi4b6idvi1r39b5hagvz-") << AdvancedString("asciidoc-8.6.8.tar.gz.drv\n", COLOR_MAGENTA);
+    s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
+    s << AdvancedString("  /nix/store/0yzz6p08k1sgpdb63c0wx48vx0yc51g6-") << AdvancedString("bzip2-1.0.6\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/1a08qk5q5vdfv13rwasbf4fqa2s26kx4-") << AdvancedString("attr-2.4.47\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/3amm865b2qb5s5mwvshvd9kpfq3aj1bc-") << AdvancedString("libssh2-1.4.3\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/5myfmphlck9gcabr6czlg6792d9zhh4m-") << AdvancedString("perl-DBI-1.630\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/j298bijkgdzzv6wlzdidldx297ch5rq2-") << AdvancedString("nix-1.7pre3327_0e2ca\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/mad928szz57gjpbfm9dih23hpspzz11f-") << AdvancedString("openssl-1.0.1f\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/q784x64hp3nwdxx7lbgb16f74i2bhxxk-") << AdvancedString("glibc-2.18\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/qw7vn33jcv1yfsfdw19ic5r2jlqk68w3-") << AdvancedString("bash-4.2-p45\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/skxdffb34mcz50f9q691qsg44bgrxg2x-") << AdvancedString("perl-DBD-SQLite-1.37\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/vmq6nmnvyblnwlrmhhhpnsjdlri4qz25-") << AdvancedString("curl-7.33.0\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/xay7d5hfhm9vj3v31dbzimi08ydrgd4w-") << AdvancedString("zlib-1.2.8\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/xkhr68z09y66c1qwzdq03lnhjl9c51si-") << AdvancedString("perl-WWW-Curl-4.15\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-") << AdvancedString("gzip-1.6\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/z1krxp2hwph8fypchf2b0ssnyp6z8k9l-") << AdvancedString("perl-5.16.3\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zp4bcz188h69jvrb1qyl10lfkanz7ld3-") << AdvancedString("boehm-gc-7.2d\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zsl05mbb69s38bbyi9nfff6vyry9m8jm-") << AdvancedString("gnutar-1.27.1\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zxvyl58mw530xf811nmm0i8b6nibwmw5-") << AdvancedString("coreutils-8.21\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/mad928szz57gjpbfm9dih23hpspzz11f-") << AdvancedString("openssl-1.0.1f\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/q784x64hp3nwdxx7lbgb16f74i2bhxxk-") << AdvancedString("glibc-2.18\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/qw7vn33jcv1yfsfdw19ic5r2jlqk68w3-") << AdvancedString("bash-4.2-p45\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/skxdffb34mcz50f9q691qsg44bgrxg2x-") << AdvancedString("perl-DBD-SQLite-1.37\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/vmq6nmnvyblnwlrmhhhpnsjdlri4qz25-") << AdvancedString("curl-7.33.0\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/xay7d5hfhm9vj3v31dbzimi08ydrgd4w-") << AdvancedString("zlib-1.2.8\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/xkhr68z09y66c1qwzdq03lnhjl9c51si-") << AdvancedString("perl-WWW-Curl-4.15\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-") << AdvancedString("gzip-1.6\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/z1krxp2hwph8fypchf2b0ssnyp6z8k9l-") << AdvancedString("perl-5.16.3\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zp4bcz188h69jvrb1qyl10lfkanz7ld3-") << AdvancedString("boehm-gc-7.2d\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zsl05mbb69s38bbyi9nfff6vyry9m8jm-") << AdvancedString("gnutar-1.27.1\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zxvyl58mw530xf811nmm0i8b6nibwmw5-") << AdvancedString("coreutils-8.21\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/mad928szz57gjpbfm9dih23hpspzz11f-") << AdvancedString("openssl-1.0.1f\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/q784x64hp3nwdxx7lbgb16f74i2bhxxk-") << AdvancedString("glibc-2.18\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/qw7vn33jcv1yfsfdw19ic5r2jlqk68w3-") << AdvancedString("bash-4.2-p45\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/skxdffb34mcz50f9q691qsg44bgrxg2x-") << AdvancedString("perl-DBD-SQLite-1.37\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/vmq6nmnvyblnwlrmhhhpnsjdlri4qz25-") << AdvancedString("curl-7.33.0\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/xay7d5hfhm9vj3v31dbzimi08ydrgd4w-") << AdvancedString("zlib-1.2.8\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/xkhr68z09y66c1qwzdq03lnhjl9c51si-") << AdvancedString("perl-WWW-Curl-4.15\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/ylcpwyczz887grq8lzdz8hn81q7yrn38-") << AdvancedString("gzip-1.6\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/z1krxp2hwph8fypchf2b0ssnyp6z8k9l-") << AdvancedString("perl-5.16.3\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zp4bcz188h69jvrb1qyl10lfkanz7ld3-") << AdvancedString("boehm-gc-7.2d\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zsl05mbb69s38bbyi9nfff6vyry9m8jm-") << AdvancedString("gnutar-1.27.1\n", COLOR_GREEN);
+    s << AdvancedString("  /nix/store/zxvyl58mw530xf811nmm0i8b6nibwmw5-") << AdvancedString("coreutils-8.21\n", COLOR_GREEN);
+
+    TerminalWidget::Instance()->append(s);
 
     BuildWidgetManager* buildWidgetManager = BuildWidgetManager::Instance();
     FetchWidgetManager* fetchWidgetManager = FetchWidgetManager::Instance();
@@ -445,10 +495,7 @@ int main(int argc, char *argv[]) {
     buildWidgetManager->add(new BuildWidget("/nix/store/zbbmg0dd4yjb1n60iyk9bakw2l9f4ikl-filelight-4.11.5", "fooPhase 1/8"));
     buildWidgetManager->add(new BuildWidget("last/nix/store/zgyxksvfqr69ksvfqr6999bc2a0bj518yi8cqd1j0-libkdcraw-4.11.5", "installationPhase 5/8"));
 
-    //FIXME think about pselect here...
     while (main_loop) {
-        //FIXME not working right now
-        check_logfile();
         check_JSON();
         keyboard_input_handler();
     }
@@ -456,9 +503,10 @@ int main(int argc, char *argv[]) {
     endwin(); /* End curses mode */
 
     //FIXME need a renderer for AdvancedString to shell *oh sigh*
-    //     std::cout << listWidget->log().str() << std::endl;
+    AdvancedStringContainer log =  TerminalWidget::Instance()->log();
 
-
+    for(unsigned int i=0; i < log.size(); ++i)
+        std::cout << log[i].terminalString();
     return 0;
 }
 

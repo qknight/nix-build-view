@@ -1,4 +1,5 @@
 #include "HelpWidget.hpp"
+#include "WindowManager.hpp"
 
 #include <sstream>
 #include <iostream>
@@ -20,7 +21,8 @@ AdvancedStringContainer HelpWidget::render(unsigned int width, unsigned int heig
     AdvancedStringContainer out;
 
     AdvancedStringContainer s;
-    s << AdvancedString("nix-build-view $version (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD);
+    
+    s << AdvancedString("nix-build-view ", COLOR_CYAN, WA_BOLD) << AdvancedString(WindowManager::Instance()->version(), COLOR_CYAN) << AdvancedString(" (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD);
     s << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN, WA_BOLD);
     s << "\n";
     s << "\n";
@@ -34,12 +36,16 @@ AdvancedStringContainer HelpWidget::render(unsigned int width, unsigned int heig
     s << "         " << AdvancedString(p("3"), COLOR_CYAN, WA_BOLD) << " - shows the download widget (can be scrolled)\n";
     s << "         " << AdvancedString(p("4"), COLOR_CYAN, WA_BOLD) << " - shows the build widget (can be scrolled)\n";
     s << "\n";
+    s << "     " << "using the views: \n";
+    s << "\n";
     s << "         " << AdvancedString(p("up"), COLOR_CYAN, WA_BOLD) << " - scrolls view up\n";
     s << "         " << AdvancedString(p("down"), COLOR_CYAN, WA_BOLD) << " - scrolls the view down\n";
     s << "         " << AdvancedString(p("page up"), COLOR_CYAN, WA_BOLD) << " - scrolls view up by several lines\n";
     s << "         " << AdvancedString(p("page down"), COLOR_CYAN, WA_BOLD) << " - scrolls view down by several lines\n";
     s << "         " << AdvancedString(p("pos1"), COLOR_CYAN, WA_BOLD) << " - scrolls view to beginning\n";
     s << "         " << AdvancedString(p("end"), COLOR_CYAN, WA_BOLD) << " - scrolls view to end\n";
+    s << "\n";
+    s << "         " << "note: if you scroll to the end of the log (2) 'auto-scroll' will be active\n";
 
 
     //caches the output for better performance

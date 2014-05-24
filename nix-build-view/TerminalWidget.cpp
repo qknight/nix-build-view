@@ -49,7 +49,6 @@ void TerminalWidget::append(AdvancedStringContainer line) {
         std::string s = a.str();
         std::stringstream ss;
 
-        //FIXME could be implemented more efficiently
         for(unsigned int x=0; x < s.size(); ++x) {
             if (s[x] == '\t')
                 ss << "        ";

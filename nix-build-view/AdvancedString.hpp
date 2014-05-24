@@ -32,6 +32,38 @@ public:
     int attributes() {
         return m_attributes;
     }
+    std::string terminalString() {
+        std::stringstream ss;
+        std::string color;
+        switch (m_fontColor) {
+        case COLOR_BLACK:
+            color= "\033[30m";
+            break;
+        case COLOR_RED:
+            color= "\033[31m";
+            break;
+        case COLOR_GREEN:
+            color= "\033[32m";
+            break;
+        case COLOR_YELLOW:
+            color= "\033[33m";
+            break;
+        case COLOR_BLUE:
+            color= "\033[34m";
+            break;
+        case COLOR_MAGENTA:
+            color= "\033[35m";
+            break;
+        case COLOR_CYAN:
+            color= "\033[36m";
+            break;
+        case COLOR_WHITE:
+            color= "\033[37m";
+            break;
+        }
+        ss << color << m_str << RESET;
+        return ss.str();
+    }
 private:
     std::string m_str;
     int m_fontColor;
@@ -110,15 +142,15 @@ public:
         sContainer.clear();
     }
 
-     /*
-      * like std::string.substr this function builds a substring starting at b and ending at e
-      *  - if b > e, an empty AdvancedStringContainer is returned
-      *  - if b or e is outside in, then an empty AdvancedStringContainer is returned
-      *  - if [ 0 <= b < e <= in.str_size ], then it will return a AdvancedStringContainer with at least one element in it
-      *
-      * WARNING: it is assumed that the string is free of \n or \t chars!
-      */
-     //FIXME implement this and write unit tests for it, finally make us of it in the render() function to limit the string!
+    /*
+     * like std::string.substr this function builds a substring starting at b and ending at e
+     *  - if b > e, an empty AdvancedStringContainer is returned
+     *  - if b or e is outside in, then an empty AdvancedStringContainer is returned
+     *  - if [ 0 <= b < e <= in.str_size ], then it will return a AdvancedStringContainer with at least one element in it
+     *
+     * WARNING: it is assumed that the string is free of \n or \t chars!
+     */
+    //FIXME implement this and write unit tests for it, finally make us of it in the render() function to limit the string!
     static void substr(std::vector<AdvancedStringContainer> &out,  AdvancedStringContainer  &in , unsigned int b, unsigned int e) {
 //         AdvancedStringContainer tmp;
 //         for (unsigned int i=0; i < in.size(); i++) {
@@ -128,7 +160,7 @@ public:
 //             std::string::size_type pos = 0;
 //             std::string::size_type old_pos = 0;
 //             bool flag=true;
-// 
+//
 //             while(flag) {
 //                 pos=str.find_first_of(ch,pos);
 //                 if(pos == std::string::npos)
@@ -146,7 +178,7 @@ public:
 //             }
 //         }
     }
-    
+
     /*
      * removes newline characters by transforming a AdvancedStringContainer (a list of words) into vector<AdvancedStringContainer> (a vector of sentences)
      */

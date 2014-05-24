@@ -10,7 +10,6 @@ public:
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     unsigned int rowsWantedByWidget();
     void add(Widget* w);
-//     virtual ~WidgetManagerBase();
     std::vector<Widget*> m_widgets;
 private:
     int m_line = 0;

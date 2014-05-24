@@ -2,6 +2,7 @@
 #define WINDOW_MANAGER_HPP
 
 #include <curses.h>
+#include "version.hpp"
 
 #include "ColorManager.hpp"
 
@@ -33,6 +34,7 @@ public:
     };
     static WindowManager* Instance();
     void keyboardInputHandler(int ch);
+    std::string version();
 private:
     WindowManager(WINDOW *win);
     void setKeyboardInputHandler(Widget* w);
@@ -48,7 +50,6 @@ private:
     
     std::vector<Layout*> m_layouts;
     Widget* m_focusWidget = NULL;
-
 };
 
 #endif

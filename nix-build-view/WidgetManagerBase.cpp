@@ -65,6 +65,7 @@ void WidgetManagerBase::keyboardInputHandler(int ch) {
 
 void WidgetManagerBase::add(Widget* w) {
     m_widgets.push_back(w);
+    update();
 }
 
 
