@@ -6,8 +6,6 @@ AdvancedStringContainer WidgetManagerBase::render(unsigned int width, unsigned i
     m_width = width;
     m_height = height;
 
-    sort();
-
     AdvancedStringContainer s;
     for(unsigned int i=m_line; i < m_line+height; ++i) {
         if (i >= m_widgets.size())
@@ -65,6 +63,7 @@ void WidgetManagerBase::keyboardInputHandler(int ch) {
 
 void WidgetManagerBase::add(Widget* w) {
     m_widgets.push_back(w);
+    sort();
     update();
 }
 

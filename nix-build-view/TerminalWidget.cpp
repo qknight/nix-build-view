@@ -9,7 +9,6 @@ int TerminalWidget::type() const {
     return WidgetName::TerminalWidget;
 }
 
-//FIXME only auto-scroll the view when m_line==0
 AdvancedStringContainer TerminalWidget::render(unsigned int width, unsigned int height) {
     // - m_logfile might obviously have more than 28 rows so only 'render' the part we are interested in
 
