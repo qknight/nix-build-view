@@ -23,7 +23,6 @@ public:
     void update() {
         WindowManager::Instance()->update(this);
     }
-
 //     void hide() {
 //         m_visible = false;
 //     }
@@ -34,7 +33,7 @@ public:
     virtual void keyboardInputHandler(int ch) {};
     // interesting for nested widget rendering
     virtual unsigned int rowsWantedByWidget() {
-      return 1;
+        return 1;
     }
 
 private:

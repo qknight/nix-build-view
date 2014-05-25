@@ -7,6 +7,9 @@
 #include "TerminalWidget.hpp"
 #include "WindowManager.hpp"
 
+#include <ctime>
+
+
 const std::string alphanum =
     "0123456789"
     "abcdefghijklmnopqrstuvwxyz";
@@ -119,7 +122,10 @@ NixBuild::NixBuild() {
     m.push_back("youtube-dl-2014.04.02");
     m.push_back("zip-3.0");
 
-    for(int i=0; i < 300; ++i) {
+
+//     long double sysTime = time(0);
+
+    for(int i=0; i < 330; ++i) {
         std::string n ="/nix/store/";
         n+= randomString(44);
         n+= "-";
@@ -134,7 +140,7 @@ NixBuild::NixBuild() {
         FetchWidgetManager::Instance()->add(new FetchWidget(n, f, 33234045));
     }
 
-    for(int i=0; i < 400; ++i) {
+    for(int i=0; i < 440; ++i) {
         std::string n = "/nix/store/";
         n+= randomString(44);
         n+= "-";
@@ -142,25 +148,35 @@ NixBuild::NixBuild() {
         BuildWidgetManager::Instance()->add(new BuildWidget(n, "installationPhase 5/8"));
     }
 
+//     AdvancedStringContainer v;
+//     v << "system time delta is: "<< (int)((time(0) - sysTime)*1000) << "\n";
+//     TerminalWidget::Instance()->append(v);
+
+
     AdvancedStringContainer s;
     s << AdvancedString("building Nix...\n");
     s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
-    //FIXME implement this
-//     for(int i=0; i < BuildWidgetManager::Instance()->m_widgets; i++) {
-//       s <<  AdvancedString(BuildWidgetManager::Instance()->m_widgets[i]->name(), COLOR_MAGENTA) << "\n";
-//     }
+
+    for(unsigned int i=0; i < BuildWidgetManager::Instance()->m_widgets.size(); i++) {
+        BuildWidget* v = dynamic_cast<BuildWidget*>(BuildWidgetManager::Instance()->m_widgets[i]);
+        std::string n = v->name();
+        s << "        " <<  AdvancedString(n, COLOR_MAGENTA) << "\n";
+    }
+
 
     s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
-    //FIXME implement this
-    //     for(int i=0; i < BuildWidgetManager::Instance()->m_widgets; i++) {
-//         s << AdvancedString("  /nix/store/0yzz6p08k1sgpdb63c0wx48vx0yc51g6-") << AdvancedString("bzip2-1.0.6\n", COLOR_GREEN);
-//     }
+
+    for(unsigned int i=0; i < FetchWidgetManager::Instance()->m_widgets.size(); i++) {
+        FetchWidget* v = dynamic_cast<FetchWidget*>(FetchWidgetManager::Instance()->m_widgets[i]);
+        std::string n = v->name();
+        s << "        " << AdvancedString(n, COLOR_GREEN) << "\n";
+    }
 
     TerminalWidget::Instance()->append(s);
 }
 
 
 void NixBuild::tick() {
-  //FIXME emulate updates on objects like download progress, bandwidth changes and after 100% remove them from the list and write a log entry
-  
+    //FIXME emulate updates on objects like download progress, bandwidth changes and after 100% remove them from the list and write a log entry
+
 }

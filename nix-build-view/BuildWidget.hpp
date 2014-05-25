@@ -9,6 +9,7 @@ public:
     BuildWidget(std::string name, std::string status);
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type() const;
+    std::string name() { return m_name; };
 private:
     std::string m_name;
     std::string m_status;

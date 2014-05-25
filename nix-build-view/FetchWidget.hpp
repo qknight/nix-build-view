@@ -10,6 +10,7 @@ public:
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type() const;
     float m_percent;
+    std::string name() { return m_url; };
 private:
     std::string m_url;
     int m_bits_per_sec;
