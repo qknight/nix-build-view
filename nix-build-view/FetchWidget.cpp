@@ -19,9 +19,7 @@ int FetchWidget::type() const {
 
 
 AdvancedStringContainer FetchWidget::render(unsigned int width, unsigned int height) {
-
     AdvancedStringContainer url_progress;
-
 
     //FIXME compute kib/Mib/Gib labels from input
     stringstream s1;

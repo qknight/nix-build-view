@@ -1,0 +1,109 @@
+# motivation
+
+in this repo i was playing with how to avoid using ncurses but still be able to rewrite several terminal lines...
+
+which failed so i gave up on this. anyway: it would be great to be able to do so as this would give rise to very cool programs like a multiline curl download or similar stuff...
+
+i continued using ncruses but rewrote the string handling to have colored strings which was really nasty business.
+
+
+# details
+
+i first tried to use terminal CTRLs to avoid ncurses but that failed since i couldn't access data outside the view (shift+pgup or scroll-wheel when using X).
+now i'm heading for a ncurses client which works like 'less' and after calling ctrl+c (or normal program exit) it will print the buffer to the terminal.
+   
+it is planned to be called like:
+
+nix-build -A foo -JSON | nix-build-viewer
+
+current experiments:
+- [done] find out if selection of text can be preserved
+  when not using wclear(win); it can be done but only if the selected field is not modified
+- make dynamic coloring work
+- create a working mainloop
+ - [done] keyboard input
+ - [done] terminal resize events using KEY_RESIZE
+ - receives CTRL+C, since i might have to forward this event and afterwards exit
+ - use pselect instead of while(true) and react only on incomming data, wrap getchar as well!
+- receives data using stdin via JSON requests
+ - stdout/stderr from nix-build is displayed in a log, JSON strings are translated into the statusbuf
+- create a widget library where elements can be selected, expanded and collapsed
+- create a logger widget with search support
+
+
+ 
+ 
+# todo
+
+what to print to the statusline?
+ - DerivationGoal 
+   could print the current status it is in: fetching|buildPhase|installPhase|... and it could
+   pass a logfile, which one can attach to with 'tail -f /tmp/9brfbp9gk7x3qim52q49rckhw7vw08h2-asciidoc-8.6.8/buildlog' 
+   /nix/store/9brfbp9gk7x3qim52q49rckhw7vw08h2-asciidoc-8.6.8.drv [buildPhase] since 5min 20sec ETA: ~ 20min
+     log: /tmp/9brfbp9gk7x3qim52q49rckhw7vw08h2-asciidoc-8.6.8/buildlog
+ - SubstitutionGoal
+   download progress while downloading | extracting stuff
+
+* design phase
+
+    * [done] design a multiline prototype -> see demo.cpp/demo2.cpp
+    
+      this can only be used if the amount of rows (used by the statusline) don't exceed the amount of rows shown by the terminal. 
+      as my list might get pretty big (10-200 entries) i will not continue to use this and instead use ncurses like done in htop.
+      
+      still if one has only 1-3 statuslines it should be possible to be used without many issues.
+    
+    * [done] disable keyboard echo
+
+      http://stackoverflow.com/questions/4963421/vt-terminal-disable-local-editing-and-echo
+
+    * [done] make the widgets resizeable - signal 28
+    
+    * [done] single line 'compact mode' prototype (wanted by eelco) - see demo3.cpp and screenshot3.jpeg
+
+    * create shortcuts which can affect the console rendering verbosity
+
+        * 'v' switch between verbose and compact mode (single line vs multiline)
+
+    * when 3 widgets are rendered (without line-wrapping) resizing works as expected, however, if a widget exceeded the linewidth, then
+      the clearStatus call does not remove the correct ammount of lines and leaves unwanted stuff
+
+        * a fix would be to compute how many linewraps resulted from the resize: previous widget-width / new linewidth = 2,173 means we have to remove 
+          3 lines now, instead of just one for example
+
+    * add regexp autocolor feature
+
+* look at: 'nixos-rebuild build -Q', why does it look so nice?
+
+* find out what features can be supported:
+
+    * single download sizes
+    * total download size
+    * single bandwidth per download 
+    * total badwidth per all downloads
+    * data already downloaded
+    * maybe include the hierarchy of targets? 
+
+* find out how downloads are started when doing 'nixos-rebuild switch' -> nix-build 
+
+* what drives the main loop in 'nix-build'
+  nix-store binary (nix-store.c) calls void run(..) -> opRealise(..) -> store->buildPaths(..) -> (build.cc) -> void Worker::run(const Goals & _topGoals) is the main loop!
+
+* find a nice output wrapper, preferably a singleton which wraps printMsg() somehow
+
+    * how does nix-build write to the shell
+    
+        it uses libutil/util.cc's:
+        printMsg() -> printMsg_() -> writeToStderr(s) -> _writeToStderr() -> defaultWriteToStderr(..) -> writeFull(..) -> write(..)
+
+    * how to integrate the WINCH (signal 28) terminal signal which is thrown on console resize?
+
+        probably using a FD which the sinal handler writes to
+
+    * how to extend ./scripts/download-from-binary-cache.pl.in to get a periodict download status update?
+
+        https://metacpan.org/source/SYP/Net-Curl-0.33/lib/Net/Curl/Easy.pm#L14
+
+# related
+
+* http://stackoverflow.com/questions/22476911/ansi-terminal-rewrite-the-output

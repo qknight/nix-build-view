@@ -1,6 +1,0 @@
-#!/bin/sh
-while true; do
-  sleep 0.5
-  date=$(date)
-  echo "it is now $date"
-done
