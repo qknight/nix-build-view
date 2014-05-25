@@ -119,7 +119,7 @@ NixBuild::NixBuild() {
     m.push_back("youtube-dl-2014.04.02");
     m.push_back("zip-3.0");
 
-    for(int i=0; i < 30; ++i) {
+    for(int i=0; i < 300; ++i) {
         std::string n ="/nix/store/";
         n+= randomString(44);
         n+= "-";
@@ -134,7 +134,7 @@ NixBuild::NixBuild() {
         FetchWidgetManager::Instance()->add(new FetchWidget(n, f, 33234045));
     }
 
-    for(int i=0; i < 40; ++i) {
+    for(int i=0; i < 400; ++i) {
         std::string n = "/nix/store/";
         n+= randomString(44);
         n+= "-";

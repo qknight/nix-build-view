@@ -1,6 +1,7 @@
 #include <vector>
-#include <AdvancedString.hpp>
 #include <iostream>
+#include <sstream>
+#include <AdvancedString.hpp>
 
 void test1(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res, int num) {
     std::vector<AdvancedStringContainer> t;
@@ -109,7 +110,6 @@ void test3(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res,
         std::cout << YELLOW << "---------------------------END TEST terminal_rasterize----------------------------------------------" << RESET << std::endl<< std::endl<< std::endl;
     }
 }
-#endif
 
 int main(int argc, char *argv[]) {
 

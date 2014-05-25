@@ -18,3 +18,8 @@ perl-5.18.2.tar.gz
 preview2
 *.o
 nix-build-view/nix-build-view
+nix-build-view/CMakeCache.txt
+nix-build-view/CMakeFiles/
+nix-build-view/TDD-AdvancedStringTest
+nix-build-view/cmake_install.cmake
+nix-build-view/Makefile

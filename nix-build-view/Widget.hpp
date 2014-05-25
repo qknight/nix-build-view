@@ -38,7 +38,7 @@ public:
     }
 
 private:
-    bool m_visible = true;
+//     bool m_visible = true;
 };
 
 #endif

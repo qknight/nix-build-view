@@ -10,7 +10,6 @@ public:
 private:
     FetchWidgetManager();
     void sort();
-//     bool mySort(const Widget* a, const  Widget* b);
 };
 
 #endif // FETCHWIDGETMANAGER_H

@@ -252,7 +252,7 @@ public:
                             break;
                         }
                     }
-                    if ((x == 0)/*|| s[0] == ' '*/) {
+                    if (x == 0) {
                         AdvancedString n = AdvancedString("", COLOR_YELLOW, as.attributes(), as.bgColor());
                         asc_tmp << n;
                         out.push_back(asc_tmp);
@@ -295,9 +295,9 @@ public:
                 AdvancedString as = asc[x];
                 AdvancedString atmp;
 
-                std::string::iterator it_begin = as.str().begin();
-                std::string::iterator it_p = as.str().begin();
-                std::string::iterator it_e = as.str().end();
+//                 std::string::iterator it_begin = as.str().begin();
+//                 std::string::iterator it_p = as.str().begin();
+//                 std::string::iterator it_e = as.str().end();
 
                 if ((as.size() == 0) && (x == asc.size()-1) && (i != buf.size()-1)) {
                     tmp << AdvancedString(std::string(width, ' '), COLOR_BLUE);
