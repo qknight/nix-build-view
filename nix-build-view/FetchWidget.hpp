@@ -9,9 +9,11 @@ public:
     FetchWidget(std::string url, float percent, int bits_per_sec);
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type() const;
-    float m_percent;
     std::string name() { return m_url; };
+    float getProgress() const;
+    void setProgress(float progress);
 private:
+    float m_progress;
     std::string m_url;
     int m_bits_per_sec;
 };

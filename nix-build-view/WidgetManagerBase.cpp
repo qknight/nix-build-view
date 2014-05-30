@@ -1,10 +1,11 @@
 #include "WidgetManagerBase.hpp"
 
 
-
 AdvancedStringContainer WidgetManagerBase::render(unsigned int width, unsigned int height) {
     m_width = width;
     m_height = height;
+
+    sort();
 
     AdvancedStringContainer s;
     for(unsigned int i=m_line; i < m_line+height; ++i) {

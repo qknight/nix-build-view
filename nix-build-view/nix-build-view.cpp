@@ -7,7 +7,7 @@
 #include "ColorCodes.h"
 #include "TDD-nix-build.hpp"
 
-#define TIME_OUT 100
+#define TIME_OUT 1000
 
 int main_loop = 1;
 
@@ -48,10 +48,11 @@ int main(int argc, char *argv[]) {
     TerminalWidget::Instance()->append(s);
 
     NixBuild* nixBuild = new NixBuild();
-    
+
     while (main_loop) {
-        nixBuild->tick();
+        nixBuild->tick(); // simulates nix-build events
         keyboard_input_handler();
+        WindowManager::Instance()->EventLoop();
     }
 
     endwin(); /* End curses mode */

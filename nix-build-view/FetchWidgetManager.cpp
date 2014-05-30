@@ -21,7 +21,7 @@ bool mySort(const Widget* a, const  Widget* b) {
         const FetchWidget* f1 = dynamic_cast<const FetchWidget*>(a);
         const FetchWidget* f2 = dynamic_cast<const FetchWidget*>(b);
 
-        return f1->m_percent > f2->m_percent;
+        return f1->getProgress() > f2->getProgress();
     }
     return false;
 }
@@ -29,3 +29,11 @@ bool mySort(const Widget* a, const  Widget* b) {
 void FetchWidgetManager::sort() {
     std::stable_sort(m_widgets.begin(), m_widgets.end(), mySort);
 }
+
+// void FetchWidgetManager::add(std::string UUID) {
+// 
+// }
+// 
+// void FetchWidgetManager::remove(std::string UUID) {
+// 
+// }

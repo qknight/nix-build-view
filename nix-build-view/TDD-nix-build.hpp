@@ -14,6 +14,7 @@ public:
   void tick();
 private:
   std::vector<std::string> m;
+  long millis_old = 0;
 };
 
 #endif

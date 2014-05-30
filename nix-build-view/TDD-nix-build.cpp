@@ -8,7 +8,7 @@
 #include "WindowManager.hpp"
 
 #include <ctime>
-
+#include <sys/time.h>
 
 const std::string alphanum =
     "0123456789"
@@ -125,6 +125,7 @@ NixBuild::NixBuild() {
 
 //     long double sysTime = time(0);
 
+    //FIXME this function is very very slow but since it is only for testing, who cares! you just need to know that!
     for(int i=0; i < 330; ++i) {
         std::string n ="/nix/store/";
         n+= randomString(44);
@@ -132,12 +133,8 @@ NixBuild::NixBuild() {
         n+= m[rand()%m.size()];
         n+= "-";
         n+= ".nar.xz";
-        float f =  0.01f*(rand()%103);
-        if (f > 1.0)
-            f = 1.0f;
-        if (f < 0)
-            f = 0.0f;
-        FetchWidgetManager::Instance()->add(new FetchWidget(n, f, 33234045));
+
+        FetchWidgetManager::Instance()->add(new FetchWidget(n, 0.01f, 33234045));
     }
 
     for(int i=0; i < 440; ++i) {
@@ -172,11 +169,50 @@ NixBuild::NixBuild() {
         s << "        " << AdvancedString(n, COLOR_GREEN) << "\n";
     }
 
+    s << "\n";
     TerminalWidget::Instance()->append(s);
 }
 
 
+// updates a random amount (range [0, 100]) of elements about every 1000 ms
 void NixBuild::tick() {
-    //FIXME emulate updates on objects like download progress, bandwidth changes and after 100% remove them from the list and write a log entry
 
+  //FIXME move this code from the data source to the render routine
+    timeval time;
+    gettimeofday(&time, NULL);
+    long millis_now = (time.tv_sec * 1000) + (time.tv_usec / 1000);
+
+    static bool ff = true;
+
+    if (ff) {
+        ff = false;
+        millis_old = millis_now;
+    }
+
+    // update all values only about each second
+    if (abs((int)(millis_old - millis_now)) < 1000) {
+        return;
+    }
+//     AdvancedStringContainer v;
+//     v << "f: "<< (int)(millis_now) << " bar "<< abs((int)(millis_old - millis_now)) << "\n";
+//     TerminalWidget::Instance()->append(v);
+
+    millis_old = millis_now;
+
+    float f =  0.01f*(rand()%103);
+
+    int elements = rand()%100;
+    for(int i=0; i < elements; ++i) {
+        int e = rand()%FetchWidgetManager::Instance()->m_widgets.size();
+        FetchWidget* v = dynamic_cast<FetchWidget*>(FetchWidgetManager::Instance()->m_widgets[e]);
+        float g = (float(rand() % 100) / 100) + 1.0f;
+        float f = v->getProgress()*g;
+        if (f > 1.0)
+            f = 1.0f;
+        if (f < 0)
+            f = 0.0f;
+        v->setProgress(f);
+    }
 }
+
+
