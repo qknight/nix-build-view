@@ -12,6 +12,8 @@ public:
     std::string name() { return m_url; };
     float getProgress() const;
     void setProgress(float progress);
+    void setBPS(int bits_per_sec);
+    int getBPS();
 private:
     float m_progress;
     std::string m_url;

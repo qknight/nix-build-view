@@ -15,3 +15,7 @@ BuildWidgetManager* BuildWidgetManager::Instance() {
 void BuildWidgetManager::sort() {
 
 }
+
+void BuildWidgetManager::addBuild(std::string UUID, std::string bar) {
+
+}

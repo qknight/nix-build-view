@@ -15,6 +15,8 @@ public:
 private:
   std::vector<std::string> m;
   long millis_old = 0;
+  std::vector<std::string> m_fetch;
+  std::vector<std::string> m_build;
 };
 
 #endif

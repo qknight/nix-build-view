@@ -48,7 +48,13 @@ float FetchWidget::getProgress() const {
 void FetchWidget::setProgress(float progress) {
     m_progress = progress;
     update(); //FIXME add lazyUpdate()
-    if (progress >= 1.0f) {
-      //FIXME remove the element and write a log entry about the download
-    }
+}
+
+
+int FetchWidget::getBPS() {
+    return 0;
+}
+
+void FetchWidget::setBPS(int bits_per_sec) {
+
 }

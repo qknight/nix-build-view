@@ -7,6 +7,7 @@ class BuildWidgetManager : public WidgetManagerBase {
 public:
     int type() const;
     static BuildWidgetManager* Instance();
+    void addBuild(std::string UUID, std::string bar);
 private:
     BuildWidgetManager();
     void sort();

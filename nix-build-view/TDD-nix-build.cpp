@@ -123,50 +123,35 @@ NixBuild::NixBuild() {
     m.push_back("zip-3.0");
 
 
-//     long double sysTime = time(0);
+    AdvancedStringContainer s;
+
+    s << AdvancedString("building Nix...\n");
+    s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
 
     //FIXME this function is very very slow but since it is only for testing, who cares! you just need to know that!
-    for(int i=0; i < 330; ++i) {
+    for(int i=0; i < 111; ++i) {
         std::string n ="/nix/store/";
         n+= randomString(44);
         n+= "-";
         n+= m[rand()%m.size()];
-        n+= "-";
         n+= ".nar.xz";
 
-        FetchWidgetManager::Instance()->add(new FetchWidget(n, 0.01f, 33234045));
+        m_fetch.push_back(n);
+        FetchWidgetManager::Instance()->addFetch(n, 0.01f, rand());
+        s << "        " <<  AdvancedString(n, COLOR_GREEN) << "\n";
     }
+
+
+    s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
 
     for(int i=0; i < 440; ++i) {
         std::string n = "/nix/store/";
         n+= randomString(44);
         n+= "-";
         n+= m[rand()%m.size()];
-        BuildWidgetManager::Instance()->add(new BuildWidget(n, "installationPhase 5/8"));
-    }
-
-//     AdvancedStringContainer v;
-//     v << "system time delta is: "<< (int)((time(0) - sysTime)*1000) << "\n";
-//     TerminalWidget::Instance()->append(v);
-
-
-    AdvancedStringContainer s;
-    s << AdvancedString("building Nix...\n");
-    s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
-
-    for(unsigned int i=0; i < BuildWidgetManager::Instance()->m_widgets.size(); i++) {
-        BuildWidget* v = dynamic_cast<BuildWidget*>(BuildWidgetManager::Instance()->m_widgets[i]);
-        std::string n = v->name();
+        BuildWidgetManager::Instance()->addBuild(n, "installationPhase 5/8");
+        m_build.push_back(n);
         s << "        " <<  AdvancedString(n, COLOR_MAGENTA) << "\n";
-    }
-
-
-    s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
-
-    for(unsigned int i=0; i < FetchWidgetManager::Instance()->m_widgets.size(); i++) {
-        FetchWidget* v = dynamic_cast<FetchWidget*>(FetchWidgetManager::Instance()->m_widgets[i]);
-        std::string n = v->name();
-        s << "        " << AdvancedString(n, COLOR_GREEN) << "\n";
     }
 
     s << "\n";
@@ -177,7 +162,7 @@ NixBuild::NixBuild() {
 // updates a random amount (range [0, 100]) of elements about every 1000 ms
 void NixBuild::tick() {
 
-  //FIXME move this code from the data source to the render routine
+    //FIXME move this code from the data source to the render routine
     timeval time;
     gettimeofday(&time, NULL);
     long millis_now = (time.tv_sec * 1000) + (time.tv_usec / 1000);
@@ -193,6 +178,7 @@ void NixBuild::tick() {
     if (abs((int)(millis_old - millis_now)) < 1000) {
         return;
     }
+
 //     AdvancedStringContainer v;
 //     v << "f: "<< (int)(millis_now) << " bar "<< abs((int)(millis_old - millis_now)) << "\n";
 //     TerminalWidget::Instance()->append(v);
@@ -203,15 +189,14 @@ void NixBuild::tick() {
 
     int elements = rand()%100;
     for(int i=0; i < elements; ++i) {
-        int e = rand()%FetchWidgetManager::Instance()->m_widgets.size();
-        FetchWidget* v = dynamic_cast<FetchWidget*>(FetchWidgetManager::Instance()->m_widgets[e]);
+        int e = rand() % m_fetch.size();
         float g = (float(rand() % 100) / 100) + 1.0f;
-        float f = v->getProgress()*g;
+        float f = FetchWidgetManager::Instance()->getProgress(m_fetch[e]) * g;
         if (f > 1.0)
             f = 1.0f;
         if (f < 0)
             f = 0.0f;
-        v->setProgress(f);
+        FetchWidgetManager::Instance()->setProgress(m_fetch[e], f);
     }
 }
 

@@ -5,13 +5,15 @@
 
 
 class WidgetManagerBase : public Widget {
+    friend class FetchWidgetManager;
+    friend class BuildWidgetManager;
 public:
     virtual int type() const = 0;
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     unsigned int rowsWantedByWidget();
+private:
     void add(Widget* w);
     std::vector<Widget*> m_widgets;
-private:
     int m_line = 0;
     void keyboardInputHandler(int ch);
     unsigned int width() {
