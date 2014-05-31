@@ -7,7 +7,10 @@ class BuildWidgetManager : public WidgetManagerBase {
 public:
     int type() const;
     static BuildWidgetManager* Instance();
-    void addBuild(std::string UUID, std::string bar);
+    void addBuild(std::string UUID, std::vector< std::string > phases);
+    void removeBuild(std::string UUID);
+    int getPhase(std::string UUID);
+    void setPhase(std::string UUID, int phase);
 private:
     BuildWidgetManager();
     void sort();

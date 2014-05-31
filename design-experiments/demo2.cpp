@@ -128,12 +128,12 @@ public:
 
 class FetchWidget : public Widget {
 private:
-    std::string m_url;
+    std::string m_name;
     float m_percent;
     int m_bits_per_sec;
 public:
     FetchWidget(std::string url, float percent, int bits_per_sec) {
-        m_url=url;
+        m_name=url;
         m_percent = percent;
         m_bits_per_sec = bits_per_sec;
     };
@@ -141,10 +141,10 @@ public:
     std::string render(int width=0) {
         std::stringstream s;
 
-        int size = m_url.size();
+        int size = m_name.size();
         std::stringstream url_progress;
         float end = m_percent * size;
-        url_progress << CYAN << m_url.substr(0, (int)end) << RESET <<  m_url.substr((int)end, size-(int)end);
+        url_progress << CYAN << m_name.substr(0, (int)end) << RESET <<  m_name.substr((int)end, size-(int)end);
 
         s << url_progress.str() << " " << (int)(m_percent*100) << "% " << m_bits_per_sec << "\n";
         olds << std::flush;

@@ -125,11 +125,13 @@ NixBuild::NixBuild() {
 
     AdvancedStringContainer s;
 
+    s << AdvancedString("this is the nix-build-view UNIT TEST, no real downloads are made, no bandwidth is harmed!\n");
+
     s << AdvancedString("building Nix...\n");
     s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
 
     //FIXME this function is very very slow but since it is only for testing, who cares! you just need to know that!
-    for(int i=0; i < 111; ++i) {
+    for(int i=0; i < 5; ++i) {
         std::string n ="/nix/store/";
         n+= randomString(44);
         n+= "-";
@@ -141,20 +143,28 @@ NixBuild::NixBuild() {
         s << "        " <<  AdvancedString(n, COLOR_GREEN) << "\n";
     }
 
+    std::vector<std::string> b;
+    b.push_back("preConfigurePhase");
+    b.push_back("configurePhase");
+    b.push_back("buildPhase");
+    b.push_back("installationPhase");
+    b.push_back("postinstallationPhase");
 
     s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
 
-    for(int i=0; i < 440; ++i) {
+    for(int i=0; i < 5; ++i) {
         std::string n = "/nix/store/";
         n+= randomString(44);
         n+= "-";
         n+= m[rand()%m.size()];
-        BuildWidgetManager::Instance()->addBuild(n, "installationPhase 5/8");
+        BuildWidgetManager::Instance()->addBuild(n, b);
         m_build.push_back(n);
         s << "        " <<  AdvancedString(n, COLOR_MAGENTA) << "\n";
     }
 
     s << "\n";
+
+    s << "Now follows the log:\n";
     TerminalWidget::Instance()->append(s);
 }
 
@@ -185,9 +195,7 @@ void NixBuild::tick() {
 
     millis_old = millis_now;
 
-    float f =  0.01f*(rand()%103);
-
-    int elements = rand()%100;
+    int elements = rand()%m_fetch.size();
     for(int i=0; i < elements; ++i) {
         int e = rand() % m_fetch.size();
         float g = (float(rand() % 100) / 100) + 1.0f;
@@ -197,6 +205,13 @@ void NixBuild::tick() {
         if (f < 0)
             f = 0.0f;
         FetchWidgetManager::Instance()->setProgress(m_fetch[e], f);
+    }
+
+    int elements2 = rand()%m_build.size();
+    for(int i=0; i < elements2; ++i) {
+        int e = rand() % m_build.size();
+        int f = BuildWidgetManager::Instance()->getPhase(m_build[e]);
+        BuildWidgetManager::Instance()->setPhase(m_build[e], f+1);
     }
 }
 

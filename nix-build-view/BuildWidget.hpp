@@ -5,14 +5,16 @@
 #include <string>
 
 class BuildWidget : public Widget {
+    friend class BuildWidgetManager;
 public:
-    BuildWidget(std::string name, std::string status);
+    BuildWidget(std::string name, std::vector<std::string> phases);
     AdvancedStringContainer render(unsigned int width, unsigned int height);
     int type() const;
-    std::string name() { return m_name; };
-private:
+    int getPhase() const { return m_currentPhase; } ;
+protected:
     std::string m_name;
-    std::string m_status;
+    std::vector<std::string> m_phases;
+    int m_currentPhase;
 };
 
 #endif

@@ -8,7 +8,7 @@
 using namespace std;
 
 FetchWidget::FetchWidget(std::string url, float progress, int bits_per_sec) {
-    m_url=url;
+    m_name=url;
     m_progress = progress;
     m_bits_per_sec = bits_per_sec;
 };
@@ -26,11 +26,11 @@ AdvancedStringContainer FetchWidget::render(unsigned int width, unsigned int hei
     AdvancedStringContainer s2;
 
     // dynamic spacer
-    int i = width - m_url.size() - s1.str().size() - 1;
+    int i = width - m_name.size() - s1.str().size() - 1;
     if (i < 0) i = 0;
 
     std::stringstream t;
-    t << m_url << " " << std::string(i+1, '.');
+    t << m_name << " " << std::string(i+1, '.');
 
     int size = t.str().size()-2;
     float end = m_progress * size;
@@ -45,16 +45,3 @@ float FetchWidget::getProgress() const {
     return m_progress;
 }
 
-void FetchWidget::setProgress(float progress) {
-    m_progress = progress;
-    update(); //FIXME add lazyUpdate()
-}
-
-
-int FetchWidget::getBPS() {
-    return 0;
-}
-
-void FetchWidget::setBPS(int bits_per_sec) {
-
-}
