@@ -30,6 +30,7 @@ void BuildWidgetManager::sort() {
     std::stable_sort(m_widgets.begin(), m_widgets.end(), BuildWidgetManagerSort);
 }
 
+// it is assumed that the given UUID is already uniq
 void BuildWidgetManager::addBuild(std::string UUID, std::vector<std::string> phases) {
     add(new BuildWidget(UUID, phases));
 }
@@ -46,6 +47,7 @@ int BuildWidgetManager::getPhase(std::string UUID) {
             return v->m_currentPhase;
         }
     }
+    return -1;
 }
 
 void BuildWidgetManager::setPhase(std::string UUID, int phase) {

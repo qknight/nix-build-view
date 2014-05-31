@@ -32,6 +32,7 @@ public:
     int attributes() {
         return m_attributes;
     }
+    // used to render a AdvancedString to a xterm or similar (not using ncurses painting)
     std::string terminalString() {
         std::stringstream ss;
         std::string color;
@@ -89,7 +90,7 @@ public:
         return *this;
     }
     //FIXME understand why adding const before AdvancedStringContainer results in a strange compiler error
-    AdvancedStringContainer& operator<<(  AdvancedStringContainer& c ) {
+    AdvancedStringContainer& operator<<( AdvancedStringContainer& c ) {
         for(unsigned int i=0; i < c.size(); ++i) {
             sContainer.push_back(c[i]);
         }

@@ -122,7 +122,6 @@ NixBuild::NixBuild() {
     m.push_back("youtube-dl-2014.04.02");
     m.push_back("zip-3.0");
 
-
     AdvancedStringContainer s;
 
     s << AdvancedString("this is the nix-build-view UNIT TEST, no real downloads are made, no bandwidth is harmed!\n");
@@ -130,8 +129,8 @@ NixBuild::NixBuild() {
     s << AdvancedString("building Nix...\n");
     s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
 
-    //FIXME this function is very very slow but since it is only for testing, who cares! you just need to know that!
-    for(int i=0; i < 5; ++i) {
+    // this function is very very slow but since it is only for testing, who cares! you just need to know that!
+    for(int i=0; i < 555; ++i) {
         std::string n ="/nix/store/";
         n+= randomString(44);
         n+= "-";
@@ -152,7 +151,7 @@ NixBuild::NixBuild() {
 
     s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
 
-    for(int i=0; i < 5; ++i) {
+    for(int i=0; i < 555; ++i) {
         std::string n = "/nix/store/";
         n+= randomString(44);
         n+= "-";

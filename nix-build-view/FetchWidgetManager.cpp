@@ -32,6 +32,7 @@ void FetchWidgetManager::sort() {
     std::stable_sort(m_widgets.begin(), m_widgets.end(), FetchWidgetManagerSort);
 }
 
+// it is assumed that the given UUID is already uniq
 void FetchWidgetManager::addFetch(std::string UUID, float progress, int bps) {
     add(new FetchWidget(UUID, progress, bps));
 }
@@ -42,16 +43,18 @@ void FetchWidgetManager::removeFetch(std::string UUID) {
 
 int FetchWidgetManager::getBPS(std::string UUID) {
 //FIXME todo
+    return 0;
 }
 
 float FetchWidgetManager::getProgress(std::string UUID) const {
-  //FIXME refactor this function since it is used more often in this class
+    //FIXME refactor this function since it is used more often in this class
     for(unsigned int i=0; i < m_widgets.size(); ++i) {
         FetchWidget* v = dynamic_cast<FetchWidget*>(m_widgets[i]);
         if (v->m_name == UUID) {
             return v->m_progress;
         }
     }
+    return 0.0f;
 }
 
 void FetchWidgetManager::setBPS(std::string UUID, int bits_per_sec) {

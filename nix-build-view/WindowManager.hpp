@@ -35,7 +35,7 @@ public:
     static WindowManager* Instance();
     void keyboardInputHandler(int ch);
     std::string version();
-    void EventLoop();
+    int EventLoop();
 private:
     WindowManager(WINDOW *win);
     void setKeyboardInputHandler(Widget* w);

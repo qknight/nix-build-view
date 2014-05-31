@@ -38,6 +38,7 @@ int main(int argc, char *argv[]) {
 
     noecho();
 
+    //FIXME remove render flickering which is caused by a massive load of updates from fetches/builds which change state
     WindowManager::Instance()->update();
 
     AdvancedStringContainer s;
@@ -49,10 +50,9 @@ int main(int argc, char *argv[]) {
 
     NixBuild* nixBuild = new NixBuild();
 
-    while (main_loop) {
+    while (main_loop && WindowManager::Instance()->EventLoop()) {
         nixBuild->tick(); // simulates nix-build events
         keyboard_input_handler();
-        WindowManager::Instance()->EventLoop();
     }
 
     endwin(); /* End curses mode */

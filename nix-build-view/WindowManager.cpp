@@ -122,7 +122,7 @@ void WindowManager::update(Widget* w) {
         }
         heightpointer += fw.height;
     }
-    wrefresh(m_win);//FIXME do i need this?
+    wrefresh(m_win);
 }
 
 void WindowManager::keyboardInputHandler(int ch) {
@@ -176,6 +176,9 @@ std::string WindowManager::version() {
     return std::string(VERSION);
 }
 
-void WindowManager::EventLoop() {
-
+int WindowManager::EventLoop() {
+  //FIXME check if all builds/fetches were completed and afterwards quit
+//   if (FetchWidgetManager::Instance()->)
+// return 0;
+    return 1;
 }

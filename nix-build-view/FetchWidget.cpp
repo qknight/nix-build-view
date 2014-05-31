@@ -20,6 +20,7 @@ int FetchWidget::type() const {
 AdvancedStringContainer FetchWidget::render(unsigned int width, unsigned int height) {
     AdvancedStringContainer url_progress;
 
+    //FIXME if width is very small, kick the m_name beginning from the left
     //FIXME compute kib/Mib/Gib labels from input
     stringstream s1;
     s1 << setw(3) << right << (int)(m_progress*100) << "% " << setw(4) << setprecision(3) << 26.3333 << "Mib " << setw(4) << setprecision(4) << 123.31333 << "kib/s";
