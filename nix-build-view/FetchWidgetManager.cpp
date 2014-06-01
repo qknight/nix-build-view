@@ -1,6 +1,7 @@
 #include "FetchWidgetManager.hpp"
 #include "FetchWidget.hpp"
 #include "TerminalWidget.hpp"
+#include "StatusWidget.hpp"
 
 #include <iostream>
 #include <algorithm>
@@ -35,10 +36,12 @@ void FetchWidgetManager::sort() {
 // it is assumed that the given UUID is already uniq
 void FetchWidgetManager::addFetch(std::string UUID, float progress, int bps) {
     add(new FetchWidget(UUID, progress, bps));
+    StatusWidget::Instance()->setFetches(m_widgets.size());
 }
 
 void FetchWidgetManager::removeFetch(std::string UUID) {
 //FIXME todo
+StatusWidget::Instance()->setFetches(m_widgets.size());
 }
 
 int FetchWidgetManager::getBPS(std::string UUID) {
@@ -74,6 +77,7 @@ void FetchWidgetManager::setProgress(std::string UUID, float progress) {
                 m_widgets.erase(m_widgets.begin());
                 update();
                 //FIXME when removing elements, move the view upwards since it runs out of items currently
+                StatusWidget::Instance()->setFetches(m_widgets.size());
             }
             return;
         }

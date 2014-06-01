@@ -1,6 +1,7 @@
 #include "BuildWidgetManager.hpp"
 #include "BuildWidget.hpp"
 #include "TerminalWidget.hpp"
+#include "StatusWidget.hpp"
 
 #include <algorithm>
 
@@ -33,10 +34,12 @@ void BuildWidgetManager::sort() {
 // it is assumed that the given UUID is already uniq
 void BuildWidgetManager::addBuild(std::string UUID, std::vector<std::string> phases) {
     add(new BuildWidget(UUID, phases));
+    StatusWidget::Instance()->setBuilds(m_widgets.size());
 }
 
 void BuildWidgetManager::removeBuild(std::string UUID) {
 //FIXME todo
+    StatusWidget::Instance()->setBuilds(m_widgets.size());
 }
 
 int BuildWidgetManager::getPhase(std::string UUID) {
@@ -63,6 +66,7 @@ void BuildWidgetManager::setPhase(std::string UUID, int phase) {
                 m_widgets.erase(m_widgets.begin());
                 update();
                 //FIXME when removing elements, move the view upwards since it runs out of items currently
+                StatusWidget::Instance()->setBuilds(m_widgets.size());
             }
             return;
         }

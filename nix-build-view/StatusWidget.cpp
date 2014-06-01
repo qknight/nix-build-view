@@ -28,6 +28,22 @@ AdvancedStringContainer StatusWidget::render(unsigned int width, unsigned int he
     }
     s2 << "]";
 
+        if (m_fetches) {
+        s2 << " " << AdvancedString(std::to_string(m_fetches), COLOR_GREEN);
+        if (m_fetches == 1)
+            s2 << AdvancedString(" fetch", COLOR_GREEN);
+        else
+            s2 << AdvancedString(" fetches", COLOR_GREEN);
+    }
+    
+    if (m_builds) {
+        s2 << " " << AdvancedString(std::to_string(m_builds), COLOR_MAGENTA);
+        if (m_builds == 1)
+            s2 << AdvancedString(" build", COLOR_MAGENTA);
+        else
+            s2 << AdvancedString(" builds", COLOR_MAGENTA);
+    }
+
     int i = width - s1.size();
     if (i < 0) i = 0;
     return s2;
@@ -46,4 +62,14 @@ StatusWidget* StatusWidget::Instance() {
 StatusWidget::StatusWidget()
 {
 
+}
+
+void StatusWidget::setBuilds(unsigned int builds) {
+    m_builds=builds;
+    update();
+}
+
+void StatusWidget::setFetches(unsigned int fetches) {
+    m_fetches=fetches;
+    update();
 }
