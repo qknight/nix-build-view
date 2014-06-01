@@ -122,7 +122,7 @@ void WindowManager::update(Widget* w) {
         }
         heightpointer += fw.height;
     }
-    wrefresh(m_win);
+//     wrefresh(m_win); //FIXME what is this good for anyway? it causes a high amount of flickering when enabled...
 }
 
 void WindowManager::keyboardInputHandler(int ch) {

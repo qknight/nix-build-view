@@ -73,6 +73,7 @@ void FetchWidgetManager::setProgress(std::string UUID, float progress) {
                 sort();
                 m_widgets.erase(m_widgets.begin());
                 update();
+                //FIXME when removing elements, move the view upwards since it runs out of items currently
             }
             return;
         }

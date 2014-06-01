@@ -62,6 +62,7 @@ void BuildWidgetManager::setPhase(std::string UUID, int phase) {
                 sort();
                 m_widgets.erase(m_widgets.begin());
                 update();
+                //FIXME when removing elements, move the view upwards since it runs out of items currently
             }
             return;
         }
