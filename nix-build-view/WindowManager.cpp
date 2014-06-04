@@ -191,6 +191,7 @@ std::string WindowManager::version() {
 }
 
 int WindowManager::EventLoop() {
+//   if (FetchWidgetManager::Instance()->
     //FIXME check if all builds/fetches were completed and afterwards quit
     return main_loop;
 }

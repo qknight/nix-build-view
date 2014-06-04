@@ -7,6 +7,10 @@ AdvancedStringContainer WidgetManagerBase::render(unsigned int width, unsigned i
 
     sort();
 
+    // if elements vanish you don't have to scroll up manually
+    if(m_line > m_widgets.size()-height)
+        m_line = m_widgets.size()-height;
+
     AdvancedStringContainer sc;
     for(unsigned int i=m_line; i < m_line+height; ++i) {
         if (i >= m_widgets.size())
