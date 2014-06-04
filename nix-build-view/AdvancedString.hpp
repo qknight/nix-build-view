@@ -90,34 +90,33 @@ private:
  */
 class AdvancedStringContainer {
 public:
-    AdvancedStringContainer& operator<<( const AdvancedString&  t ) {
+    AdvancedStringContainer& operator<<(const AdvancedString&  t) {
         sContainer.push_back(t);
         return *this;
     }
-    //FIXME understand why adding const before AdvancedStringContainer results in a strange compiler error
-    AdvancedStringContainer& operator<<( AdvancedStringContainer& c ) {
+    AdvancedStringContainer& operator<<(const AdvancedStringContainer& c) {
         for(unsigned int i=0; i < c.size(); ++i) {
             sContainer.push_back(c[i]);
         }
         return *this;
     }
-    AdvancedStringContainer& operator<<( const std::string& s1 ) {
+    AdvancedStringContainer& operator<<(const std::string& s1) {
         sContainer.push_back(AdvancedString(s1));
         return *this;
     }
-    AdvancedStringContainer& operator<<( const int& t ) {
+    AdvancedStringContainer& operator<<(const int& t) {
         sContainer.push_back(AdvancedString(std::to_string(t)));
         return *this;
     }
-    AdvancedStringContainer& operator<<( const size_t&  t ) {
+    AdvancedStringContainer& operator<<(const size_t& t) {
         sContainer.push_back(AdvancedString(std::to_string(t)));
         return *this;
     }
-    AdvancedStringContainer& operator<<( const unsigned int&  t ) {
+    AdvancedStringContainer& operator<<(const unsigned int& t) {
         sContainer.push_back(AdvancedString(std::to_string(t)));
         return *this;
     }
-    AdvancedStringContainer& operator<<( const float&  f ) {
+    AdvancedStringContainer& operator<<(const float& f) {
         sContainer.push_back(AdvancedString(std::to_string(f)));
         return *this;
     }
@@ -265,9 +264,7 @@ public:
                                 asc_tmp.clear();
                                 break;
                             }
-
                         }
-
                         if (!run) {
                             run = true;
                             break;
@@ -280,7 +277,7 @@ public:
                         asc_tmp.clear();
                     }
                 }
-            } else {		//p hinzu
+            } else {
 
                 AdvancedString n = AdvancedString("", COLOR_YELLOW);
                 asc_tmp << n;

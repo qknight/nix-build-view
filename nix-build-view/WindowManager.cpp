@@ -117,6 +117,7 @@ void WindowManager::update(Widget* w) {
             if(!left)
                 break;
             std::string s;
+            // limit the width of the string to the max of width*height
             if (left < as[x].size())
                 s = as[x].str().substr(0,left);
             else
@@ -132,7 +133,14 @@ void WindowManager::update(Widget* w) {
 }
 
 void WindowManager::keyboardInputHandler(int ch) {
-//      0 - help widget
+    /////////// BEGIN global shortcuts //////////////////////////
+    if (ch == 'Q' || ch == 'q') {
+        main_loop = 0;
+        return;
+    }
+    /////////// END global shortcuts //////////////////////////
+
+    //      0 - help widget
     //      1 - composed view: input should be forwarded to the log
     //      2 - like 1 but log has fullscreen
     //      3 - fetch is fullscreen and is scrollable
@@ -184,7 +192,5 @@ std::string WindowManager::version() {
 
 int WindowManager::EventLoop() {
     //FIXME check if all builds/fetches were completed and afterwards quit
-//   if (FetchWidgetManager::Instance()->)
-// return 0;
-    return 1;
+    return main_loop;
 }

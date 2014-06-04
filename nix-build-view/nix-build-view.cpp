@@ -9,22 +9,12 @@
 
 #define TIME_OUT 1000
 
-int main_loop = 1;
-
 void keyboard_input_handler() {
     int ch;
-
     timeout(TIME_OUT);
     ch = getch(); /* Waits for TIME_OUT milliseconds */
     if (ch == ERR)
         return;
-    /////////// BEGIN global shortcuts //////////////////////////
-    if (ch == 'Q' || ch == 'q') {
-        main_loop = 0;
-        return;
-    }
-    /////////// END global shortcuts //////////////////////////
-
     // all other inputs are delegated to the windowmanager
     WindowManager::Instance()->keyboardInputHandler(ch);
 }
@@ -49,8 +39,7 @@ int main(int argc, char *argv[]) {
 
     NixBuild* nixBuild = new NixBuild();
 
-    //FIXME remove render flickering which is caused by a massive load of updates from fetches/builds which change state
-    while (main_loop && WindowManager::Instance()->EventLoop()) {
+    while (WindowManager::Instance()->EventLoop()) {
         nixBuild->tick(); // simulates nix-build events
         keyboard_input_handler();
     }

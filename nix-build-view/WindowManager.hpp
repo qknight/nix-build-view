@@ -51,6 +51,7 @@ private:
     
     std::vector<Layout*> m_layouts;
     Widget* m_focusWidget = NULL;
+    int main_loop = 1;
 };
 
 #endif
