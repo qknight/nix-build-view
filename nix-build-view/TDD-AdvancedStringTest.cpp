@@ -111,6 +111,71 @@ void test3(AdvancedStringContainer& a, std::vector<AdvancedStringContainer> res,
     }
 }
 
+
+void test4(AdvancedString& a, AdvancedString& res, unsigned int b, unsigned int len, int num) {
+    AdvancedString t = AdvancedString::substr(a, b, len);
+
+    bool r = true;
+
+    if (t.size() != res.size() )
+        r=false;
+
+    if (r) {
+        for (int i=0; i < t.size(); ++i) {
+            if (t.str() != res.str()) {
+                r=false;
+                break;
+            }
+        }
+    }
+    if (!r) {
+        std::cout << YELLOW << "---------------------------BEGIN TEST AdvancedString::substr ----------------------------------------------" << RESET << std::endl;
+        std::cout << RED << "TEST " << num << " WAS A FAILURE" << RESET << std::endl;
+        std::cout << "==== input was: ====" << std::endl;
+        std::cout  << "'" << YELLOW << a.str() << RESET << "'" << std::endl;
+        std::cout << "==== result was: ====" << std::endl;
+        std::cout  << "'" << RED << t.str() << RESET << "'" << std::endl;
+        std::cout <<   "==== but should be: ====" <<  std::endl;
+        std::cout << "'" << GREEN << res.str() << RESET <<"'" << std::endl;
+        std::cout << YELLOW << "---------------------------END TEST AdvancedString::substr ----------------------------------------------" << RESET << std::endl<< std::endl<< std::endl;
+    }
+}
+
+void test5(AdvancedStringContainer& a, AdvancedStringContainer& res, int b, int len, int num) {
+    AdvancedStringContainer t;
+
+    AdvancedStringContainer::substr(t, a, b, len);
+
+    bool r = true;
+    bool s = true;
+
+    if (t.size() != res.size() ) {
+        r=false;
+        s=false;
+    }
+
+    if (r) {
+        for (int i=0; i < t.size(); ++i) {
+            if (t[i].str() != res[i].str()) {
+                r=false;
+                break;
+            }
+        }
+    }
+    if (!r) {
+        std::cout << YELLOW << "---------------------------BEGIN TEST AdvancedStringContainer::substr ----------------------------------------------" << RESET << std::endl;
+        std::cout << RED << "TEST " << num << " WAS A FAILURE" << RESET << std::endl;
+        if (!s) std::cout << RED << "size difference in AdvancedStringContainer t vs res =  " << t.size() << " vs " << res.size() << RESET << std::endl;
+        std::cout << "==== input was: ====" << std::endl;
+        std::cout  << "'" << YELLOW << a.str() << RESET << "'" << std::endl;
+        std::cout << "==== result was: ====" << std::endl;
+        std::cout  << "'" << RED << t.str() << RESET << "'" << std::endl;
+        std::cout <<   "==== but should be: ====" <<  std::endl;
+        std::cout << "'" << GREEN << res.str() << RESET <<"'" << std::endl;
+        std::cout << YELLOW << "---------------------------END TEST AdvancedStringContainer::substr ----------------------------------------------" << RESET << std::endl<< std::endl<< std::endl;
+    }
+}
+
 int main(int argc, char *argv[]) {
 
     {
@@ -490,6 +555,85 @@ int main(int argc, char *argv[]) {
 //         for (int i=0; i < buf.size(); ++i) {
 //             std::cout  << "'" << YELLOW << buf[i].str() << RESET << "'" << std::endl;
 //         }
+    }
+    ///////////////////////////////////////////// AdvancedString::substr /////////////////////////////////////////////
+    {
+        AdvancedString c("hello world");
+        AdvancedString res("hello");
+        test4(c, res, 0, 5, 90);
+    }
+    {
+        AdvancedString c("hello world");
+        AdvancedString res("");
+        test4(c, res, 0, 0, 91);
+    }
+    {
+        AdvancedString c("hello world");
+        AdvancedString res(" world");
+        test4(c, res, 5, 55, 92);
+    }
+    {
+        AdvancedString c("hello world");
+        AdvancedString res("");
+        test4(c, res, 55, 55, 93);
+    }
+    {
+        AdvancedString c("");
+        AdvancedString res("");
+        test4(c, res, 55, 55, 94);
+    }
+    {
+        AdvancedString c("123");
+        AdvancedString res("2");
+        test4(c, res, 1, 1, 95);
+    }
+    ///////////////////////////////////////////// AdvancedStringContainer::substr /////////////////////////////////////////////
+    {
+        AdvancedStringContainer c;
+        c << "hello world" << ", how are " << "you";
+        AdvancedStringContainer res;
+        res << "hello world";
+        test5(c, res, 0, 11, 110);
+    }
+    {
+        AdvancedStringContainer c;
+        c << "hello world" << ", how are " << "you";
+        AdvancedStringContainer res;
+        res << "llo world, how";
+        test5(c, res, 2, 14, 111);
+    }
+    {
+        AdvancedStringContainer c;
+        c << "hello world" << ", how are " << "you";
+        AdvancedStringContainer res;
+        res << "llo world, how are y";
+        test5(c, res, 2, 20, 112);
+    }
+    {
+        AdvancedStringContainer c;
+        c << "" << "hello world" << "" << ", how are " << "you";
+        AdvancedStringContainer res;
+        res << "llo world, how are y";
+        test5(c, res, 2, 20, 113);
+    }
+    {
+        AdvancedStringContainer c;
+        c << "";
+        AdvancedStringContainer res; // should be empty
+        test5(c, res, 0, 11, 114);
+    }
+    {
+        AdvancedStringContainer c;
+        c << "" << "" << "";
+        AdvancedStringContainer res; // should be empty
+        test5(c, res, 0, 11, 115);
+    }
+    {
+        AdvancedStringContainer c;
+        c << "" << "" << "" << "f" << "";
+        AdvancedStringContainer res;
+        res << "f";
+        test5(c, res, 0, 1, 116);
     }
     exit(0);
 }

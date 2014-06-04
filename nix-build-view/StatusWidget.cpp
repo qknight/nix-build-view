@@ -28,14 +28,14 @@ AdvancedStringContainer StatusWidget::render(unsigned int width, unsigned int he
     }
     s2 << "]";
 
-        if (m_fetches) {
+    if (m_fetches) {
         s2 << " " << AdvancedString(std::to_string(m_fetches), COLOR_GREEN);
         if (m_fetches == 1)
             s2 << AdvancedString(" fetch", COLOR_GREEN);
         else
             s2 << AdvancedString(" fetches", COLOR_GREEN);
     }
-    
+
     if (m_builds) {
         s2 << " " << AdvancedString(std::to_string(m_builds), COLOR_MAGENTA);
         if (m_builds == 1)

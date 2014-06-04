@@ -67,6 +67,7 @@ void BuildWidgetManager::setPhase(std::string UUID, int phase) {
                 update();
                 //FIXME when removing elements, move the view upwards since it runs out of items currently
                 StatusWidget::Instance()->setBuilds(m_widgets.size());
+                //FIXME use interl remove fkt
             }
             return;
         }

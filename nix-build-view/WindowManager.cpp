@@ -98,7 +98,6 @@ void WindowManager::update(Widget* w) {
     else
         ;//FIXME redraw only single widget space
 
-    //FIXME bug: when amount of lines written exceeds the number of visibile lines it removes a false amount of lines and damages the terminal output
     int pos=0;
     int heightpointer = 0;
     attron(A_REVERSE);
@@ -107,22 +106,29 @@ void WindowManager::update(Widget* w) {
     Layout* l = m_layouts[m_selectedLayout];
 
     // layout the widget in the current terminal width/height
-    //FIXME add check if width and height is not exceeded
     RasterizedLayout r = l->rasterize(width(), height());
 
     for(unsigned int i=0; i < r.m_fixedWidgets.size(); ++i) {
         FixedWidget fw = r.m_fixedWidgets[i];
         AdvancedStringContainer as = fw.widget->render(fw.width, fw.height);
+        int left = fw.width * fw.height;
         pos=0;
         for (unsigned int x=0; x < as.size(); ++x) {
+            if(!left)
+                break;
+            std::string s;
+            if (left < as[x].size())
+                s = as[x].str().substr(0,left);
+            else
+                s = as[x].str();
             attron(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
-            mvprintw(heightpointer+(pos/width()), pos%width(), as[x].str().c_str());
-            pos+=as[x].str().size();
+            mvprintw(heightpointer+(pos/width()), pos%width(), s.c_str());
+            pos += s.size();
+            left -= s.size();
             attroff(as[x].attributes() | COLOR_PAIR(cm.setColor(as[x].bgColor(), as[x].fontColor())));
         }
         heightpointer += fw.height;
     }
-//     wrefresh(m_win); //FIXME what is this good for anyway? it causes a high amount of flickering when enabled...
 }
 
 void WindowManager::keyboardInputHandler(int ch) {
@@ -177,7 +183,7 @@ std::string WindowManager::version() {
 }
 
 int WindowManager::EventLoop() {
-  //FIXME check if all builds/fetches were completed and afterwards quit
+    //FIXME check if all builds/fetches were completed and afterwards quit
 //   if (FetchWidgetManager::Instance()->)
 // return 0;
     return 1;

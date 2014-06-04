@@ -7,14 +7,26 @@ AdvancedStringContainer WidgetManagerBase::render(unsigned int width, unsigned i
 
     sort();
 
-    AdvancedStringContainer s;
+    AdvancedStringContainer sc;
     for(unsigned int i=m_line; i < m_line+height; ++i) {
         if (i >= m_widgets.size())
             break;
         AdvancedStringContainer a = m_widgets[i]->render(width, 1);
-        s << a;
+        // limits the stringsize to width (if it was longer)
+        int left = width * 1;
+        for (unsigned int x=0; x < a.size(); ++x) {
+            if(!left)
+                break;
+            AdvancedString as;
+            if (left < a[x].size())
+                as = AdvancedString::substr(a[x], 0, left);
+            else
+                as = a[x];
+            sc << as;
+            left -= as.size();
+        }
     }
-    return s;
+    return sc;
 }
 
 unsigned int WidgetManagerBase::rowsWantedByWidget() {

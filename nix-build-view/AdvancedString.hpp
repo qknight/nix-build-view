@@ -17,19 +17,19 @@ public:
         m_attributes = attributes;
         m_bgColor = bgColor;
     }
-    int size() {
+    int size() const {
         return m_str.size();
     }
-    std::string str() {
+    std::string str() const {
         return m_str;
     }
-    int fontColor() {
+    int fontColor() const {
         return m_fontColor;
     }
-    int bgColor() {
+    int bgColor() const {
         return m_bgColor;
     }
-    int attributes() {
+    int attributes() const {
         return m_attributes;
     }
     // used to render a AdvancedString to a xterm or similar (not using ncurses painting)
@@ -64,6 +64,11 @@ public:
         }
         ss << color << m_str << RESET;
         return ss.str();
+    }
+    static AdvancedString substr(const AdvancedString &in, unsigned int b, unsigned int len) {
+        if (b >= in.size())
+            return AdvancedString();
+        return AdvancedString(in.str().substr(b, len), in.fontColor(), in.attributes(), in.bgColor());
     }
 private:
     std::string m_str;
@@ -116,16 +121,16 @@ public:
         sContainer.push_back(AdvancedString(std::to_string(f)));
         return *this;
     }
-    AdvancedString operator[] (unsigned int element) {
+    AdvancedString operator[] (unsigned int element) const {
         if (element < sContainer.size())
             return sContainer[element];
         else
             return AdvancedString();
     }
-    unsigned int size() {
+    unsigned int size() const {
         return sContainer.size();
     }
-    int str_size() {
+    int str_size() const {
         unsigned int size = 0;
         for(unsigned int i=0; i < sContainer.size(); ++i) {
             size += sContainer[i].size();
@@ -144,38 +149,53 @@ public:
     }
 
     /*
-     * like std::string.substr this function builds a substring starting at b and ending at e
-     *  - if b > e, an empty AdvancedStringContainer is returned
-     *  - if b or e is outside in, then an empty AdvancedStringContainer is returned
-     *  - if [ 0 <= b < e <= in.str_size ], then it will return a AdvancedStringContainer with at least one element in it
+     * like std::string.substr this function builds a substring starting at b and ending at b+len
+     *  - if b > in.str_size(), an empty AdvancedStringContainer is returned
      *
-     * WARNING: it is assumed that the string is free of \n or \t chars!
+     * note: it is assumed that the string is free of \n, \t chars or terminal control sequences of any kind
+     *       if not, they are treated as normal chars
+     * note: empty AdvancedString's will be removed
      */
-    //FIXME implement this and write unit tests for it, finally make us of it in the render() function to limit the string!
-    static void substr(std::vector<AdvancedStringContainer> &out,  AdvancedStringContainer  &in , unsigned int b, unsigned int e) {
-//         AdvancedStringContainer tmp;
+    static void substr(AdvancedStringContainer &out,  const AdvancedStringContainer &in , unsigned int b, unsigned int len) {
+//         if (b >= in.str_size())
+//             return;
+//         bool begin_found=false;
+//         int visited = 0;
+//         unsigned int left = len;
 //         for (unsigned int i=0; i < in.size(); i++) {
-//             AdvancedString as = in[i];
-//             std::string str = as.str();
-//             std::string sub;
-//             std::string::size_type pos = 0;
-//             std::string::size_type old_pos = 0;
-//             bool flag=true;
-//
-//             while(flag) {
-//                 pos=str.find_first_of(ch,pos);
-//                 if(pos == std::string::npos)
-//                 {
-//                     flag = false;
-//                     pos = str.size();
+//             if (in[i].size() == 0)
+//                 continue;
+//             if (!begin_found) {
+//                 if (visited + in[i].size() < b) {
+//                     visited += in[i].size();
+//                     continue;
+//                 } else {
+//                     begin_found = true;
 //                 }
-//                 sub = str.substr(old_pos, pos-old_pos);
-//                 tmp << AdvancedString(sub, as.fontColor(), as.attributes(), as.bgColor());
-//                 if (flag || i == in.size()-1) {
-//                     out.push_back(tmp);
-//                     tmp.clear();
+//             } else {
+//                 // 5 cases:
+//                 if (visited < b) {
+//                     int l = 0;
+//                     int x = b-visited;
+//                     if (in[i].size() >= x)
+//                         l = x;
+//                     else
+//                         l = in[i].size();
+//                     // 1. part from the middle needed, add it and return
+//                     std::sting s = in[i].substr(x, l);
+//                     out << AdvancedString(s, in[i].fontColor(), in[i].attributes(), in[i].bgColor());
+//                     left -= l;
+//                     // 2. first part is not needed, add rest
+//                     in[i].substr(x, string::npos)
+// 
+// 
+//                 } else {
+//                     // 3. fits completely (just add it),
+//                     // 4. last part is not needed, leave rest and return
+// 
+// 
 //                 }
-//                 old_pos = ++pos;
+//                 // 5. no more input, return
 //             }
 //         }
     }
