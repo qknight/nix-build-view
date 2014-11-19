@@ -38,7 +38,10 @@ however, i'm open to dicussion!
 
 or look at this screenshot(s):
 
-   https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg
-   https://raw.github.com/qknight/nix-build-hack/master/screenshot2.jpeg
-   https://raw.github.com/qknight/nix-build-hack/master/screenshot3.jpeg
-   https://raw.github.com/qknight/nix-build-hack/master/screenshot4.jpeg
+![screenshot1](https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg)
+
+![screenshot2](https://raw.github.com/qknight/nix-build-hack/master/screenshot2.jpeg)
+
+![screenshot3](https://raw.github.com/qknight/nix-build-hack/master/screenshot3.jpeg)
+
+![screenshot4](https://raw.github.com/qknight/nix-build-hack/master/screenshot4.jpeg)
