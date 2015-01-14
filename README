@@ -26,13 +26,30 @@ i'm not sure which license to pick. two options:
 
 however, i'm open to dicussion!
 
-# how to get this running
+# how to get nix-build-view compiled & running
+
+note: this repository is called nix-build-view _but_ also contains a direcotry called nix-build-view!
+
+using stdenv (GCC):
 
  1. cd nix-build-view
- 2. nix-shell -p ncurses -p cmake
- 3. mkdir build; cd build; cmake ..; 
- 4. make
- 5. ./nix-build-view
+ 2. nix-shell -p ncurses cmake
+ 3. mkdir build; cd build 
+ 4. cmake ..
+ 5. make
+ 6. ./nix-build-view
+
+in case you want to use clang (LLVM):
+
+ 1. cd nix-build-view
+ 2. nix-shell -p ncurses cmake clang
+ 3. mkdir build; cd build 
+    export CC=clang
+    export CXX=clang++
+ 4. cmake ..
+ 5. make
+ 6. ./nix-build-view
+
 
 # screenshots
 
