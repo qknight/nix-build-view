@@ -29,56 +29,56 @@ HelpWidget::render(unsigned int width, unsigned int height)
 
     s << AdvancedString("nix-build-view ", COLOR_CYAN, WA_BOLD)
       << AdvancedString(WindowManager::Instance()->version(), COLOR_CYAN)
-      << AdvancedString(" (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD);
+      << AdvancedString(" (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD)
 
-    s << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN, WA_BOLD);
+      << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN, WA_BOLD)
 
-    s << "\n";
-    s << "\n";
-    s << "     " << "keyboard shortcuts: \n";
-    s << "\n";
-    s << "         " << AdvancedString(p("q"), COLOR_CYAN, WA_BOLD)
-      << " - quit the program\n";
+      << "\n"
+      << "\n"
+      << "     " << "keyboard shortcuts: \n"
+      << "\n"
+      << "         " << AdvancedString(p("q"), COLOR_CYAN, WA_BOLD)
+      << " - quit the program\n"
 
-    s << "\n";
-    s << "         " << AdvancedString(p("h"), COLOR_CYAN, WA_BOLD)
-      << " - help\n";
+      << "\n"
+      << "         " << AdvancedString(p("h"), COLOR_CYAN, WA_BOLD)
+      << " - help\n"
 
-    s << "         " << AdvancedString(p("1"), COLOR_CYAN, WA_BOLD)
-      << " - combined view with log+fetch+build\n";
+      << "         " << AdvancedString(p("1"), COLOR_CYAN, WA_BOLD)
+      << " - combined view with log+fetch+build\n"
 
-    s << "         " << AdvancedString(p("2"), COLOR_CYAN, WA_BOLD)
-      << " - shows the logfile output of nix-build-view\n";
+      << "         " << AdvancedString(p("2"), COLOR_CYAN, WA_BOLD)
+      << " - shows the logfile output of nix-build-view\n"
 
-    s << "         " << AdvancedString(p("3"), COLOR_CYAN, WA_BOLD)
-      << " - shows the download widget (can be scrolled)\n";
+      << "         " << AdvancedString(p("3"), COLOR_CYAN, WA_BOLD)
+      << " - shows the download widget (can be scrolled)\n"
 
-    s << "         " << AdvancedString(p("4"), COLOR_CYAN, WA_BOLD)
-      << " - shows the build widget (can be scrolled)\n";
+      << "         " << AdvancedString(p("4"), COLOR_CYAN, WA_BOLD)
+      << " - shows the build widget (can be scrolled)\n"
 
-    s << "\n";
-    s << "     " << "using the views: \n";
-    s << "\n";
-    s << "         " << AdvancedString(p("up"), COLOR_CYAN, WA_BOLD)
-      << " - scrolls view up\n";
+      << "\n"
+      << "     " << "using the views: \n"
+      << "\n"
+      << "         " << AdvancedString(p("up"), COLOR_CYAN, WA_BOLD)
+      << " - scrolls view up\n"
 
-    s << "         " << AdvancedString(p("down"), COLOR_CYAN, WA_BOLD)
-      << " - scrolls the view down\n";
+      << "         " << AdvancedString(p("down"), COLOR_CYAN, WA_BOLD)
+      << " - scrolls the view down\n"
 
-    s << "         " << AdvancedString(p("page up"), COLOR_CYAN, WA_BOLD)
-      << " - scrolls view up by several lines\n";
+      << "         " << AdvancedString(p("page up"), COLOR_CYAN, WA_BOLD)
+      << " - scrolls view up by several lines\n"
 
-    s << "         " << AdvancedString(p("page down"), COLOR_CYAN, WA_BOLD)
-      << " - scrolls view down by several lines\n";
+      << "         " << AdvancedString(p("page down"), COLOR_CYAN, WA_BOLD)
+      << " - scrolls view down by several lines\n"
 
-    s << "         " << AdvancedString(p("pos1"), COLOR_CYAN, WA_BOLD)
-      << " - scrolls view to beginning\n";
+      << "         " << AdvancedString(p("pos1"), COLOR_CYAN, WA_BOLD)
+      << " - scrolls view to beginning\n"
 
-    s << "         " << AdvancedString(p("end"), COLOR_CYAN, WA_BOLD)
-      << " - scrolls view to end\n";
+      << "         " << AdvancedString(p("end"), COLOR_CYAN, WA_BOLD)
+      << " - scrolls view to end\n"
 
-    s << "\n";
-    s << "         "
+      << "\n"
+      << "         "
       << "note: if you scroll to the end of the log (2) 'auto-scroll' will be active\n";
 
 
