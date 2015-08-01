@@ -14,16 +14,19 @@ const std::string alphanum =
     "0123456789"
     "abcdefghijklmnopqrstuvwxyz";
 
-std::string randomString(unsigned int size)
+std::string
+randomString(unsigned int size)
 {
     std::string str;
-    for(unsigned int i = 0; i < size; ++i) {
+    for (unsigned int i = 0; i < size; ++i) {
         str += alphanum[rand()%alphanum.size()];
     }
-    return  str;
+
+    return str;
 }
 
-NixBuild::NixBuild() {
+NixBuild::NixBuild()
+{
     srand(10);
     m.push_back("acpi-1.7");
     m.push_back("aescrypt-3.0.9");
@@ -127,15 +130,21 @@ NixBuild::NixBuild() {
     s << AdvancedString("this is the nix-build-view UNIT TEST, no real downloads are made, no bandwidth is harmed!\n");
 
     s << AdvancedString("building Nix...\n");
-    s << AdvancedString("these paths will be ") << AdvancedString("fetched", COLOR_GREEN) << AdvancedString(" (") << AdvancedString("40.1", COLOR_YELLOW) << AdvancedString(" Mib download, ") << AdvancedString("201.66", COLOR_YELLOW) << AdvancedString(" Mib unpacked):\n");
+    s << AdvancedString("these paths will be ")
+      << AdvancedString("fetched", COLOR_GREEN)
+      << AdvancedString(" (")
+      << AdvancedString("40.1", COLOR_YELLOW)
+      << AdvancedString(" Mib download, ")
+      << AdvancedString("201.66", COLOR_YELLOW)
+      << AdvancedString(" Mib unpacked):\n");
 
     // this function is very very slow but since it is only for testing, who cares! you just need to know that!
-    for(int i=0; i < 555; ++i) {
+    for (int i = 0; i < 555; ++i) {
         std::string n ="/nix/store/";
-        n+= randomString(44);
-        n+= "-";
-        n+= m[rand()%m.size()];
-        n+= ".nar.xz";
+        n += randomString(44);
+        n += "-";
+        n += m[rand() % m.size()];
+        n += ".nar.xz";
 
         m_fetch.push_back(n);
         FetchWidgetManager::Instance()->addFetch(n, 0.01f, rand());
@@ -149,13 +158,15 @@ NixBuild::NixBuild() {
     b.push_back("installationPhase");
     b.push_back("postinstallationPhase");
 
-    s << AdvancedString("these derivations will be ") << AdvancedString("built", COLOR_MAGENTA) << AdvancedString(":\n");
+    s << AdvancedString("these derivations will be ")
+      << AdvancedString("built", COLOR_MAGENTA)
+      << AdvancedString(":\n");
 
-    for(int i=0; i < 555; ++i) {
+    for (int i = 0; i < 555; ++i) {
         std::string n = "/nix/store/";
-        n+= randomString(44);
-        n+= "-";
-        n+= m[rand()%m.size()];
+        n += randomString(44);
+        n += "-";
+        n += m[rand() % m.size()];
         BuildWidgetManager::Instance()->addBuild(n, b);
         m_build.push_back(n);
         s << "        " <<  AdvancedString(n, COLOR_MAGENTA) << "\n";
@@ -164,14 +175,15 @@ NixBuild::NixBuild() {
     s << "\n";
 
     s << "Now follows the log:\n";
+
     TerminalWidget::Instance()->append(s);
 }
 
-
 // updates a random amount (range [0, 100]) of elements about every 1000 ms
-void NixBuild::tick() {
-
-    //FIXME move this code from the data source to the render routine
+void
+NixBuild::tick()
+{
+    // FIXME move this code from the data source to the render routine
     timeval time;
     gettimeofday(&time, NULL);
     long millis_now = (time.tv_sec * 1000) + (time.tv_usec / 1000);
@@ -194,24 +206,31 @@ void NixBuild::tick() {
 
     millis_old = millis_now;
 
-    int elements = rand()%m_fetch.size();
-    for(int i=0; i < elements; ++i) {
-        int e = rand() % m_fetch.size();
+    int elements = rand() % m_fetch.size();
+
+    for (int i = 0; i < elements; ++i) {
+        int e   = rand() % m_fetch.size();
         float g = (float(rand() % 100) / 100) + 1.0f;
         float f = FetchWidgetManager::Instance()->getProgress(m_fetch[e]) * g;
-        if (f > 1.0)
+
+        if (f > 1.0) {
             f = 1.0f;
-        if (f < 0)
+        }
+
+        if (f < 0) {
             f = 0.0f;
+        }
+
         FetchWidgetManager::Instance()->setProgress(m_fetch[e], f);
     }
 
-    int elements2 = rand()%m_build.size();
-    for(int i=0; i < elements2; ++i) {
+    int elements2 = rand() % m_build.size();
+
+    for (int i = 0; i < elements2; ++i) {
         int e = rand() % m_build.size();
         int f = BuildWidgetManager::Instance()->getPhase(m_build[e]);
-        BuildWidgetManager::Instance()->setPhase(m_build[e], f+1);
+
+        BuildWidgetManager::Instance()->setPhase(m_build[e], f + 1);
     }
 }
-
 
