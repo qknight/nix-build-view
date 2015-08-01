@@ -1,64 +1,62 @@
 # motivation
 
-this is an interactive showcase how nix-build could be extended for better usability using a GUI based on ncurses.
+This is an interactive showcase how nix-build could be extended for better
+usability using a GUI based on ncurses.
 
-nix-build uses perl scripts to download NAR files, these 3 examples implement a callback which can be used to query the status of such downloads:
+`nix-build` uses perl scripts to download NAR files, these 3 examples implement
+a callback which can be used to query the status of such downloads:
 
-* 01-curl-transport.pl
-* net_curl_easy.pl
-* www_curl_easy.pl
+* `01-curl-transport.pl`
+* `net_curl_easy.pl`
+* `www_curl_easy.pl`
 
-in nix-build-view i've written a ncurses based view with advanced color string handling.
+In nix-build-view I've written a ncurses based view with advanced color string
+handling.
 
-# outstanding concepts
+# Outstanding concepts
 
-i wanted to have colored widgets thus i had to write my own WindowManager and i added my own AdvancedString implementation. 
-please feel free to copy them.
+I wanted to have colored widgets thus I had to write my own `WindowManager` and
+I added my own `AdvancedString` implementation. Please feel free to copy them.
 
-note: AdvancedString could need some profiling but it is fast enough for this purpose.
+Note: `AdvancedString` could need some profiling but it is fast enough for this
+purpose.
 
-# licensing
+# Licensing
 
-i'm not sure which license to pick. two options:
+I'm not sure which license to pick. two options:
 
-* if i merge this source into nix-build i will pick BSD (this is what nix-build is licensed to)
-* if it is decided that nix-build-view should be 'just a view' and thus be its own process GPLv3 would be a good pick 
+* If I merge this source into nix-build i will pick BSD (this is what nix-build
+  is licensed to)
+* If it is decided that nix-build-view should be 'just a view' and thus be its
+  own process GPLv3 would be a good pick
 
-however, i'm open to dicussion!
+However, I'm open to discussion!
 
-# how to get nix-build-view compiled & running
+# How to get nix-build-view compiled & running
 
-note: this repository is called nix-build-view _but_ also contains a direcotry called nix-build-view!
+Note: This repository is called nix-build-view _but_ also contains a directory
+called nix-build-view!
 
-using stdenv (GCC):
+Using stdenv (GCC):
 
- 1. cd nix-build-view
- 2. nix-shell -p ncurses cmake
- 3. mkdir build; cd build 
- 4. cmake ..
- 5. make
- 6. ./nix-build-view
+```
+cd nix-build-view
+nix-shell -p ncurses cmake
+mkdir build; cd build
+cmake ..
+make
+./nix-build-view
+```
 
-in case you want to use clang (LLVM):
+In case you want to use clang (LLVM):
 
- 1. cd nix-build-view
- 2. nix-shell -p ncurses cmake clang
- 3. mkdir build; cd build 
-    export CC=clang
-    export CXX=clang++
- 4. cmake ..
- 5. make
- 6. ./nix-build-view
-
-
-# screenshots
-
-or look at this screenshot(s):
-
-![screenshot1](https://raw.github.com/qknight/nix-build-hack/master/screenshot1.jpeg)
-
-![screenshot2](https://raw.github.com/qknight/nix-build-hack/master/screenshot2.jpeg)
-
-![screenshot3](https://raw.github.com/qknight/nix-build-hack/master/screenshot3.jpeg)
-
-![screenshot4](https://raw.github.com/qknight/nix-build-hack/master/screenshot4.jpeg)
+```
+cd nix-build-view
+nix-shell -p ncurses cmake clang
+mkdir build; cd build
+export CC=clang
+export CXX=clang++
+cmake ..
+make
+./nix-build-view
+```
