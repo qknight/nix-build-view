@@ -19,39 +19,62 @@ class StatusWidget;
 class HelpWidget;
 class VerticalSpacerWidget;
 
-
 class WindowManager {
+
 public:
+
     void update(Widget* w = NULL);
+
     void setLayout(int layout);
+
     void addLayout(Layout* l);
+
     void resize(int width, int height);
+
     int width() {
         return m_width;
     };
+
     int height() {
         return m_height;
     };
+
     static WindowManager* Instance();
+
     void keyboardInputHandler(int ch);
+
     std::string version();
+
     int EventLoop();
+
 private:
+
     WindowManager(WINDOW *win);
+
     void setKeyboardInputHandler(Widget* w);
+
     WINDOW* m_win;
+
     int m_width;
+
     int m_height;
+
     ColorManager cm;
-    unsigned int m_selectedLayout=0;
+
+    unsigned int m_selectedLayout = 0;
 
     StatusWidget* statusWidget;
+
     HelpWidget* helpWidget;
+
     VerticalSpacerWidget* verticalSpacer;
-    
+
     std::vector<Layout*> m_layouts;
+
     Widget* m_focusWidget = NULL;
+
     int main_loop = 1;
+
 };
 
-#endif
+#endif // WINDOW_MANAGER_HPP
