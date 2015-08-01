@@ -25,11 +25,7 @@ Layout::rasterize(int width, int height)
 
         fw.widget = m_layoutItems[i]->widget;
 
-        if (fw.widget->rowsWantedByWidget() == 0) {
-            fw.height = 0;
-        } else {
-            fw.height = 1;
-        }
+        fw.height = (fw.widget->rowsWantedByWidget() == 0) ? 0 : 1;
 
         rowsUsed += fw.height;
         fw.width = width;
