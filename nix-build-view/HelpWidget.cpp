@@ -33,49 +33,51 @@ HelpWidget::render(unsigned int width, unsigned int height)
 
       << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN, WA_BOLD)
 
+#define __as(txt) AdvancedString((txt), COLOR_CYAN, WA_BOLD)
       << "\n"
       << "\n"
       << "     " << "keyboard shortcuts: \n"
       << "\n"
-      << "         " << AdvancedString(p("q"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("q"))
       << " - quit the program\n"
 
       << "\n"
-      << "         " << AdvancedString(p("h"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("h"))
       << " - help\n"
 
-      << "         " << AdvancedString(p("1"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("1"))
       << " - combined view with log+fetch+build\n"
 
-      << "         " << AdvancedString(p("2"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("2"))
       << " - shows the logfile output of nix-build-view\n"
 
-      << "         " << AdvancedString(p("3"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("3"))
       << " - shows the download widget (can be scrolled)\n"
 
-      << "         " << AdvancedString(p("4"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("4"))
       << " - shows the build widget (can be scrolled)\n"
 
       << "\n"
       << "     " << "using the views: \n"
       << "\n"
-      << "         " << AdvancedString(p("up"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("up"))
       << " - scrolls view up\n"
 
-      << "         " << AdvancedString(p("down"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("down"))
       << " - scrolls the view down\n"
 
-      << "         " << AdvancedString(p("page up"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("page up"))
       << " - scrolls view up by several lines\n"
 
-      << "         " << AdvancedString(p("page down"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("page down"))
       << " - scrolls view down by several lines\n"
 
-      << "         " << AdvancedString(p("pos1"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("pos1"))
       << " - scrolls view to beginning\n"
 
-      << "         " << AdvancedString(p("end"), COLOR_CYAN, WA_BOLD)
+      << "         " << __as(p("end"))
       << " - scrolls view to end\n"
+#undef __as
 
       << "\n"
       << "         "
