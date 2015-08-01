@@ -45,11 +45,8 @@ StatusWidget::render(unsigned int width, unsigned int height)
 
     if (m_builds) {
         s2 << " " << AdvancedString(std::to_string(m_builds), COLOR_MAGENTA);
-        if (m_builds == 1)  {
-            s2 << AdvancedString(" build", COLOR_MAGENTA);
-        } else {
-            s2 << AdvancedString(" builds", COLOR_MAGENTA);
-        }
+        auto str = (m_builds == 1 ? " build" : " builds");
+        s2 << AdvancedString(str, COLOR_MAGENTA);
     }
 
     int i = width - s1.size();
