@@ -3,10 +3,13 @@
 
 #include "Widget.hpp"
 
-class VerticalSpacerWidget : public Widget {
+class VerticalSpacerWidget : public Widget
+{
     AdvancedStringContainer render(unsigned int width, unsigned int height);
+
     int type() const;
+
     unsigned int rowsWantedByWidget();
 };
 
-#endif //VerticalSpacerWidget
+#endif // VerticalSpacerWidget__HPP
