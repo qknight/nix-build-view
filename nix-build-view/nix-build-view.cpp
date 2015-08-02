@@ -9,17 +9,24 @@
 
 #define TIME_OUT 1000
 
-void keyboard_input_handler() {
+void
+keyboard_input_handler()
+{
     int ch;
     timeout(TIME_OUT);
     ch = getch(); /* Waits for TIME_OUT milliseconds */
-    if (ch == ERR)
+
+    if (ch == ERR) {
         return;
+    }
+
     // all other inputs are delegated to the windowmanager
     WindowManager::Instance()->keyboardInputHandler(ch);
 }
 
-int main(int argc, char *argv[]) {
+int
+main(int argc, char *argv[])
+{
     initscr();	/* Start curses mode */
     start_color();
     cbreak(); /* Line buffering disabled. Pass on every thing */
@@ -31,7 +38,9 @@ int main(int argc, char *argv[]) {
     WindowManager::Instance()->update();
 
     AdvancedStringContainer s;
-    s << AdvancedString("nix-build-view ", COLOR_CYAN, WA_BOLD) << AdvancedString(WindowManager::Instance()->version(), COLOR_CYAN) << AdvancedString(" (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD);
+    s << AdvancedString("nix-build-view ", COLOR_CYAN, WA_BOLD)
+      << AdvancedString(WindowManager::Instance()->version(), COLOR_CYAN)
+      << AdvancedString(" (c) 2014++ Joachim Schiele\n", COLOR_CYAN, WA_BOLD);
     s << AdvancedString("Released under the GNU GPL v3\n", COLOR_CYAN, WA_BOLD);
     s << AdvancedString("\n");
 
@@ -47,10 +56,10 @@ int main(int argc, char *argv[]) {
     endwin(); /* End curses mode */
 
     AdvancedStringContainer log =  TerminalWidget::Instance()->log();
-    for(unsigned int i=0; i < log.size(); ++i)
+    for (unsigned int i = 0; i < log.size(); ++i) {
         std::cout << log[i].terminalString();
+    }
+
     return 0;
 }
-
-
 

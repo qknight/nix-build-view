@@ -1,15 +1,22 @@
 #include "VerticalSpacerWidget.hpp"
 
-unsigned int VerticalSpacerWidget::rowsWantedByWidget() {
-  return 0; 
+unsigned int
+VerticalSpacerWidget::rowsWantedByWidget()
+{
+    return 0;
 }
 
-int VerticalSpacerWidget::type() const {
+int
+VerticalSpacerWidget::type() const
+{
     return WidgetName::VerticalSpacerWidget;
 }
 
-AdvancedStringContainer VerticalSpacerWidget::render(unsigned int width, unsigned int height) {
+    AdvancedStringContainer
+VerticalSpacerWidget::render(unsigned int width, unsigned int height)
+{
     AdvancedStringContainer a;
-//     a << "hello world";
+    //     a << "hello world";
     return a;
 }
+

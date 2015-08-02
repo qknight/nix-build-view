@@ -1,3 +1,5 @@
+#ifndef __COLORCODES_H__
+#define __COLORCODES_H__
 
 #define RESET       "\033[0m"
 #define BLACK       "\033[30m"             /* Black */
@@ -16,3 +18,5 @@
 #define BOLDMAGENTA "\033[1m\033[35m"      /* Bold Magenta */
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
+
+#endif // __COLORCODES_H__
