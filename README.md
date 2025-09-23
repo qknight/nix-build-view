@@ -13,6 +13,8 @@ a callback which can be used to query the status of such downloads:
 In nix-build-view I've written a ncurses based view with advanced color string
 handling.
 
+![Nix build view](nix-build-view.jpeg)
+
 # Outstanding concepts
 
 I wanted to have colored widgets thus I had to write my own `WindowManager` and
